@@ -16,9 +16,9 @@ export async function POST(request: NextRequest) {
     const database = getDatabase();
     
     // Kullanıcıyı email ile bul
-    const user = database.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
+    const user = database.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase()) as any;
     
-    if (!user) {
+    if (!user || !user.id) {
       return NextResponse.json(
         { error: 'Bu email adresi ile kayıtlı kullanıcı bulunamadı' },
         { status: 404 }

@@ -68,9 +68,9 @@ export async function POST(request: NextRequest) {
       );
 
       // Kullanıcıyı getir
-      const user = database.prepare('SELECT * FROM users WHERE id = ?').get(userId);
+      const user = database.prepare('SELECT * FROM users WHERE id = ?').get(userId) as any;
       
-      if (!user) {
+      if (!user || !user.id) {
         throw new Error('Kullanıcı oluşturulamadı');
       }
 

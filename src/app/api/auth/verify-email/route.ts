@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
   
   try {
     // Güvenlik middleware'i uygula
-    const securityResult = await securityMiddleware(request, requestId);
+    const securityResult = await securityMiddleware(request);
     if (securityResult) return securityResult;
 
     // Request body validation
@@ -108,10 +108,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Kullanıcı zaten var mı kontrol et
-    const existingUser = database.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
+    const existingUser = database.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase()) as any;
     
     let user;
-    if (existingUser) {
+    if (existingUser && existingUser.id) {
       console.log('✅ Kullanıcı zaten mevcut, email verified olarak işaretleniyor');
       
       user = existingUser;

@@ -98,9 +98,9 @@ export async function POST(request: NextRequest) {
     console.log(`✅ [${requestId}] Kod doğrulandı, şifre güncellenıyor...`);
 
     // Kullanıcıyı getir
-    const user = database.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase());
+    const user = database.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase()) as any;
     
-    if (!user) {
+    if (!user || !user.id) {
       console.log(`❌ [${requestId}] Kullanıcı bulunamadı:`, email);
       return createErrorResponse(
         'Kullanıcı bulunamadı',
