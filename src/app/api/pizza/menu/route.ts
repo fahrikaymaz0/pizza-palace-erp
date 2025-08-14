@@ -4,26 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 const pizzas = [
   {
     id: 1,
-    name: 'Margherita',
-    description: 'Klasik İtalyan lezzeti',
-    price: 45,
-    image: '🍕', // 12MB - emoji kullanıyoruz
-    category: 'Klasik',
-    ingredients: ['Domates sosu', 'Mozzarella', 'Fesleğen'],
-    available: true,
-  },
-  {
-    id: 2,
-    name: 'Pepperoni',
-    description: 'Acılı pepperoni ile',
-    price: 55,
-    image: '🌶️', // 20MB - emoji kullanıyoruz
-    category: 'Etli',
-    ingredients: ['Domates sosu', 'Mozzarella', 'Pepperoni'],
-    available: true,
-  },
-  {
-    id: 3,
     name: 'BBQ Chicken',
     description: 'BBQ soslu tavuk',
     price: 60,
@@ -33,7 +13,7 @@ const pizzas = [
     available: true,
   },
   {
-    id: 4,
+    id: 2,
     name: 'Vegetarian',
     description: 'Sebzeli özel lezzet',
     price: 50,
@@ -43,7 +23,7 @@ const pizzas = [
     available: true,
   },
   {
-    id: 5,
+    id: 3,
     name: 'Supreme',
     description: 'Zengin içerik',
     price: 70,
@@ -60,7 +40,7 @@ const pizzas = [
     available: true,
   },
   {
-    id: 6,
+    id: 4,
     name: 'Mexican Hot',
     description: 'Baharatlı jalapeno ve mısır',
     price: 62,
@@ -70,7 +50,7 @@ const pizzas = [
     available: true,
   },
   {
-    id: 7,
+    id: 5,
     name: 'Funghi',
     description: 'Bol mantarlı',
     price: 58,
@@ -80,7 +60,7 @@ const pizzas = [
     available: true,
   },
   {
-    id: 8,
+    id: 6,
     name: 'Cheesy Lovers',
     description: 'Dört peynirli',
     price: 70,
@@ -92,10 +72,10 @@ const pizzas = [
 ];
 
 const categories = [
-  { id: 1, name: 'Klasik' },
-  { id: 2, name: 'Etli' },
-  { id: 3, name: 'Vejetaryen' },
-  { id: 4, name: 'Özel' },
+  { id: 1, name: 'Etli' },
+  { id: 2, name: 'Vejetaryen' },
+  { id: 3, name: 'Özel' },
+  { id: 4, name: 'Klasik' },
 ];
 
 export async function GET(request: NextRequest) {
