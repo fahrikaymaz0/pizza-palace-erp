@@ -49,9 +49,9 @@ export async function GET(request: NextRequest) {
     // SQLite'dan kullanıcı bilgilerini al
     const database = getDatabase();
     
-    const user = database.prepare('SELECT * FROM users WHERE id = ?').get(decoded.userId);
+    const user = database.prepare('SELECT * FROM users WHERE id = ?').get(decoded.userId) as any;
     
-    if (!user) {
+    if (!user || !user.id) {
       console.log(`❌ [${requestId}] SQLite Database'de kullanıcı bulunamadı: ${decoded.userId}`);
       return NextResponse.json(
         { 
@@ -65,7 +65,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Kullanıcı profilini SQLite'dan al
-    const profile = database.prepare('SELECT * FROM user_profiles WHERE user_id = ?').get(decoded.userId);
+    const profile = database.prepare('SELECT * FROM user_profiles WHERE user_id = ?').get(decoded.userId) as any;
 
     console.log(`✅ [${requestId}] Auth verify başarılı: ${user.email}`);
 

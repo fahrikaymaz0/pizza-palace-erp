@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
 import { getDatabase } from '@/lib/sqlite';
+import { getPizzaDatabase } from '@/lib/pizza-database';
 import {
   createSuccessResponse,
   createErrorResponse,
@@ -24,9 +26,9 @@ export async function GET(request: NextRequest) {
         const decoded = jwt.verify(token, JWT_SECRET) as any;
         const database = getDatabase();
         
-        const orderCountResult = database.prepare('SELECT COUNT(*) as order_count FROM orders WHERE user_id = ?');
+        const orderCountResult = database.prepare('SELECT COUNT(*) as order_count FROM orders WHERE user_id = ?').get(decoded.userId) as any;
         
-        userOrderCount = orderCountResult.order_count;
+        userOrderCount = orderCountResult?.order_count || 0;
       } catch (error) {
         console.log(`⚠️ [${requestId}] Kullanıcı sipariş sayısı alınamadı:`, error);
       }
@@ -85,31 +87,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('auth-token')?.value;
-
-    if (!token) {
-      return NextResponse.json(
-        { success: false, error: 'Giriş yapmanız gerekiyor' },
-        { status: 401 }
-      );
-    }
-
-    const decoded = jwt.verify(token, JWT_SECRET) as any;
-    const userId = decoded.userId;
-    const { campaignType } = await request.json();
-
-    // Veritabanından kullanıcı siparişlerini al
-    const db = PizzaDatabase.getInstance();
-    await db.init();
-    
-    const userOrders = await db.getUserOrders(userId);
-    const orderCount = userOrders.length;
-
     return NextResponse.json({
       success: true,
-      message: 'Kampanya bilgileri güncellendi',
-      orderCount: orderCount
+      message: 'Kampanya bilgileri güncellendi'
     });
   } catch (error) {
     console.error('Campaigns POST error:', error);

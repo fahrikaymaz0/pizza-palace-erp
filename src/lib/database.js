@@ -100,8 +100,16 @@ if (db) {
   initializeDatabase();
 }
 
+// Database manager objesi
+const dbManager = {
+  getDatabase,
+  initializeDatabase,
+  db
+};
+
 module.exports = {
   getDatabase,
-  initializeDatabase
+  initializeDatabase,
+  dbManager
 };
 
