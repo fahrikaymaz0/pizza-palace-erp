@@ -79,18 +79,16 @@ export default function PizzaMenu() {
 
   const loadMenu = async () => {
     try {
+      setLoading(true);
       const response = await fetch('/api/pizza/menu');
-      const raw = await response.json();
-      // Hem professional (data.pizzas) hem de legacy (pizzas) formatını destekle
-      const payload =
-        raw?.data &&
-        (Array.isArray(raw.data.pizzas) || Array.isArray(raw.data.categories))
-          ? raw.data
-          : raw;
-      const nextPizzas = normalizePizzas(payload?.pizzas);
-      const nextCategories = normalizeCategories(payload?.categories);
-      setPizzas(nextPizzas);
-      setCategories(nextCategories);
+      const data = await response.json();
+
+      if (data.success && data.data) {
+        setPizzas(data.data.pizzas || []);
+        setCategories(data.data.categories || []);
+      } else {
+        console.error('Menü yükleme hatası:', data);
+      }
     } catch (error) {
       console.error('Menü yükleme hatası:', error);
     } finally {
