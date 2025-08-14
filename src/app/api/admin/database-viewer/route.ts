@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     // Eğer belirli bir tablo isteniyorsa
     if (table) {
       try {
-        const countResult = database.prepare(`SELECT COUNT(*) as count FROM ${table}`).get();
+        const countResult = database.prepare(`SELECT COUNT(*) as count FROM ${table}`).get() as { count: number };
         const dataResult = database.prepare(`SELECT * FROM ${table} LIMIT ? OFFSET ?`).all(limit, offset);
         
         return NextResponse.json({
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
       },
       tables: tables.map(tableName => ({
         name: tableName,
-        count: database.prepare(`SELECT COUNT(*) as count FROM ${tableName}`).get().count
+        count: (database.prepare(`SELECT COUNT(*) as count FROM ${tableName}`).get() as { count: number }).count
       }))
     });
 
@@ -96,6 +96,46 @@ function formatBytes(bytes: number): string {
   const sizes = ['Bytes', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// Veritabanı istatistiklerini al
+function getDatabaseStats() {
+  try {
+    const database = getDatabase();
+    const tablesResult = database.prepare(`
+      SELECT name FROM sqlite_master 
+      WHERE type='table' AND name NOT LIKE 'sqlite_%'
+    `).all();
+    
+    const stats: any = {};
+    tablesResult.forEach((row: any) => {
+      const countResult = database.prepare(`SELECT COUNT(*) as count FROM ${row.name}`).get() as { count: number };
+      stats[row.name] = countResult.count;
+    });
+    
+    return stats;
+  } catch (error) {
+    console.error('Database stats error:', error);
+    return {};
+  }
+}
+
+// Veritabanı boyutunu al
+function getDatabaseSize(): number {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const dbPath = path.join(process.cwd(), 'pizza-palace.db');
+    
+    if (fs.existsSync(dbPath)) {
+      const stats = fs.statSync(dbPath);
+      return stats.size;
+    }
+    return 0;
+  } catch (error) {
+    console.error('Database size error:', error);
+    return 0;
+  }
 }
 
 
