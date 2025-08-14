@@ -254,16 +254,8 @@ export default function PizzaHomePage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-yellow-300 via-orange-400 to-orange-600 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-32 h-32 mx-auto mb-4">
-            <Image
-              src="/pizza-slices.gif"
-              alt="Loading"
-              width={128}
-              height={128}
-              priority
-              style={{ objectFit: 'contain' }}
-            />
-          </div>
+          <div className="text-6xl mb-4 animate-bounce">🍕</div>
+          <div className="text-white text-xl">Yükleniyor...</div>
         </div>
       </div>
     );
@@ -369,18 +361,19 @@ export default function PizzaHomePage() {
         </div>
       </section>
 
-      {/* Video Section - Lezzetli Pizzalar ve En Çok Sevilen Pizzalar arasında */}
-      <section className="relative w-full h-[600px] overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          style={{ objectPosition: 'center' }}
-        >
-          <source src="/pizzaanasayfa.mp4" type="video/mp4" />
-        </video>
+      {/* Hero Section - Lezzetli Pizzalar ve En Çok Sevilen Pizzalar arasında */}
+      <section className="relative w-full h-[400px] overflow-hidden bg-gradient-to-br from-red-200 to-orange-200">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-8xl mb-4">🍕</div>
+            <h2 className="text-4xl font-bold text-gray-800 mb-2">
+              Lezzetli Pizzalar
+            </h2>
+            <p className="text-gray-600 text-xl">
+              En taze malzemelerle hazırlanır
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Popular Pizzas Section */}
@@ -399,17 +392,10 @@ export default function PizzaHomePage() {
                 key={pizza.id}
                 className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full min-h-[480px]"
               >
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={pizza.image}
-                    alt={pizza.name}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      display: 'block',
-                    }}
-                  />
+                <div className="relative h-48 overflow-hidden bg-gray-100">
+                  <div className="w-full h-full flex items-center justify-center">
+                    <div className="text-4xl">🍕</div>
+                  </div>
                 </div>
                 <div className="p-6 flex flex-col h-full">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -437,17 +423,16 @@ export default function PizzaHomePage() {
       </section>
 
       {/* Video Section - En Çok Sevilen Pizzalar altında */}
-      <section className="relative w-full h-[600px] overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover"
-          style={{ objectPosition: 'center' }}
-        >
-          <source src="/pizzaanasayfa2.mp4" type="video/mp4" />
-        </video>
+      <section className="relative w-full h-[400px] overflow-hidden bg-gradient-to-br from-red-100 to-orange-100">
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-6xl mb-4">🍕</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
+              Pizza Palace
+            </h2>
+            <p className="text-gray-600">En lezzetli pizzalar burada!</p>
+          </div>
+        </div>
       </section>
 
       {/* Features Section */}
