@@ -1,11 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
-import {
-  generateVerificationCode,
-  sendVerificationEmail,
-} from '@/lib/mailer.js';
+import { NextResponse } from 'next/server';
 
 // Geçici kod saklama (gerçek uygulamada Redis kullanılır)
 const verificationCodes = new Map();
+
+// 6 haneli doğrulama kodu oluştur
+const generateVerificationCode = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
 
 export async function POST(request) {
   try {
@@ -36,15 +37,8 @@ export async function POST(request) {
       10 * 60 * 1000
     );
 
-    // Email gönder
-    const emailResult = await sendVerificationEmail(email, verificationCode);
-
-    if (!emailResult.success) {
-      return NextResponse.json(
-        { error: 'Email gönderilemedi. Lütfen tekrar deneyin.' },
-        { status: 500 }
-      );
-    }
+    // Simüle edilmiş email gönderimi
+    console.log(`Doğrulama kodu gönderildi: ${email} -> ${verificationCode}`);
 
     return NextResponse.json({
       success: true,

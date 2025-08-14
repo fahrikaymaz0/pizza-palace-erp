@@ -1,5 +1,10 @@
 const nodemailer = require('nodemailer');
 
+// 6 haneli doğrulama kodu oluştur
+const generateVerificationCode = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
 // Email transporter oluştur
 const transporter = nodemailer.createTransporter({
   service: 'gmail',
@@ -60,4 +65,5 @@ module.exports = {
   sendEmail,
   sendVerificationEmail,
   sendPasswordResetEmail,
+  generateVerificationCode,
 };

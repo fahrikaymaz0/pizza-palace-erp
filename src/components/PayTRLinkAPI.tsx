@@ -437,7 +437,7 @@ const PayTRLinkAPI = () => {
                 • Kredi kartı bilgileri PayTR tarafında güvenli şekilde işlenir
               </li>
               <li>• Test modunda çalışır, gerçek ödeme yapılmaz</li>
-              <li>• Ödeme sonucu callback URL'lerine yönlendirilir</li>
+              <li>• Ödeme sonucu callback URL&apos;lerine yönlendirilir</li>
               <li>
                 • Environment variables ayarlanmamışsa test simülasyonu çalışır
               </li>
