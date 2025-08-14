@@ -28,13 +28,13 @@ export default function PayTRLinkTestPage() {
       const linkResult = await createTestPaymentLink(paymentData);
       setResult(linkResult);
 
-      if (linkResult.success) {
+      if ((linkResult as any).success) {
         console.log('✅ PayTR Link API test başarılı!');
-        console.log('🔗 Ödeme URL:', linkResult.payment_url);
+        console.log('🔗 Ödeme URL:', (linkResult as any).payment_url);
         
         // Kullanıcıyı PayTR ödeme sayfasına yönlendir
-        if (linkResult.payment_url) {
-          window.location.href = linkResult.payment_url;
+        if ((linkResult as any).payment_url) {
+          window.location.href = (linkResult as any).payment_url;
         }
       } else {
         console.error('❌ PayTR Link API test başarısız:', linkResult);

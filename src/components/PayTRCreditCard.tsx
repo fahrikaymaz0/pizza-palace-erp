@@ -315,7 +315,7 @@ const PayTRCreditCard = () => {
         return;
       }
 
-      paymentData.paytr_token = token;
+      (paymentData as any).paytr_token = token;
 
       // PayTR'ye POST request
       const form = document.createElement('form');
@@ -326,7 +326,7 @@ const PayTRCreditCard = () => {
         const input = document.createElement('input');
         input.type = 'hidden';
         input.name = key;
-        input.value = paymentData[key];
+        input.value = (paymentData as any)[key];
         form.appendChild(input);
       });
 

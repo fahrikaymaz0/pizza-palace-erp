@@ -185,12 +185,13 @@ export class InputValidator {
   createErrorResponse(requestId?: string): NextResponse | null {
     if (this.isValid()) return null;
     
-    return createErrorResponse(
-      this.errors.join(', '),
-      ERROR_CODES.VALIDATION_ERROR,
+    return NextResponse.json({
+      success: false,
+      error: this.errors.join(', '),
+      code: ERROR_CODES.VALIDATION_ERROR,
       requestId,
-      400
-    );
+      timestamp: new Date().toISOString()
+    }, { status: 400 });
   }
 }
 
@@ -209,20 +210,22 @@ export const handleDatabaseError = (error: any, operation: string, requestId?: s
   
   // Check for specific database errors
   if (error?.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-    return createErrorResponse(
-      'Bu kayıt zaten mevcut',
-      ERROR_CODES.DUPLICATE_RECORD,
+    return NextResponse.json({
+      success: false,
+      error: 'Bu kayıt zaten mevcut',
+      code: ERROR_CODES.DUPLICATE_RECORD,
       requestId,
-      409
-    );
+      timestamp: new Date().toISOString()
+    }, { status: 409 });
   }
   
-  return createErrorResponse(
-    'Veritabanı hatası oluştu',
-    ERROR_CODES.DATABASE_QUERY_ERROR,
+  return NextResponse.json({
+    success: false,
+    error: 'Veritabanı hatası oluştu',
+    code: ERROR_CODES.DATABASE_QUERY_ERROR,
     requestId,
-    500
-  );
+    timestamp: new Date().toISOString()
+  }, { status: 500 });
 };
 
 /**

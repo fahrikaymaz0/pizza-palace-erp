@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
 
     console.log(`Kod doğrulama isteği: ${email} -> ${code}`);
 
-    const result = verifyCode(email, code);
+    const result = await verifyCode(email, code);
     
     if (result.valid) {
       console.log(`Kod doğrulandı: ${email}`);

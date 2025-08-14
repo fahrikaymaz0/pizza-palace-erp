@@ -160,20 +160,20 @@ export const verifyCode = async (email: string, inputCode: string): Promise<{ va
     }
     
     // Süre kontrolü
-    if (new Date() > new Date(result.expires_at)) {
+    if (new Date() > new Date((result as any).expires_at)) {
       database.prepare('DELETE FROM verification_codes WHERE email = ?').run(email.toLowerCase());
       console.log(`⏰ Kod süresi dolmuş: ${email}`);
       return { valid: false, message: 'Kodun süresi dolmuş' };
     }
     
     // Kod kontrolü
-    if (result.code !== inputCode) {
-      console.log(`❌ Yanlış kod: ${email} -> Beklenen: ${result.code}, Girilen: ${inputCode}`);
+    if ((result as any).code !== inputCode) {
+      console.log(`❌ Yanlış kod: ${email} -> Beklenen: ${(result as any).code}, Girilen: ${inputCode}`);
       return { valid: false, message: 'Yanlış kod' };
     }
     
     // Kod doğru, userData'yı al ve sonra sil
-    const userData = result.user_data ? JSON.parse(result.user_data) : null;
+    const userData = (result as any).user_data ? JSON.parse((result as any).user_data) : null;
     
     // Kod doğrulandıktan sonra sil
     database.prepare('DELETE FROM verification_codes WHERE email = ?').run(email.toLowerCase());

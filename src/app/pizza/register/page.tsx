@@ -18,14 +18,14 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: any) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -77,7 +77,7 @@ export default function RegisterPage() {
     }
   };
 
-  const handleVerifyEmail = async (e) => {
+  const handleVerifyEmail = async (e: any) => {
     e.preventDefault();
     setLoading(true);
     setError('');
