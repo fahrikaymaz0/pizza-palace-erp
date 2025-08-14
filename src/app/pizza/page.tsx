@@ -394,7 +394,7 @@ export default function PizzaHomePage() {
               >
                 <div className="relative h-48 overflow-hidden bg-gray-100">
                   <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-4xl">🍕</div>
+                    <div className="text-6xl">{pizza.image}</div>
                   </div>
                 </div>
                 <div className="p-6 flex flex-col h-full">
