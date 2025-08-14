@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import { getDatabase, getDatabaseStats, getDatabaseSize } from '@/lib/sqlite';
+import { getDatabase } from '@/lib/sqlite';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
