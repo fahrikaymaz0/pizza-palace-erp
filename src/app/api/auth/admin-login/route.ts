@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     const database = getDatabase();
 
     // Admin kullanıcıyı doğrula (email ve role=admin)
-    const admin = database.prepare('SELECT * FROM users WHERE email = ? AND role = ?').get(email, 'admin');
+    const admin = database.prepare('SELECT * FROM users WHERE email = ? AND role = ?').get(email, 'admin') as any;
     
     if (!admin) {
       console.log(`❌ [${requestId}] Admin bulunamadı: ${email}`);
