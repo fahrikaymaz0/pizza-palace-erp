@@ -154,6 +154,8 @@ Vercel dashboard'da projenize gidin:
 2. **"Environment Variables" bölümüne gidin**
 3. **Aşağıdaki değişkenleri ekleyin**:
 
+#### Zorunlu Environment Variables:
+
 ```
 JWT_SECRET=your-super-secret-key-here-123456789
 NODE_ENV=production
@@ -162,10 +164,77 @@ SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=your-anon-key
 ```
 
-**Supabase bilgilerini almak için**:
-1. Supabase dashboard'da **"Settings" > "API"**'ye gidin
-2. **"Project URL"** ve **"anon public"** key'i kopyalayın
-3. **"Database" > "Connection string"**'den DATABASE_URL'i alın
+#### Opsiyonel Environment Variables:
+
+```
+NEXT_PUBLIC_APP_URL=https://your-project.vercel.app
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+```
+
+#### Environment Variables Açıklamaları:
+
+**JWT_SECRET**: 
+- JWT token'ları için güvenlik anahtarı
+- En az 32 karakter uzunluğunda olmalı
+- Örnek: `JWT_SECRET=my-super-secret-jwt-key-2024-pizza-palace-123`
+
+**NODE_ENV**: 
+- Production ortamı için `production` olarak ayarlayın
+- Örnek: `NODE_ENV=production`
+
+**DATABASE_URL**: 
+- Supabase veritabanı bağlantı URL'i
+- Supabase Dashboard > Settings > Database > Connection string'den alın
+- Örnek: `DATABASE_URL=postgresql://postgres:yourpassword@db.abcdefgh.supabase.co:5432/postgres`
+
+**SUPABASE_URL**: 
+- Supabase proje URL'i
+- Supabase Dashboard > Settings > API > Project URL'den alın
+- Örnek: `SUPABASE_URL=https://abcdefgh.supabase.co`
+
+**SUPABASE_ANON_KEY**: 
+- Supabase anonim anahtarı
+- Supabase Dashboard > Settings > API > anon public key'den alın
+- Örnek: `SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
+
+#### Supabase Bilgilerini Alma Adımları:
+
+1. **Supabase Dashboard'a gidin** (https://supabase.com/dashboard)
+2. **Projenizi seçin**
+3. **Sol menüden "Settings" > "API"ye tıklayın**
+4. **"Project URL"** ve **"anon public"** key'i kopyalayın
+5. **"Database" > "Connection string"**'den DATABASE_URL'i alın
+
+#### Environment Variables Ekleme Adımları:
+
+1. **Vercel Dashboard'da projenize gidin**
+2. **"Settings" sekmesine tıklayın**
+3. **"Environment Variables" bölümüne gidin**
+4. **Her değişken için:**
+   - **Name**: Değişken adını yazın (örn: JWT_SECRET)
+   - **Value**: Değişken değerini yazın (örn: my-super-secret-jwt-key-2024)
+   - **Environment**: Production seçin
+   - **"Add" butonuna tıklayın**
+
+#### Örnek Environment Variables:
+
+```
+JWT_SECRET=pizza-palace-jwt-secret-key-2024-very-secure-123
+NODE_ENV=production
+DATABASE_URL=postgresql://postgres:mypassword123@db.abcdefgh.supabase.co:5432/postgres
+SUPABASE_URL=https://abcdefgh.supabase.co
+SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiY2RlZmdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MzQ1Njc4OTAsImV4cCI6MTk1MDE0Mzg5MH0.example
+NEXT_PUBLIC_APP_URL=https://pizza-palace-erp.vercel.app
+NEXT_PUBLIC_SUPABASE_URL=https://abcdefgh.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFiY2RlZmdoIiwicm9sZSI6ImFub24iLCJpYXQiOjE2MzQ1Njc4OTAsImV4cCI6MTk1MDE0Mzg5MH0.example
+```
+
+**⚠️ Önemli Notlar:**
+- JWT_SECRET'ı kimseyle paylaşmayın
+- Supabase bilgilerini güvenli tutun
+- Production ortamında gerçek değerleri kullanın
+- Test ortamında farklı değerler kullanabilirsiniz
 
 ### Adım 8: Yeni Deployment
 
@@ -229,4 +298,5 @@ Sorun yaşarsanız:
 ---
 
 **Not**: Bu rehber production ortamı için hazırlanmıştır. Tüm adımları takip ettiğinizde projeniz canlıda çalışır durumda olacaktır.
+
 

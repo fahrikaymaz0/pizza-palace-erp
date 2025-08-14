@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/sqlite';
 import { generateCode, sendPasswordResetEmail, saveCodeWithUserData } from '@/lib/emailService';
 import { securityMiddleware } from '../../middleware/security';
+import { createErrorResponse, ERROR_CODES } from '@/lib/apiResponse';
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,6 +10,9 @@ export async function POST(request: NextRequest) {
     const securityResult = await securityMiddleware(request);
     if (securityResult) return securityResult;
 
+    // Request ID oluştur
+    const requestId = Math.random().toString(36).substring(2, 15);
+    
     console.log('🔐 Şifremi unuttum API çağrıldı');
     
     const { email } = await request.json();
