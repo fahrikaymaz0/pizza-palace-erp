@@ -1,0 +1,95 @@
+{
+  "name": "dinamik-erp-nextjs",
+  "version": "1.0.0",
+  "description": "Modern API-first yaklaşım ile her müşteri için özel veritabanı yönetimi sağlayan dinamik ERP sistemi",
+  "private": true,
+  "author": "Fahri",
+  "license": "MIT",
+  "keywords": [
+    "nextjs",
+    "react",
+    "typescript",
+    "sqlite",
+    "erp",
+    "pizza",
+    "ecommerce",
+    "admin-panel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/dinamik-erp-nextjs.git"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "db:reset": "node reset-db.js",
+    "db:seed": "node create-admin-user.js",
+    "db:clear": "node clear-database.js",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky install"
+  },
+  "dependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/nodemailer": "^6.4.17",
+    "@types/three": "^0.179.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^12.2.0",
+    "csurf": "^1.11.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "lottie-react": "^2.4.1",
+    "next": "14.0.4",
+    "nodemailer": "^7.0.5",
+    "pg": "^8.11.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "three": "^0.179.1",
+    "twilio": "^5.8.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.7.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^20",
+    "@types/pg": "^8.10.9",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "autoprefixer": "^10.0.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.0.4",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "husky": "^8.0.3",
+    "jest": "^29.7.0",
+    "lint-staged": "^15.0.0",
+    "postcss": "^8",
+    "prettier": "^3.0.0",
+    "tailwindcss": "^3.3.0",
+    "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  }
+}

@@ -1,0 +1,2 @@
+EMAIL_USER=pizzapalaceofficial00@gmail.com
+EMAIL_PASS=scgwevbmztpahfoc
