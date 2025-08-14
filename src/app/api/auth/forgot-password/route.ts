@@ -26,11 +26,10 @@ export async function POST(request: NextRequest) {
 
     console.log('Validasyon geçti, database bağlantısı kuruluyor...');
     
-    const db = PizzaDatabase.getInstance();
-    await db.init();
+    const database = getDatabase();
     
     // Kullanıcı var mı kontrol et
-    const existingUser = await db.getUserByEmail(email);
+    const existingUser = database.prepare('SELECT * FROM users WHERE email = ?').get(email) as any;
     if (!existingUser) {
       console.log('Email kayıtlı değil:', email);
       return NextResponse.json(
