@@ -393,7 +393,15 @@ export default function PizzaMenu() {
               className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
             >
               <div className="h-48 bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center overflow-hidden relative">
-                <div className="text-6xl">{pizza.image}</div>
+                {pizza.image.startsWith('/') ? (
+                  <img
+                    src={pizza.image}
+                    alt={pizza.name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="text-6xl">{pizza.image}</div>
+                )}
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">

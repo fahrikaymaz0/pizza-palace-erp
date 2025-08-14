@@ -7,7 +7,7 @@ const pizzas = [
     name: 'Margherita',
     description: 'Klasik İtalyan lezzeti',
     price: 45,
-    image: '🍕',
+    image: '🍕', // 12MB - emoji kullanıyoruz
     category: 'Klasik',
     ingredients: ['Domates sosu', 'Mozzarella', 'Fesleğen'],
     available: true,
@@ -17,7 +17,7 @@ const pizzas = [
     name: 'Pepperoni',
     description: 'Acılı pepperoni ile',
     price: 55,
-    image: '🌶️',
+    image: '🌶️', // 20MB - emoji kullanıyoruz
     category: 'Etli',
     ingredients: ['Domates sosu', 'Mozzarella', 'Pepperoni'],
     available: true,
@@ -27,7 +27,7 @@ const pizzas = [
     name: 'BBQ Chicken',
     description: 'BBQ soslu tavuk',
     price: 60,
-    image: '🍗',
+    image: '/pizzas/bbq-chicken.png', // 156KB - gerçek resim
     category: 'Etli',
     ingredients: ['BBQ sos', 'Tavuk', 'Soğan', 'Mozzarella'],
     available: true,
@@ -37,7 +37,7 @@ const pizzas = [
     name: 'Vegetarian',
     description: 'Sebzeli özel lezzet',
     price: 50,
-    image: '🥬',
+    image: '/pizzas/vegetarian.png', // 153KB - gerçek resim
     category: 'Vejetaryen',
     ingredients: ['Mantar', 'Biber', 'Soğan', 'Zeytin', 'Mozzarella'],
     available: true,
@@ -47,7 +47,7 @@ const pizzas = [
     name: 'Supreme',
     description: 'Zengin içerik',
     price: 70,
-    image: '👑',
+    image: '/pizzas/supreme.png', // 93KB - gerçek resim
     category: 'Özel',
     ingredients: [
       'Pepperoni',
@@ -64,7 +64,7 @@ const pizzas = [
     name: 'Mexican Hot',
     description: 'Baharatlı jalapeno ve mısır',
     price: 62,
-    image: '🌶️',
+    image: '/pizzas/mexican-hot.png', // 191KB - gerçek resim
     category: 'Özel',
     ingredients: ['Jalapeno', 'Mısır', 'Biber', 'Mozzarella'],
     available: true,
@@ -74,7 +74,7 @@ const pizzas = [
     name: 'Funghi',
     description: 'Bol mantarlı',
     price: 58,
-    image: '🍄',
+    image: '/pizzas/funghi.png', // 117KB - gerçek resim
     category: 'Vejetaryen',
     ingredients: ['Mantar', 'Mozzarella', 'Domates sosu'],
     available: true,
@@ -84,7 +84,7 @@ const pizzas = [
     name: 'Cheesy Lovers',
     description: 'Dört peynirli',
     price: 70,
-    image: '🧀',
+    image: '/pizzas/cheesy-lovers.png', // 101KB - gerçek resim
     category: 'Klasik',
     ingredients: ['Mozzarella', 'Parmesan', 'Cheddar', 'Beyaz peynir'],
     available: true,

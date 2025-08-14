@@ -393,9 +393,17 @@ export default function PizzaHomePage() {
                 className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full min-h-[480px]"
               >
                 <div className="relative h-48 overflow-hidden bg-gray-100">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-6xl">{pizza.image}</div>
-                  </div>
+                  {pizza.image.startsWith('/') ? (
+                    <img
+                      src={pizza.image}
+                      alt={pizza.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="text-6xl">{pizza.image}</div>
+                    </div>
+                  )}
                 </div>
                 <div className="p-6 flex flex-col h-full">
                   <h3 className="text-xl font-semibold text-gray-900 mb-2">
