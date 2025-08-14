@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import ProfanityFilter from '@/lib/profanityFilter';
+const ProfanityFilter = require('@/lib/profanityFilter');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 

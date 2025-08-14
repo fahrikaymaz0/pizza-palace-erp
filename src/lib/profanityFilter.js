@@ -55,6 +55,35 @@ class ProfanityFilter {
       this.badWords.splice(index, 1);
     }
   }
+
+  // Singleton instance al
+  static getInstance() {
+    if (!ProfanityFilter.instance) {
+      ProfanityFilter.instance = new ProfanityFilter();
+    }
+    return ProfanityFilter.instance;
+  }
+
+  // Profanity sayısını al
+  getProfanityCount() {
+    return this.badWords.length;
+  }
+
+  // Profanity kelimelerini al
+  getProfanityWords() {
+    return [...this.badWords];
+  }
+
+  // Liste güncel mi kontrol et
+  async isProfanityListUpToDate() {
+    return true; // Basit implementasyon
+  }
+
+  // Listeyi yenile
+  async refreshProfanityList() {
+    // Basit implementasyon - gerçekte API'den çekilebilir
+    return true;
+  }
 }
 
 // Singleton instance
