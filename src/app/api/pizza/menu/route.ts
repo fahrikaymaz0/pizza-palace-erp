@@ -111,54 +111,13 @@ export async function GET(request: NextRequest) {
   });
 }
 
-// Özel pizza oluştur - korumalı örnek uç nokta
+// Basit POST endpoint - sadece GET kullanılacak
 export async function POST(request: NextRequest) {
-  try {
-    const token = request.cookies.get('pizza_token')?.value;
-
-    if (!token) {
-      return new Response(JSON.stringify({ error: 'Token bulunamadı' }), {
-        status: 401,
-      });
-    }
-
-    const jwt = require('jsonwebtoken');
-    const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    if (!decoded || !decoded.userId) {
-      return new Response(JSON.stringify({ error: 'Geçersiz token' }), {
-        status: 401,
-      });
-    }
-
-    const pizzaData = await request.json();
-
-    if (
-      !pizzaData.name ||
-      !pizzaData.description ||
-      !pizzaData.price ||
-      !pizzaData.ingredients
-    ) {
-      return new Response(JSON.stringify({ error: 'Tüm alanlar gereklidir' }), {
-        status: 400,
-      });
-    }
-
-    console.log('Özel pizza oluşturuluyor (örnek):', pizzaData);
-
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Özel pizza başarıyla oluşturuldu (örnek)',
-      }),
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Pizza oluşturma hatası:', error);
-    return new Response(JSON.stringify({ error: 'Sunucu hatası' }), {
-      status: 500,
-    });
-  }
+  return NextResponse.json(
+    {
+      success: false,
+      message: 'POST metodu desteklenmiyor',
+    },
+    { status: 405 }
+  );
 }
