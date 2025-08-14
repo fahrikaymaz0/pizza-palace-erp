@@ -29,7 +29,7 @@ const initializePizzaDatabase = () => {
 
   // Pizza özel tabloları buraya eklenebilir
   // Şu an için ana database ile aynı tabloları kullanıyoruz
-  
+
   console.log('Pizza Database tabloları hazır');
 };
 
@@ -40,6 +40,5 @@ if (db) {
 
 module.exports = {
   getPizzaDatabase,
-  initializePizzaDatabase
+  initializePizzaDatabase,
 };
-

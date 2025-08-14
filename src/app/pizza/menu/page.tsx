@@ -51,7 +51,7 @@ export default function PizzaMenu() {
       description: p.description,
       price: Number(p.price),
       image: p.image || p.image_url || '/pizzas/margherita.png',
-      category: p.category || 'Klasik'
+      category: p.category || 'Klasik',
     }));
   };
 
@@ -66,7 +66,7 @@ export default function PizzaMenu() {
   const checkUserStatus = async () => {
     try {
       const response = await fetch('/api/pizza/auth/verify', {
-        credentials: 'include'
+        credentials: 'include',
       });
       if (response.ok) {
         const userData = await response.json();
@@ -82,7 +82,11 @@ export default function PizzaMenu() {
       const response = await fetch('/api/pizza/menu');
       const raw = await response.json();
       // Hem professional (data.pizzas) hem de legacy (pizzas) formatını destekle
-      const payload = raw?.data && (Array.isArray(raw.data.pizzas) || Array.isArray(raw.data.categories)) ? raw.data : raw;
+      const payload =
+        raw?.data &&
+        (Array.isArray(raw.data.pizzas) || Array.isArray(raw.data.categories))
+          ? raw.data
+          : raw;
       const nextPizzas = normalizePizzas(payload?.pizzas);
       const nextCategories = normalizeCategories(payload?.categories);
       setPizzas(nextPizzas);
@@ -108,12 +112,10 @@ export default function PizzaMenu() {
 
   const addToCart = (pizza: Pizza) => {
     const existingItem = cart.find(item => item.id === pizza.id);
-    
+
     if (existingItem) {
       const updatedCart = cart.map(item =>
-        item.id === pizza.id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+        item.id === pizza.id ? { ...item, quantity: item.quantity + 1 } : item
       );
       saveCart(updatedCart);
     } else {
@@ -122,7 +124,7 @@ export default function PizzaMenu() {
         name: pizza.name,
         price: pizza.price,
         quantity: 1,
-        image: pizza.image
+        image: pizza.image,
       };
       saveCart([...cart, newItem]);
     }
@@ -138,17 +140,15 @@ export default function PizzaMenu() {
       removeFromCart(pizzaId);
       return;
     }
-    
+
     const updatedCart = cart.map(item =>
-      item.id === pizzaId
-        ? { ...item, quantity }
-        : item
+      item.id === pizzaId ? { ...item, quantity } : item
     );
     saveCart(updatedCart);
   };
 
   const getCartTotal = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
   const getCartItemCount = () => {
@@ -159,7 +159,7 @@ export default function PizzaMenu() {
     try {
       await fetch('/api/pizza/auth/logout', {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
       });
       setUser(null);
     } catch (error) {
@@ -167,14 +167,15 @@ export default function PizzaMenu() {
     }
   };
 
-  const filteredPizzas = selectedCategory === 'all' 
-    ? pizzas 
-    : pizzas.filter(pizza => pizza.category === selectedCategory);
+  const filteredPizzas =
+    selectedCategory === 'all'
+      ? pizzas
+      : pizzas.filter(pizza => pizza.category === selectedCategory);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
-      currency: 'TRY'
+      currency: 'TRY',
     }).format(price);
   };
 
@@ -183,10 +184,10 @@ export default function PizzaMenu() {
       <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <div className="relative w-32 h-32 mx-auto">
-            <Image 
-              src="/pizza-slices.gif" 
-              alt="Loading..." 
-              width={128} 
+            <Image
+              src="/pizza-slices.gif"
+              alt="Loading..."
+              width={128}
               height={128}
               priority
             />
@@ -209,15 +210,21 @@ export default function PizzaMenu() {
               </div>
               <h1 className="text-2xl font-bold text-red-600">Pizza Palace</h1>
             </div>
-            
+
             <nav className="hidden md:flex space-x-8">
-              <Link href="/pizza" className="text-gray-700 hover:text-red-600 transition-colors">
+              <Link
+                href="/pizza"
+                className="text-gray-700 hover:text-red-600 transition-colors"
+              >
                 Ana Sayfa
               </Link>
               <Link href="/pizza/menu" className="text-red-600 font-semibold">
                 Menü
               </Link>
-              <Link href="/pizza/orders" className="text-gray-700 hover:text-red-600 transition-colors">
+              <Link
+                href="/pizza/orders"
+                className="text-gray-700 hover:text-red-600 transition-colors"
+              >
                 Siparişlerim
               </Link>
             </nav>
@@ -247,7 +254,10 @@ export default function PizzaMenu() {
                   </button>
                 </>
               ) : (
-                <Link href="/pizza/login" className="text-gray-700 hover:text-red-600 transition-colors font-medium">
+                <Link
+                  href="/pizza/login"
+                  className="text-gray-700 hover:text-red-600 transition-colors font-medium"
+                >
                   Giriş Yap
                 </Link>
               )}
@@ -279,25 +289,38 @@ export default function PizzaMenu() {
               ) : (
                 <>
                   <div className="space-y-4 mb-6">
-                    {cart.map((item) => (
-                      <div key={item.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    {cart.map(item => (
+                      <div
+                        key={item.id}
+                        className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
+                      >
                         <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                           <span className="text-red-600">🍕</span>
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-gray-900">{item.name}</h4>
-                          <p className="text-sm text-gray-600">{formatPrice(item.price)}</p>
+                          <h4 className="font-medium text-gray-900">
+                            {item.name}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {formatPrice(item.price)}
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity - 1)
+                            }
                             className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center hover:bg-red-200"
                           >
                             -
                           </button>
-                          <span className="w-8 text-center font-medium">{item.quantity}</span>
+                          <span className="w-8 text-center font-medium">
+                            {item.quantity}
+                          </span>
                           <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            onClick={() =>
+                              updateQuantity(item.id, item.quantity + 1)
+                            }
                             className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center hover:bg-red-200"
                           >
                             +
@@ -310,7 +333,9 @@ export default function PizzaMenu() {
                   <div className="border-t pt-4">
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-lg font-semibold">Toplam:</span>
-                      <span className="text-xl font-bold text-red-600">{formatPrice(getCartTotal())}</span>
+                      <span className="text-xl font-bold text-red-600">
+                        {formatPrice(getCartTotal())}
+                      </span>
                     </div>
                     <button
                       onClick={() => {
@@ -345,38 +370,53 @@ export default function PizzaMenu() {
             >
               Tümü
             </button>
-            {Array.isArray(categories) && categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.name)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                  selectedCategory === category.name
-                    ? 'bg-red-600 text-white'
-                    : 'bg-white text-gray-700 hover:bg-red-50'
-                }`}
-              >
-                {category.name}
-              </button>
-            ))}
+            {Array.isArray(categories) &&
+              categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.name)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    selectedCategory === category.name
+                      ? 'bg-red-600 text-white'
+                      : 'bg-white text-gray-700 hover:bg-red-50'
+                  }`}
+                >
+                  {category.name}
+                </button>
+              ))}
           </div>
         </div>
 
         {/* Pizza Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredPizzas.map((pizza) => (
-            <div key={pizza.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+          {filteredPizzas.map(pizza => (
+            <div
+              key={pizza.id}
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+            >
               <div className="h-48 bg-gradient-to-br from-red-100 to-orange-100 flex items-center justify-center overflow-hidden relative">
                 <img
                   src={pizza.image}
                   alt={pizza.name}
-                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    display: 'block',
+                  }}
                 />
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{pizza.name}</h3>
-                <p className="text-gray-600 mb-4 line-clamp-2">{pizza.description}</p>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {pizza.name}
+                </h3>
+                <p className="text-gray-600 mb-4 line-clamp-2">
+                  {pizza.description}
+                </p>
                 <div className="flex justify-between items-center">
-                  <span className="text-2xl font-bold text-red-600">{formatPrice(pizza.price)}</span>
+                  <span className="text-2xl font-bold text-red-600">
+                    {formatPrice(pizza.price)}
+                  </span>
                   <button
                     onClick={() => addToCart(pizza)}
                     className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
@@ -391,4 +431,4 @@ export default function PizzaMenu() {
       </main>
     </div>
   );
-} 
+}

@@ -104,12 +104,11 @@ if (db) {
 const dbManager = {
   getDatabase,
   initializeDatabase,
-  db
+  db,
 };
 
 module.exports = {
   getDatabase,
   initializeDatabase,
-  dbManager
+  dbManager,
 };
-

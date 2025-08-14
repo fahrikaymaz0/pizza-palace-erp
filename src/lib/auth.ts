@@ -1,7 +1,8 @@
 import { NextRequest } from 'next/server';
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this';
+const JWT_SECRET =
+  process.env.JWT_SECRET || 'your-super-secret-jwt-key-change-this';
 
 export interface AdminUser {
   username: string;
@@ -13,13 +14,13 @@ export interface AdminUser {
 export function verifyToken(request: NextRequest): AdminUser | null {
   try {
     const token = request.cookies.get('admin_token')?.value;
-    
+
     if (!token) {
       return null;
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as AdminUser;
-    
+
     // Token süresi kontrolü
     const now = Date.now();
     const tokenAge = now - decoded.timestamp;
@@ -45,4 +46,4 @@ export function isAdmin(user: AdminUser | null): boolean {
 export async function hashPassword(password: string): Promise<string> {
   const bcrypt = require('bcryptjs');
   return await bcrypt.hash(password, 12);
-} 
+}

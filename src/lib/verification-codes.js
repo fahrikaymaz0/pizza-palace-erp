@@ -11,13 +11,16 @@ function generateVerificationCode() {
 function storeCode(email, data) {
   verificationCodes.set(email, {
     ...data,
-    createdAt: Date.now()
+    createdAt: Date.now(),
   });
 
   // 10 dakika sonra kodu sil
-  setTimeout(() => {
-    verificationCodes.delete(email);
-  }, 10 * 60 * 1000);
+  setTimeout(
+    () => {
+      verificationCodes.delete(email);
+    },
+    10 * 60 * 1000
+  );
 }
 
 // Kodu getir
@@ -40,5 +43,5 @@ module.exports = {
   storeCode,
   getCode,
   deleteCode,
-  getAllCodes
-}; 
+  getAllCodes,
+};

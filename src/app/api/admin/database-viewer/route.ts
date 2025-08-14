@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any;
-    
+
     if (!decoded || !decoded.isAdmin) {
       return NextResponse.json(
         { success: false, error: 'Admin yetkisi gerekli' },
@@ -34,20 +34,27 @@ export async function GET(request: NextRequest) {
     // Eğer belirli bir tablo isteniyorsa
     if (table) {
       try {
-        const countResult = database.prepare(`SELECT COUNT(*) as count FROM ${table}`).get() as { count: number };
-        const dataResult = database.prepare(`SELECT * FROM ${table} LIMIT ? OFFSET ?`).all(limit, offset);
-        
+        const countResult = database
+          .prepare(`SELECT COUNT(*) as count FROM ${table}`)
+          .get() as { count: number };
+        const dataResult = database
+          .prepare(`SELECT * FROM ${table} LIMIT ? OFFSET ?`)
+          .all(limit, offset);
+
         return NextResponse.json({
           success: true,
           table,
           data: dataResult,
           totalCount: countResult.count,
           limit,
-          offset
+          offset,
         });
       } catch (error) {
         return NextResponse.json(
-          { success: false, error: `Tablo '${table}' bulunamadı veya erişilemedi` },
+          {
+            success: false,
+            error: `Tablo '${table}' bulunamadı veya erişilemedi`,
+          },
           { status: 400 }
         );
       }
@@ -58,11 +65,15 @@ export async function GET(request: NextRequest) {
     const dbSize = getDatabaseSize();
 
     // Tüm tabloları listele
-    const tablesResult = database.prepare(`
+    const tablesResult = database
+      .prepare(
+        `
       SELECT name FROM sqlite_master 
       WHERE type='table' AND name NOT LIKE 'sqlite_%'
       ORDER BY name
-    `).all();
+    `
+      )
+      .all();
 
     const tables = tablesResult.map((row: any) => row.name);
 
@@ -72,14 +83,17 @@ export async function GET(request: NextRequest) {
         size: dbSize,
         sizeFormatted: formatBytes(dbSize),
         tables: tables.length,
-        stats
+        stats,
       },
       tables: tables.map(tableName => ({
         name: tableName,
-        count: (database.prepare(`SELECT COUNT(*) as count FROM ${tableName}`).get() as { count: number }).count
-      }))
+        count: (
+          database
+            .prepare(`SELECT COUNT(*) as count FROM ${tableName}`)
+            .get() as { count: number }
+        ).count,
+      })),
     });
-
   } catch (error) {
     console.error('Database viewer error:', error);
     return NextResponse.json(
@@ -102,17 +116,23 @@ function formatBytes(bytes: number): string {
 function getDatabaseStats() {
   try {
     const database = getDatabase();
-    const tablesResult = database.prepare(`
+    const tablesResult = database
+      .prepare(
+        `
       SELECT name FROM sqlite_master 
       WHERE type='table' AND name NOT LIKE 'sqlite_%'
-    `).all();
-    
+    `
+      )
+      .all();
+
     const stats: any = {};
     tablesResult.forEach((row: any) => {
-      const countResult = database.prepare(`SELECT COUNT(*) as count FROM ${row.name}`).get() as { count: number };
+      const countResult = database
+        .prepare(`SELECT COUNT(*) as count FROM ${row.name}`)
+        .get() as { count: number };
       stats[row.name] = countResult.count;
     });
-    
+
     return stats;
   } catch (error) {
     console.error('Database stats error:', error);
@@ -126,7 +146,7 @@ function getDatabaseSize(): number {
     const fs = require('fs');
     const path = require('path');
     const dbPath = path.join(process.cwd(), 'pizza-palace.db');
-    
+
     if (fs.existsSync(dbPath)) {
       const stats = fs.statSync(dbPath);
       return stats.size;
@@ -137,8 +157,3 @@ function getDatabaseSize(): number {
     return 0;
   }
 }
-
-
-
-
-

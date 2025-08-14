@@ -5,8 +5,8 @@ const transporter = nodemailer.createTransporter({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER || 'your-email@gmail.com',
-    pass: process.env.EMAIL_PASS || 'your-app-password'
-  }
+    pass: process.env.EMAIL_PASS || 'your-app-password',
+  },
 });
 
 // Email gönderme fonksiyonu
@@ -16,7 +16,7 @@ const sendEmail = async (to, subject, html) => {
       from: process.env.EMAIL_USER || 'your-email@gmail.com',
       to: to,
       subject: subject,
-      html: html
+      html: html,
     };
 
     const result = await transporter.sendMail(mailOptions);
@@ -37,7 +37,7 @@ const sendVerificationEmail = async (email, code) => {
       <p>Bu kod 10 dakika geçerlidir.</p>
     </div>
   `;
-  
+
   return await sendEmail(email, subject, html);
 };
 
@@ -52,13 +52,12 @@ const sendPasswordResetEmail = async (email, resetLink) => {
       <p>Bu link 1 saat geçerlidir.</p>
     </div>
   `;
-  
+
   return await sendEmail(email, subject, html);
 };
 
 module.exports = {
   sendEmail,
   sendVerificationEmail,
-  sendPasswordResetEmail
+  sendPasswordResetEmail,
 };
-

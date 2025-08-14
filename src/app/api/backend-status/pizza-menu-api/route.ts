@@ -7,14 +7,16 @@ export async function GET() {
       success: true,
       apiName: 'pizza-menu-api',
       available: true,
-      message: 'Pizza menu API hazır - Frontendci kullanabilir'
+      message: 'Pizza menu API hazır - Frontendci kullanabilir',
     });
-
   } catch (error) {
     console.error('API durumu kontrol edilirken hata:', error);
-    return NextResponse.json({
-      success: false,
-      error: 'API durumu kontrol edilemedi'
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'API durumu kontrol edilemedi',
+      },
+      { status: 500 }
+    );
   }
-} 
+}

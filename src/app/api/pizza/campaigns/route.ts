@@ -7,7 +7,7 @@ import {
   createSuccessResponse,
   createErrorResponse,
   ERROR_CODES,
-  generateRequestId
+  generateRequestId,
 } from '@/lib/apiResponse';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -15,7 +15,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 export async function GET(request: NextRequest) {
   const requestId = generateRequestId();
   console.log(`🎯 [${requestId}] Campaigns API başladı`);
-  
+
   try {
     const token = request.cookies.get('auth-token')?.value;
     let userOrderCount = 0;
@@ -25,12 +25,19 @@ export async function GET(request: NextRequest) {
       try {
         const decoded = jwt.verify(token, JWT_SECRET) as any;
         const database = getDatabase();
-        
-        const orderCountResult = database.prepare('SELECT COUNT(*) as order_count FROM orders WHERE user_id = ?').get(decoded.userId) as any;
-        
+
+        const orderCountResult = database
+          .prepare(
+            'SELECT COUNT(*) as order_count FROM orders WHERE user_id = ?'
+          )
+          .get(decoded.userId) as any;
+
         userOrderCount = orderCountResult?.order_count || 0;
       } catch (error) {
-        console.log(`⚠️ [${requestId}] Kullanıcı sipariş sayısı alınamadı:`, error);
+        console.log(
+          `⚠️ [${requestId}] Kullanıcı sipariş sayısı alınamadı:`,
+          error
+        );
       }
     }
 
@@ -43,7 +50,7 @@ export async function GET(request: NextRequest) {
         discount: 20,
         code: 'ILKSIPARIS',
         validFor: userOrderCount === 0 ? 'active' : 'expired',
-        condition: 'Sadece ilk sipariş için geçerli'
+        condition: 'Sadece ilk sipariş için geçerli',
       },
       {
         id: 2,
@@ -52,7 +59,7 @@ export async function GET(request: NextRequest) {
         discount: 33,
         code: '3AL2ODE',
         validFor: 'active',
-        condition: 'Aynı siparişte 3 pizza'
+        condition: 'Aynı siparişte 3 pizza',
       },
       {
         id: 3,
@@ -61,19 +68,20 @@ export async function GET(request: NextRequest) {
         discount: 15,
         code: 'HAFTASONU',
         validFor: 'active',
-        condition: 'Cumartesi ve Pazar günleri'
-      }
+        condition: 'Cumartesi ve Pazar günleri',
+      },
     ];
 
-    console.log(`✅ [${requestId}] Kampanyalar getirildi (Kullanıcı sipariş sayısı: ${userOrderCount})`);
-    
+    console.log(
+      `✅ [${requestId}] Kampanyalar getirildi (Kullanıcı sipariş sayısı: ${userOrderCount})`
+    );
+
     return createSuccessResponse(
       'Kampanyalar başarıyla getirildi',
       { campaigns },
       requestId,
       200
     );
-
   } catch (error) {
     console.error(`❌ [${requestId}] Campaigns API error:`, error);
     return createErrorResponse(
@@ -89,7 +97,7 @@ export async function POST(request: NextRequest) {
   try {
     return NextResponse.json({
       success: true,
-      message: 'Kampanya bilgileri güncellendi'
+      message: 'Kampanya bilgileri güncellendi',
     });
   } catch (error) {
     console.error('Campaigns POST error:', error);
@@ -98,4 +106,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

@@ -28,16 +28,15 @@ export async function GET(request: NextRequest) {
     // Pizza admin yetkisi kontrolü
     const user = verifyPizzaAdminToken(request);
     if (!user) {
-      return NextResponse.json(
-        { error: 'Yetkisiz erişim' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 });
     }
 
     const database = getDatabase();
 
     // Tüm siparişleri kullanıcı bilgileriyle birlikte getir
-    const orders = database.prepare(`
+    const orders = database
+      .prepare(
+        `
       SELECT 
         o.id,
         o.user_id,
@@ -52,11 +51,15 @@ export async function GET(request: NextRequest) {
       FROM orders o
       JOIN users u ON o.user_id = u.id
       ORDER BY o.created_at DESC
-    `).all() as any[];
+    `
+      )
+      .all() as any[];
 
     // Her sipariş için ürün detaylarını getir
     const ordersWithItems = orders.map(order => {
-      const items = database.prepare(`
+      const items = database
+        .prepare(
+          `
         SELECT 
           oi.id,
           oi.quantity,
@@ -65,20 +68,21 @@ export async function GET(request: NextRequest) {
         FROM order_items oi
         JOIN products p ON oi.product_id = p.id
         WHERE oi.order_id = ?
-      `).all(order.id) as any[];
+      `
+        )
+        .all(order.id) as any[];
 
       return {
         ...order,
-        items
+        items,
       };
     });
 
     return NextResponse.json({
       success: true,
       orders: ordersWithItems,
-      total: ordersWithItems.length
+      total: ordersWithItems.length,
     });
-
   } catch (error) {
     console.error('Pizza admin orders error:', error);
     return NextResponse.json(
@@ -87,9 +91,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
-
-
-
-
-

@@ -13,9 +13,3 @@ if (fs.existsSync(dbPath)) {
 }
 
 console.log('🔄 Uygulamayı yeniden başlatın - yeni veritabanı oluşturulacak');
-
-
-
-
-
-

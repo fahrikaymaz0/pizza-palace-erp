@@ -5,18 +5,17 @@ export async function POST(request: NextRequest) {
     // Admin token cookie'sini temizle
     const response = NextResponse.json({
       success: true,
-      message: 'Admin çıkışı başarılı'
+      message: 'Admin çıkışı başarılı',
     });
 
     response.cookies.set('admin-token', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 0 // Cookie'yi hemen sil
+      maxAge: 0, // Cookie'yi hemen sil
     });
 
     return response;
-
   } catch (error) {
     console.error('Admin logout error:', error);
     return NextResponse.json(
@@ -24,4 +23,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

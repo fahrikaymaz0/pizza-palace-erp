@@ -65,7 +65,7 @@ export default function PizzaReviews() {
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
@@ -100,18 +100,30 @@ export default function PizzaReviews() {
               </div>
               <h1 className="text-2xl font-bold text-red-600">Pizza Palace</h1>
             </div>
-            
+
             <nav className="hidden md:flex space-x-8">
-              <Link href="/pizza" className="text-gray-700 hover:text-red-600 transition-colors">
+              <Link
+                href="/pizza"
+                className="text-gray-700 hover:text-red-600 transition-colors"
+              >
                 Ana Sayfa
               </Link>
-              <Link href="/pizza/menu" className="text-gray-700 hover:text-red-600 transition-colors">
+              <Link
+                href="/pizza/menu"
+                className="text-gray-700 hover:text-red-600 transition-colors"
+              >
                 Menü
               </Link>
-              <Link href="/pizza/orders" className="text-gray-700 hover:text-red-600 transition-colors">
+              <Link
+                href="/pizza/orders"
+                className="text-gray-700 hover:text-red-600 transition-colors"
+              >
                 Siparişlerim
               </Link>
-              <Link href="/pizza/reviews" className="text-red-600 font-semibold">
+              <Link
+                href="/pizza/reviews"
+                className="text-red-600 font-semibold"
+              >
                 Yorumlar
               </Link>
             </nav>
@@ -128,7 +140,10 @@ export default function PizzaReviews() {
                   </button>
                 </>
               ) : (
-                <Link href="/pizza/login" className="text-gray-700 hover:text-red-600 transition-colors font-medium">
+                <Link
+                  href="/pizza/login"
+                  className="text-gray-700 hover:text-red-600 transition-colors font-medium"
+                >
                   Giriş Yap
                 </Link>
               )}
@@ -140,16 +155,20 @@ export default function PizzaReviews() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Tüm Yorumlar</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            Tüm Yorumlar
+          </h2>
           <p className="text-gray-600">Müşterilerimizin deneyimleri</p>
         </div>
 
         {reviews.length === 0 ? (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">💬</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Henüz yorum yok</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Henüz yorum yok
+            </h3>
             <p className="text-gray-600 mb-6">İlk yorumu siz yapın!</p>
-            <Link 
+            <Link
               href="/pizza"
               className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
             >
@@ -158,12 +177,17 @@ export default function PizzaReviews() {
           </div>
         ) : (
           <div className="grid gap-6">
-            {reviews.map((review) => (
-              <div key={review.id} className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            {reviews.map(review => (
+              <div
+                key={review.id}
+                className="bg-white rounded-xl shadow-lg p-6 border border-gray-100"
+              >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
                   <div className="flex items-center">
                     <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                      <span className="text-red-600 font-bold">{review.userName.charAt(0)}</span>
+                      <span className="text-red-600 font-bold">
+                        {review.userName.charAt(0)}
+                      </span>
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">
@@ -184,7 +208,9 @@ export default function PizzaReviews() {
                 </div>
 
                 <div className="border-t border-gray-100 pt-4">
-                  <p className="text-gray-700 leading-relaxed">{review.comment}</p>
+                  <p className="text-gray-700 leading-relaxed">
+                    {review.comment}
+                  </p>
                 </div>
               </div>
             ))}
@@ -193,4 +219,4 @@ export default function PizzaReviews() {
       </main>
     </div>
   );
-} 
+}

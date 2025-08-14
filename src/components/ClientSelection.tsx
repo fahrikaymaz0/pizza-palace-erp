@@ -16,14 +16,13 @@ interface ClientSelectionProps {
   loading: boolean;
 }
 
-export default function ClientSelection({ 
-  clients, 
-  currentClient, 
-  onClientSelected, 
-  onRefresh, 
-  loading 
+export default function ClientSelection({
+  clients,
+  currentClient,
+  onClientSelected,
+  onRefresh,
+  loading,
 }: ClientSelectionProps) {
-  
   const getIndustryLabel = (industry: string) => {
     const labels: Record<string, string> = {
       restaurant: 'Restoran / Yemek',
@@ -33,7 +32,7 @@ export default function ClientSelection({
       healthcare: 'Sağlık',
       education: 'Eğitim',
       technology: 'Teknoloji',
-      other: 'Diğer'
+      other: 'Diğer',
     };
     return labels[industry] || industry;
   };
@@ -44,7 +43,7 @@ export default function ClientSelection({
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
@@ -61,10 +60,7 @@ export default function ClientSelection({
     return (
       <div className="text-center py-8">
         <p className="text-gray-600 mb-4">Henüz müşteri bulunmuyor.</p>
-        <button
-          onClick={onRefresh}
-          className="btn-secondary"
-        >
+        <button onClick={onRefresh} className="btn-secondary">
           Yenile
         </button>
       </div>
@@ -77,16 +73,13 @@ export default function ClientSelection({
         <h3 className="text-lg font-medium text-gray-900">
           Mevcut Müşteriler ({clients.length})
         </h3>
-        <button
-          onClick={onRefresh}
-          className="btn-secondary text-sm"
-        >
+        <button onClick={onRefresh} className="btn-secondary text-sm">
           Yenile
         </button>
       </div>
 
       <div className="grid gap-3">
-        {clients.map((client) => (
+        {clients.map(client => (
           <div
             key={client.id}
             className={`p-4 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
@@ -111,8 +104,16 @@ export default function ClientSelection({
               </div>
               {currentClient?.id === client.id && (
                 <div className="text-primary-600">
-                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                      clipRule="evenodd"
+                    />
                   </svg>
                 </div>
               )}
@@ -124,10 +125,11 @@ export default function ClientSelection({
       {currentClient && (
         <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
           <p className="text-sm text-green-800">
-            <strong>Seçili Müşteri:</strong> {currentClient.name} ({currentClient.email})
+            <strong>Seçili Müşteri:</strong> {currentClient.name} (
+            {currentClient.email})
           </p>
         </div>
       )}
     </div>
   );
-} 
+}

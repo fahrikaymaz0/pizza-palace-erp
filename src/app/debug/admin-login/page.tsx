@@ -48,13 +48,18 @@ export default function AdminLoginDebugPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="bg-white rounded-lg shadow p-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">🍕 Pizza Admin</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              🍕 Pizza Admin
+            </h2>
             <p className="text-gray-600">Debug Giriş Sayfası</p>
           </div>
 
           <form className="mt-8 space-y-6" onSubmit={handleLogin}>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 E-posta
               </label>
               <input
@@ -63,14 +68,17 @@ export default function AdminLoginDebugPage() {
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
                 placeholder="admin@pizza.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Şifre
               </label>
               <input
@@ -79,7 +87,7 @@ export default function AdminLoginDebugPage() {
                 type="password"
                 required
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
                 placeholder="admin123"
               />
@@ -111,7 +119,10 @@ export default function AdminLoginDebugPage() {
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
               Debug bilgileri için: <br />
-              <a href="/debug/admin-orders" className="text-red-600 hover:text-red-500">
+              <a
+                href="/debug/admin-orders"
+                className="text-red-600 hover:text-red-500"
+              >
                 /debug/admin-orders
               </a>
             </p>
@@ -121,7 +132,3 @@ export default function AdminLoginDebugPage() {
     </div>
   );
 }
-
-
-
-

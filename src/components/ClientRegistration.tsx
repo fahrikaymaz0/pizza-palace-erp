@@ -6,14 +6,19 @@ interface ClientRegistrationProps {
   onClientCreated: (client: any) => void;
 }
 
-export default function ClientRegistration({ onClientCreated }: ClientRegistrationProps) {
+export default function ClientRegistration({
+  onClientCreated,
+}: ClientRegistrationProps) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    industry: ''
+    industry: '',
   });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,10 +50,12 @@ export default function ClientRegistration({ onClientCreated }: ClientRegistrati
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
@@ -56,7 +63,10 @@ export default function ClientRegistration({ onClientCreated }: ClientRegistrati
     <div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="name"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Müşteri Adı *
           </label>
           <input
@@ -72,7 +82,10 @@ export default function ClientRegistration({ onClientCreated }: ClientRegistrati
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Email *
           </label>
           <input
@@ -88,7 +101,10 @@ export default function ClientRegistration({ onClientCreated }: ClientRegistrati
         </div>
 
         <div>
-          <label htmlFor="industry" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="industry"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Sektör *
           </label>
           <select
@@ -121,14 +137,16 @@ export default function ClientRegistration({ onClientCreated }: ClientRegistrati
       </form>
 
       {message && (
-        <div className={`mt-4 p-3 rounded-lg ${
-          message.type === 'success' 
-            ? 'bg-green-100 text-green-700 border border-green-200' 
-            : 'bg-red-100 text-red-700 border border-red-200'
-        }`}>
+        <div
+          className={`mt-4 p-3 rounded-lg ${
+            message.type === 'success'
+              ? 'bg-green-100 text-green-700 border border-green-200'
+              : 'bg-red-100 text-red-700 border border-red-200'
+          }`}
+        >
           {message.text}
         </div>
       )}
     </div>
   );
-} 
+}

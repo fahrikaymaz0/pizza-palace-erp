@@ -4,11 +4,11 @@ import jwt from 'jsonwebtoken';
 import { getDatabase } from '@/lib/sqlite';
 import { verifyCode } from '@/lib/emailService';
 import { securityMiddleware } from '../../middleware/security';
-import { 
-  createSuccessResponse, 
-  createErrorResponse, 
-  ERROR_CODES, 
-  InputValidator 
+import {
+  createSuccessResponse,
+  createErrorResponse,
+  ERROR_CODES,
+  InputValidator,
 } from '@/lib/apiResponse';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -16,7 +16,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 export async function POST(request: NextRequest) {
   const requestId = Math.random().toString(36).substring(7);
   console.log(`🔐 [${requestId}] Reset Password API başladı`);
-  
+
   try {
     // Güvenlik middleware'i uygula
     const securityResult = await securityMiddleware(request);
@@ -29,20 +29,20 @@ export async function POST(request: NextRequest) {
     } catch (parseError) {
       console.error(`❌ [${requestId}] JSON parse hatası:`, parseError);
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Geçersiz JSON formatı',
           code: 'INVALID_JSON',
-          requestId 
+          requestId,
         },
         { status: 400 }
       );
     }
 
     const { email, code, newPassword } = body;
-    console.log(`🔑 [${requestId}] Şifre sıfırlama isteği:`, { 
-      email: email?.substring(0, 3) + '***', 
-      code: code?.substring(0, 2) + '****' 
+    console.log(`🔑 [${requestId}] Şifre sıfırlama isteği:`, {
+      email: email?.substring(0, 3) + '***',
+      code: code?.substring(0, 2) + '****',
     });
 
     // Input validation
@@ -62,7 +62,10 @@ export async function POST(request: NextRequest) {
       database = getDatabase();
       console.log(`💾 [${requestId}] SQLite Database bağlantısı kuruldu`);
     } catch (dbInitError) {
-      console.error(`❌ [${requestId}] SQLite Database bağlantı hatası:`, dbInitError);
+      console.error(
+        `❌ [${requestId}] SQLite Database bağlantı hatası:`,
+        dbInitError
+      );
       return createErrorResponse(
         'Veritabanı bağlantısı kurulamadı',
         ERROR_CODES.DATABASE_CONNECTION_ERROR,
@@ -84,9 +87,12 @@ export async function POST(request: NextRequest) {
         500
       );
     }
-    
+
     if (!verificationResult.valid) {
-      console.log(`❌ [${requestId}] Kod doğrulanamadı:`, verificationResult.message);
+      console.log(
+        `❌ [${requestId}] Kod doğrulanamadı:`,
+        verificationResult.message
+      );
       return createErrorResponse(
         verificationResult.message,
         ERROR_CODES.INTERNAL_SERVER_ERROR,
@@ -98,8 +104,10 @@ export async function POST(request: NextRequest) {
     console.log(`✅ [${requestId}] Kod doğrulandı, şifre güncellenıyor...`);
 
     // Kullanıcıyı getir
-    const user = database.prepare('SELECT * FROM users WHERE email = ?').get(email.toLowerCase()) as any;
-    
+    const user = database
+      .prepare('SELECT * FROM users WHERE email = ?')
+      .get(email.toLowerCase()) as any;
+
     if (!user || !user.id) {
       console.log(`❌ [${requestId}] Kullanıcı bulunamadı:`, email);
       return createErrorResponse(
@@ -126,8 +134,10 @@ export async function POST(request: NextRequest) {
 
     // Şifreyi güncelle
     try {
-      database.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hashedPassword, user.id);
-      
+      database
+        .prepare('UPDATE users SET password_hash = ? WHERE id = ?')
+        .run(hashedPassword, user.id);
+
       console.log(`✅ [${requestId}] Şifre başarıyla güncellendi:`, user.id);
     } catch (updateError) {
       console.error(`❌ [${requestId}] Şifre güncelleme hatası:`, updateError);
@@ -141,11 +151,11 @@ export async function POST(request: NextRequest) {
 
     // JWT token oluştur
     const token = jwt.sign(
-      { 
-        userId: user.id, 
-        email: user.email, 
-        name: user.name, 
-        role: 'user' 
+      {
+        userId: user.id,
+        email: user.email,
+        name: user.name,
+        role: 'user',
       },
       JWT_SECRET,
       { expiresIn: '7d' }
@@ -158,21 +168,20 @@ export async function POST(request: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name
+        name: user.name,
       },
-      token
+      token,
     });
 
     response.cookies.set('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 // 7 gün
+      maxAge: 7 * 24 * 60 * 60, // 7 gün
     });
 
     console.log(`🎉 [${requestId}] Şifre sıfırlama başarılı:`, user.email);
     return response;
-
   } catch (error) {
     console.error(`❌ [${requestId}] Beklenmeyen hata:`, error);
     return createErrorResponse(

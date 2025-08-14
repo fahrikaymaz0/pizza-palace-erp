@@ -7,8 +7,3 @@ export default function PayTRDirektAPIPage() {
     </div>
   );
 }
-
-
-
-
-

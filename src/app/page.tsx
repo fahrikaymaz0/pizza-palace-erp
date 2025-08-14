@@ -19,9 +19,11 @@ export default function Home() {
           <div className="w-6 h-6 bg-red-600 rounded flex items-center justify-center">
             <span className="text-white text-sm">🍕</span>
           </div>
-          <p className="mt-4 text-gray-600">Pizza Palace'a yönlendiriliyor...</p>
+          <p className="mt-4 text-gray-600">
+            Pizza Palace&apos;a yönlendiriliyor...
+          </p>
         </div>
       </div>
     </div>
   );
-} 
+}

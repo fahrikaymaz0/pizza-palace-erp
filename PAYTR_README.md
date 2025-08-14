@@ -14,11 +14,11 @@ Bu proje, PayTR ödeme sistemi ile entegre edilmiş dinamik test kartı algılam
 
 Sistem aşağıdaki PayTR test kartlarını otomatik olarak algılar:
 
-| Kart Türü | Kart Numarası | CVV | Son Kullanım |
-|-----------|---------------|-----|--------------|
-| VISA | 4355084355084358 | 000 | 12/30 |
-| MasterCard | 5406675406675403 | 000 | 12/30 |
-| Troy | 9792030394440796 | 000 | 12/30 |
+| Kart Türü  | Kart Numarası    | CVV | Son Kullanım |
+| ---------- | ---------------- | --- | ------------ |
+| VISA       | 4355084355084358 | 000 | 12/30        |
+| MasterCard | 5406675406675403 | 000 | 12/30        |
+| Troy       | 9792030394440796 | 000 | 12/30        |
 
 ## 🛠️ Kurulum
 
@@ -88,16 +88,19 @@ src/
 ## 🔧 API Endpoints
 
 ### 1. Token Oluşturma
+
 ```
 POST /api/paytr/create-token
 ```
 
 ### 2. API Bağlantı Testi
+
 ```
 POST /api/paytr/test-connection
 ```
 
 ### 3. PayTR Callback
+
 ```
 POST /api/paytr/callback
 ```
@@ -117,21 +120,21 @@ POST /api/paytr/callback
 ```typescript
 const detectCardType = (cardNumber: string) => {
   const cleanNumber = cardNumber.replace(/\s/g, '');
-  
+
   // PayTR Test Kartlarını Kontrol Et
-  const testCard = PAYTR_TEST_CARDS.find(card => 
+  const testCard = PAYTR_TEST_CARDS.find(card =>
     card.pattern.test(cleanNumber)
   );
-  
+
   if (testCard) {
     return {
       type: 'test',
       brand: testCard.brand,
       card: testCard,
-      message: `PayTR ${testCard.name} algılandı!`
+      message: `PayTR ${testCard.name} algılandı!`,
     };
   }
-  
+
   // Gerçek kart türleri...
 };
 ```
@@ -153,6 +156,7 @@ const detectCardType = (cardNumber: string) => {
 ## 📞 Destek
 
 PayTR API entegrasyonu ile ilgili sorularınız için:
+
 - [PayTR Dokümantasyon](https://www.paytr.com/odeme/api)
 - [PayTR Test Kartları](https://www.paytr.com/odeme/test-kartlari)
 
@@ -165,8 +169,3 @@ PayTR API entegrasyonu ile ilgili sorularınız için:
 ---
 
 **Not**: Bu sistem sadece test amaçlıdır. Canlı ortamda kullanmadan önce PayTR ile iletişime geçin.
-
-
-
-
-

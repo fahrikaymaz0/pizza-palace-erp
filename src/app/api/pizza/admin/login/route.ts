@@ -5,7 +5,7 @@ import {
   createSuccessResponse,
   createErrorResponse,
   ERROR_CODES,
-  generateRequestId
+  generateRequestId,
 } from '@/lib/apiResponse';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 export async function POST(request: NextRequest) {
   const requestId = generateRequestId();
   console.log(`🍕 [${requestId}] Pizza Admin Login API başladı`);
-  
+
   try {
     const { email, password } = await request.json();
 
@@ -27,10 +27,12 @@ export async function POST(request: NextRequest) {
     }
 
     const database = getDatabase();
-    
+
     // Pizza admin kullanıcısını kontrol et
-    const admin = database.prepare('SELECT * FROM users WHERE email = ? AND role = ?').get(email, 'pizza_admin') as any;
-    
+    const admin = database
+      .prepare('SELECT * FROM users WHERE email = ? AND role = ?')
+      .get(email, 'pizza_admin') as any;
+
     if (!admin) {
       console.log(`❌ [${requestId}] Pizza admin bulunamadı: ${email}`);
       return createErrorResponse(
@@ -40,7 +42,7 @@ export async function POST(request: NextRequest) {
         401
       );
     }
-    
+
     // Şifre kontrolü
     if (password !== admin.password_hash) {
       console.log(`❌ [${requestId}] Yanlış şifre: ${email}`);
@@ -54,35 +56,40 @@ export async function POST(request: NextRequest) {
 
     // Pizza admin token oluştur
     const token = jwt.sign(
-      { 
-        userId: admin.id, 
-        email: admin.email, 
+      {
+        userId: admin.id,
+        email: admin.email,
         role: 'pizza_admin',
-        timestamp: Date.now()
+        timestamp: Date.now(),
       },
       JWT_SECRET,
       { expiresIn: '24h' }
     );
 
     // Son giriş zamanını güncelle
-    database.prepare('UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?').run(admin.id);
+    database
+      .prepare('UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = ?')
+      .run(admin.id);
 
     console.log(`✅ [${requestId}] Pizza admin girişi başarılı: ${email}`);
-    
-    const response = NextResponse.json({
-      success: true,
-      message: 'Pizza admin girişi başarılı',
-      data: {
-        user: {
-          id: admin.id,
-          email: admin.email,
-          name: admin.name,
-          role: admin.role
-        }
+
+    const response = NextResponse.json(
+      {
+        success: true,
+        message: 'Pizza admin girişi başarılı',
+        data: {
+          user: {
+            id: admin.id,
+            email: admin.email,
+            name: admin.name,
+            role: admin.role,
+          },
+        },
+        requestId,
+        timestamp: new Date().toISOString(),
       },
-      requestId,
-      timestamp: new Date().toISOString()
-    }, { status: 200 });
+      { status: 200 }
+    );
 
     // Pizza admin token cookie'si ayarla
     response.cookies.set('pizza_admin_token', token, {
@@ -90,11 +97,10 @@ export async function POST(request: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 24 * 60 * 60, // 24 saat
-      path: '/'
+      path: '/',
     });
 
     return response;
-
   } catch (error) {
     console.error(`❌ [${requestId}] Pizza admin login error:`, error);
     return createErrorResponse(
@@ -105,9 +111,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-
-
-
-
-

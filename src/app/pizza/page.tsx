@@ -80,11 +80,11 @@ export default function PizzaHomePage() {
     try {
       console.log('🔐 Auth kontrol ediliyor...');
       const response = await fetch('/api/auth/verify');
-      
+
       if (response.ok) {
         const data = await response.json();
         console.log('✅ Auth verify response:', data);
-        
+
         // Professional API response format'ını destekle
         if (data.success && data.data?.user) {
           setUser(data.data.user);
@@ -112,15 +112,17 @@ export default function PizzaHomePage() {
     try {
       console.log('🍕 Pizza menüsü yükleniyor...');
       const response = await fetch('/api/pizza/menu');
-      
+
       if (response.ok) {
         const data = await response.json();
         console.log('✅ Pizza menüsü API response:', data);
-        
+
         // Professional API response format'ını destekle
         if (data.success && data.data) {
           setPizzas(data.data.pizzas || []);
-          console.log(`📋 ${data.data.pizzas?.length || 0} pizza yüklendi (${data.data.source})`);
+          console.log(
+            `📋 ${data.data.pizzas?.length || 0} pizza yüklendi (${data.data.source})`
+          );
         } else {
           // Eski format için fallback
           setPizzas(data.pizzas || []);
@@ -152,7 +154,7 @@ export default function PizzaHomePage() {
       if (response.ok) {
         const data = await response.json();
         console.log('🎯 Kampanyalar yüklendi:', data);
-        
+
         // Professional API response format'ını destekle
         if (data.success && data.data?.campaigns) {
           setCampaigns(data.data.campaigns);
@@ -203,7 +205,7 @@ export default function PizzaHomePage() {
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
-      currency: 'TRY'
+      currency: 'TRY',
     }).format(price);
   };
 
@@ -224,11 +226,11 @@ export default function PizzaHomePage() {
       const response = await fetch('/api/pizza/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newReview)
+        body: JSON.stringify(newReview),
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setNewReview({ rating: 5, comment: '' });
         setShowReviewForm(false);
@@ -240,8 +242,6 @@ export default function PizzaHomePage() {
       setReviewError('Yorum eklenirken hata oluştu');
     }
   };
-
-
 
   const handleCampaignClick = () => {
     setShowCampaignMessage(true);
@@ -274,7 +274,8 @@ export default function PizzaHomePage() {
       {/* Campaign Message */}
       {showCampaignMessage && (
         <div className="fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-          🎉 Seçtiğiniz 3 pizza 2 fiyat değerinde! Menüye yönlendiriliyorsunuz...
+          🎉 Seçtiğiniz 3 pizza 2 fiyat değerinde! Menüye
+          yönlendiriliyorsunuz...
         </div>
       )}
 
@@ -287,19 +288,26 @@ export default function PizzaHomePage() {
                 <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-orange-500 rounded flex items-center justify-center">
                   <span className="text-white text-sm">🍕</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900">Pizza Palace</span>
+                <span className="text-xl font-bold text-gray-900">
+                  Pizza Palace
+                </span>
               </div>
-
             </div>
-            
+
             <div className="flex items-center space-x-4">
-              <Link href="/pizza/menu" className="text-gray-700 hover:text-red-600 transition-colors">
+              <Link
+                href="/pizza/menu"
+                className="text-gray-700 hover:text-red-600 transition-colors"
+              >
                 Menü
               </Link>
-              <Link href="/pizza/orders" className="text-gray-700 hover:text-red-600 transition-colors">
+              <Link
+                href="/pizza/orders"
+                className="text-gray-700 hover:text-red-600 transition-colors"
+              >
                 Siparişlerim
               </Link>
-              
+
               <button
                 onClick={() => setShowCart(true)}
                 className="relative bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
@@ -311,12 +319,12 @@ export default function PizzaHomePage() {
                   </span>
                 )}
               </button>
-              
+
               {user ? (
                 <div className="flex items-center space-x-4">
                   <span className="text-gray-700">Hoş geldiniz,</span>
-                  <Link 
-                    href="/pizza/profile" 
+                  <Link
+                    href="/pizza/profile"
                     className="text-orange-600 hover:text-orange-700 transition-colors flex items-center space-x-1 font-medium"
                   >
                     <span>👤</span>
@@ -330,7 +338,10 @@ export default function PizzaHomePage() {
                   </button>
                 </div>
               ) : (
-                <Link href="/pizza/login" className="text-gray-700 hover:text-red-600 transition-colors">
+                <Link
+                  href="/pizza/login"
+                  className="text-gray-700 hover:text-red-600 transition-colors"
+                >
                   Giriş Yap
                 </Link>
               )}
@@ -376,13 +387,18 @@ export default function PizzaHomePage() {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">En Çok Sevilen Pizzalar</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              En Çok Sevilen Pizzalar
+            </h2>
             <p className="text-gray-600">Müşterilerimizin favorileri</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {pizzas.slice(0, 3).map((pizza) => (
-              <div key={pizza.id} className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full min-h-[480px]">
+            {pizzas.slice(0, 3).map(pizza => (
+              <div
+                key={pizza.id}
+                className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full min-h-[480px]"
+              >
                 <div className="relative h-64 overflow-hidden">
                   <img
                     src={pizza.image}
@@ -391,15 +407,21 @@ export default function PizzaHomePage() {
                       width: '100%',
                       height: '100%',
                       objectFit: 'cover',
-                      display: 'block'
+                      display: 'block',
                     }}
                   />
                 </div>
                 <div className="p-6 flex flex-col h-full">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{pizza.name}</h3>
-                  <p className="text-gray-600 mb-4 flex-grow">{pizza.description}</p>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {pizza.name}
+                  </h3>
+                  <p className="text-gray-600 mb-4 flex-grow">
+                    {pizza.description}
+                  </p>
                   <div className="flex justify-between items-center mt-auto">
-                    <span className="text-2xl font-bold text-red-600">{formatPrice(pizza.price)}</span>
+                    <span className="text-2xl font-bold text-red-600">
+                      {formatPrice(pizza.price)}
+                    </span>
                     <button
                       onClick={() => addToCart(pizza)}
                       className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors"
@@ -432,24 +454,34 @@ export default function PizzaHomePage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Neden Pizza Palace?</h2>
-            <p className="text-gray-600">Size en iyi hizmeti sunmak için çalışıyoruz</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Neden Pizza Palace?
+            </h2>
+            <p className="text-gray-600">
+              Size en iyi hizmeti sunmak için çalışıyoruz
+            </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center bg-gradient-to-br from-red-50 to-orange-50 p-8 rounded-xl shadow-lg border border-gray-100">
               <div className="text-4xl mb-4">🚚</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Hızlı Teslimat</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Hızlı Teslimat
+              </h3>
               <p className="text-gray-600">30 dakika içinde kapınızda</p>
             </div>
             <div className="text-center bg-gradient-to-br from-red-50 to-orange-50 p-8 rounded-xl shadow-lg border border-gray-100">
               <div className="text-4xl mb-4">🍕</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Taze Malzemeler</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Taze Malzemeler
+              </h3>
               <p className="text-gray-600">Günlük taze malzemeler</p>
             </div>
             <div className="text-center bg-gradient-to-br from-red-50 to-orange-50 p-8 rounded-xl shadow-lg border border-gray-100">
               <div className="text-4xl mb-4">💳</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Güvenli Ödeme</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Güvenli Ödeme
+              </h3>
               <p className="text-gray-600">Güvenli online ödeme</p>
             </div>
           </div>
@@ -460,35 +492,40 @@ export default function PizzaHomePage() {
       <section className="py-16 bg-gradient-to-br from-red-50 to-orange-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Özel Teklifler</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Özel Teklifler
+            </h2>
             <p className="text-gray-600">Kaçırmayın!</p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="bg-gradient-to-br from-red-500 to-orange-500 text-white p-8 rounded-xl shadow-lg">
-              <h3 className="text-2xl font-bold mb-4">🎉 İlk Sipariş İndirimi</h3>
+              <h3 className="text-2xl font-bold mb-4">
+                🎉 İlk Sipariş İndirimi
+              </h3>
               <p className="text-lg mb-4">
-                {isFirstOrder 
+                {isFirstOrder
                   ? 'İlk siparişinizde %20 indirim!'
-                  : 'İlk sipariş indirimi kullanıldı'
-                }
+                  : 'İlk sipariş indirimi kullanıldı'}
               </p>
-              <Link 
+              <Link
                 href="/pizza/menu"
                 className={`px-6 py-3 rounded-lg font-semibold transition-colors inline-block ${
-                  isFirstOrder 
-                    ? 'bg-white text-red-600 hover:bg-gray-100' 
+                  isFirstOrder
+                    ? 'bg-white text-red-600 hover:bg-gray-100'
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }`}
               >
                 {isFirstOrder ? 'Hemen Sipariş Ver' : 'Kullanıldı'}
               </Link>
             </div>
-            
+
             <div className="bg-gradient-to-br from-yellow-500 to-orange-500 text-white p-8 rounded-xl shadow-lg">
               <h3 className="text-2xl font-bold mb-4">🍕 3 Al 2 Öde</h3>
-              <p className="text-lg mb-4">Seçili pizzalarda 3 al 2 öde kampanyası!</p>
-              <button 
+              <p className="text-lg mb-4">
+                Seçili pizzalarda 3 al 2 öde kampanyası!
+              </p>
+              <button
                 onClick={handleCampaignClick}
                 className="bg-white text-orange-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors inline-block"
               >
@@ -499,8 +536,6 @@ export default function PizzaHomePage() {
         </div>
       </section>
 
-
-
       {/* Modern Yorum Form Modal */}
       {showReviewForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -508,8 +543,12 @@ export default function PizzaHomePage() {
             <div className="p-8">
               <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">💬 Yorum Ekle</h3>
-                  <p className="text-gray-600 text-sm mt-1">Deneyiminizi diğer müşterilerle paylaşın</p>
+                  <h3 className="text-2xl font-bold text-gray-900">
+                    💬 Yorum Ekle
+                  </h3>
+                  <p className="text-gray-600 text-sm mt-1">
+                    Deneyiminizi diğer müşterilerle paylaşın
+                  </p>
                 </div>
                 <button
                   onClick={() => setShowReviewForm(false)}
@@ -531,13 +570,15 @@ export default function PizzaHomePage() {
                   ⭐ Puanınız
                 </label>
                 <div className="flex space-x-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
+                  {[1, 2, 3, 4, 5].map(star => (
                     <button
                       key={star}
-                      onClick={() => setNewReview({ ...newReview, rating: star })}
+                      onClick={() =>
+                        setNewReview({ ...newReview, rating: star })
+                      }
                       className={`text-3xl transition-all duration-200 hover:scale-110 ${
-                        star <= newReview.rating 
-                          ? 'text-yellow-400 drop-shadow-sm' 
+                        star <= newReview.rating
+                          ? 'text-yellow-400 drop-shadow-sm'
                           : 'text-gray-300 hover:text-yellow-200'
                       }`}
                     >
@@ -546,7 +587,9 @@ export default function PizzaHomePage() {
                   ))}
                 </div>
                 <p className="text-sm text-gray-500 mt-2">
-                  {newReview.rating > 0 ? `${newReview.rating}/5 puan` : 'Puanınızı seçin'}
+                  {newReview.rating > 0
+                    ? `${newReview.rating}/5 puan`
+                    : 'Puanınızı seçin'}
                 </p>
               </div>
 
@@ -556,7 +599,9 @@ export default function PizzaHomePage() {
                 </label>
                 <textarea
                   value={newReview.comment}
-                  onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                  onChange={e =>
+                    setNewReview({ ...newReview, comment: e.target.value })
+                  }
                   className="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
                   rows={5}
                   placeholder="Pizza Palace deneyiminizi paylaşın... (En az 10 karakter)"
@@ -566,12 +611,16 @@ export default function PizzaHomePage() {
                   <p className="text-sm text-gray-500">
                     {newReview.comment.length}/500 karakter
                   </p>
-                  <div className={`text-xs px-2 py-1 rounded ${
-                    newReview.comment.length >= 10 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-red-100 text-red-700'
-                  }`}>
-                    {newReview.comment.length >= 10 ? '✓ Yeterli' : 'En az 10 karakter'}
+                  <div
+                    className={`text-xs px-2 py-1 rounded ${
+                      newReview.comment.length >= 10
+                        ? 'bg-green-100 text-green-700'
+                        : 'bg-red-100 text-red-700'
+                    }`}
+                  >
+                    {newReview.comment.length >= 10
+                      ? '✓ Yeterli'
+                      : 'En az 10 karakter'}
                   </div>
                 </div>
               </div>
@@ -579,7 +628,9 @@ export default function PizzaHomePage() {
               <div className="flex space-x-4">
                 <button
                   onClick={submitReview}
-                  disabled={newReview.rating === 0 || newReview.comment.length < 10}
+                  disabled={
+                    newReview.rating === 0 || newReview.comment.length < 10
+                  }
                   className="flex-1 bg-gradient-to-r from-red-600 to-orange-600 text-white py-4 rounded-lg font-semibold hover:from-red-700 hover:to-orange-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                 >
                   <span className="mr-2">📤</span>
@@ -620,35 +671,55 @@ export default function PizzaHomePage() {
               ) : (
                 <>
                   <div className="space-y-4 mb-6">
-                    {cart.map((item) => (
-                      <div key={item.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    {cart.map(item => (
+                      <div
+                        key={item.id}
+                        className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
+                      >
                         <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
                           <span className="text-red-600">🍕</span>
                         </div>
                         <div className="flex-1">
-                          <h4 className="font-medium text-gray-900">{item.name}</h4>
-                          <p className="text-sm text-gray-600">{formatPrice(item.price)}</p>
+                          <h4 className="font-medium text-gray-900">
+                            {item.name}
+                          </h4>
+                          <p className="text-sm text-gray-600">
+                            {formatPrice(item.price)}
+                          </p>
                         </div>
                         <div className="flex items-center space-x-2">
                           <button
                             onClick={() => {
-                              const updatedCart = cart.map(cartItem =>
-                                cartItem.id === item.id 
-                                  ? { ...cartItem, quantity: Math.max(0, cartItem.quantity - 1) }
-                                  : cartItem
-                              ).filter(cartItem => cartItem.quantity > 0);
+                              const updatedCart = cart
+                                .map(cartItem =>
+                                  cartItem.id === item.id
+                                    ? {
+                                        ...cartItem,
+                                        quantity: Math.max(
+                                          0,
+                                          cartItem.quantity - 1
+                                        ),
+                                      }
+                                    : cartItem
+                                )
+                                .filter(cartItem => cartItem.quantity > 0);
                               saveCart(updatedCart);
                             }}
                             className="w-8 h-8 bg-red-100 text-red-600 rounded-full flex items-center justify-center hover:bg-red-200"
                           >
                             -
                           </button>
-                          <span className="w-8 text-center font-medium">{item.quantity}</span>
+                          <span className="w-8 text-center font-medium">
+                            {item.quantity}
+                          </span>
                           <button
                             onClick={() => {
                               const updatedCart = cart.map(cartItem =>
-                                cartItem.id === item.id 
-                                  ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                                cartItem.id === item.id
+                                  ? {
+                                      ...cartItem,
+                                      quantity: cartItem.quantity + 1,
+                                    }
                                   : cartItem
                               );
                               saveCart(updatedCart);
@@ -666,7 +737,12 @@ export default function PizzaHomePage() {
                     <div className="flex justify-between items-center mb-4">
                       <span className="text-lg font-semibold">Toplam:</span>
                       <span className="text-xl font-bold text-red-600">
-                        {formatPrice(cart.reduce((total, item) => total + (item.price * item.quantity), 0))}
+                        {formatPrice(
+                          cart.reduce(
+                            (total, item) => total + item.price * item.quantity,
+                            0
+                          )
+                        )}
                       </span>
                     </div>
                     <button
@@ -704,9 +780,30 @@ export default function PizzaHomePage() {
             <div>
               <h4 className="text-lg font-semibold mb-4">Hızlı Linkler</h4>
               <ul className="space-y-2">
-                <li><Link href="/pizza/menu" className="text-gray-400 hover:text-white transition-colors">Menü</Link></li>
-                <li><Link href="/pizza/orders" className="text-gray-400 hover:text-white transition-colors">Siparişlerim</Link></li>
-                <li><Link href="/pizza/profile" className="text-gray-400 hover:text-white transition-colors">Profil</Link></li>
+                <li>
+                  <Link
+                    href="/pizza/menu"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Menü
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pizza/orders"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Siparişlerim
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/pizza/profile"
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    Profil
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -720,9 +817,24 @@ export default function PizzaHomePage() {
             <div>
               <h4 className="text-lg font-semibold mb-4">Sosyal Medya</h4>
               <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white text-2xl transition-colors">📘</a>
-                <a href="#" className="text-gray-400 hover:text-white text-2xl transition-colors">📷</a>
-                <a href="#" className="text-gray-400 hover:text-white text-2xl transition-colors">🐦</a>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white text-2xl transition-colors"
+                >
+                  📘
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white text-2xl transition-colors"
+                >
+                  📷
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white text-2xl transition-colors"
+                >
+                  🐦
+                </a>
               </div>
             </div>
           </div>
@@ -733,4 +845,4 @@ export default function PizzaHomePage() {
       </footer>
     </div>
   );
-} 
+}

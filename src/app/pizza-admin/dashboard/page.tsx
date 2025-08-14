@@ -40,9 +40,9 @@ export default function PizzaAdminDashboard() {
   const checkAuth = async () => {
     try {
       const response = await fetch('/api/pizza/admin/orders', {
-        credentials: 'include'
+        credentials: 'include',
       });
-      
+
       if (!response.ok) {
         router.push('/pizza-admin/login');
       }
@@ -54,9 +54,9 @@ export default function PizzaAdminDashboard() {
   const loadOrders = async () => {
     try {
       const response = await fetch('/api/pizza/admin/orders', {
-        credentials: 'include'
+        credentials: 'include',
       });
-      
+
       if (response.ok) {
         const data = await response.json();
         if (data.success) {
@@ -98,7 +98,7 @@ export default function PizzaAdminDashboard() {
     try {
       await fetch('/api/pizza/admin/logout', {
         method: 'POST',
-        credentials: 'include'
+        credentials: 'include',
       });
       router.push('/pizza-admin/login');
     } catch (error) {
@@ -108,23 +108,35 @@ export default function PizzaAdminDashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'pending': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'approved': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'delivering': return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'delivered': return 'bg-green-100 text-green-800 border-green-200';
-      case 'cancelled': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'approved':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'delivering':
+        return 'bg-purple-100 text-purple-800 border-purple-200';
+      case 'delivered':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'cancelled':
+        return 'bg-red-100 text-red-800 border-red-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'pending': return 'Onay Bekliyor';
-      case 'approved': return 'Onaylandı / Hazırlanıyor';
-      case 'delivering': return 'Kuryede';
-      case 'delivered': return 'Teslim Edildi';
-      case 'cancelled': return 'İptal Edildi';
-      default: return 'Bilinmiyor';
+      case 'pending':
+        return 'Onay Bekliyor';
+      case 'approved':
+        return 'Onaylandı / Hazırlanıyor';
+      case 'delivering':
+        return 'Kuryede';
+      case 'delivered':
+        return 'Teslim Edildi';
+      case 'cancelled':
+        return 'İptal Edildi';
+      default:
+        return 'Bilinmiyor';
     }
   };
 
@@ -134,28 +146,29 @@ export default function PizzaAdminDashboard() {
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('tr-TR', {
       style: 'currency',
-      currency: 'TRY'
+      currency: 'TRY',
     }).format(price);
   };
 
-  const filteredOrders = selectedStatus === 'all' 
-    ? orders 
-    : orders.filter(order => order.status === selectedStatus);
+  const filteredOrders =
+    selectedStatus === 'all'
+      ? orders
+      : orders.filter(order => order.status === selectedStatus);
 
   // Telefon numarası formatı
   const formatPhoneForDisplay = (phone: string) => {
     if (!phone) return '';
-    
+
     // Sadece rakamları al
     const numbers = phone.replace(/\D/g, '');
-    
+
     // Türkiye telefon numarası formatı
     if (numbers.length === 10) {
       return `+90 ${numbers.slice(0, 3)} ${numbers.slice(3, 6)} ${numbers.slice(6, 8)} ${numbers.slice(8)}`;
@@ -164,7 +177,7 @@ export default function PizzaAdminDashboard() {
     } else if (numbers.length === 11 && numbers.startsWith('90')) {
       return `+90 ${numbers.slice(2, 5)} ${numbers.slice(5, 8)} ${numbers.slice(8, 10)} ${numbers.slice(10)}`;
     }
-    
+
     return phone; // Formatlanamazsa orijinal değeri döndür
   };
 
@@ -172,14 +185,24 @@ export default function PizzaAdminDashboard() {
   const PhoneDisplay = ({ phone }: { phone: string }) => {
     const formattedPhone = formatPhoneForDisplay(phone);
     const isClickable = phone && phone.replace(/\D/g, '').length >= 10;
-    
+
     return (
       <div className="flex items-center space-x-2">
-        <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+        <svg
+          className="w-4 h-4 text-gray-500"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+          />
         </svg>
         {isClickable ? (
-          <a 
+          <a
             href={`tel:${formattedPhone}`}
             className="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200"
             title="Aramak için tıklayın"
@@ -213,11 +236,13 @@ export default function PizzaAdminDashboard() {
             <div className="flex items-center">
               <div className="text-4xl mr-3">🍕</div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Pizza Admin Panel</h1>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  Pizza Admin Panel
+                </h1>
                 <p className="text-sm text-gray-600">Sipariş Yönetimi</p>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <span className="text-gray-700 font-medium">Pizza Admin</span>
               <button
@@ -283,7 +308,9 @@ export default function PizzaAdminDashboard() {
                 <span className="text-2xl">✅</span>
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Teslim Edilen</p>
+                <p className="text-sm font-medium text-gray-600">
+                  Teslim Edilen
+                </p>
                 <p className="text-2xl font-bold text-gray-900">
                   {orders.filter(o => o.status === 'delivered').length}
                 </p>
@@ -350,12 +377,19 @@ export default function PizzaAdminDashboard() {
           {filteredOrders.length === 0 ? (
             <div className="text-center py-12">
               <div className="text-6xl mb-4">🍕</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Henüz sipariş yok</h3>
-              <p className="text-gray-600">Bekleyen siparişler burada görünecek</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Henüz sipariş yok
+              </h3>
+              <p className="text-gray-600">
+                Bekleyen siparişler burada görünecek
+              </p>
             </div>
           ) : (
-            filteredOrders.map((order) => (
-              <div key={order.id} className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+            filteredOrders.map(order => (
+              <div
+                key={order.id}
+                className="bg-white rounded-xl shadow-lg p-6 border border-gray-100"
+              >
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-4">
                   <div>
                     <h3 className="text-lg font-semibold text-gray-900">
@@ -369,7 +403,9 @@ export default function PizzaAdminDashboard() {
                     </p>
                   </div>
                   <div className="flex items-center space-x-4 mt-2 lg:mt-0">
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(order.status)}`}>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(order.status)}`}
+                    >
                       {getStatusText(order.status)}
                     </span>
                     <span className="text-lg font-bold text-red-600">
@@ -380,10 +416,15 @@ export default function PizzaAdminDashboard() {
 
                 {/* Order Items */}
                 <div className="border-t border-gray-100 pt-4 mb-4">
-                  <h4 className="font-medium text-gray-900 mb-3">Sipariş Detayları</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">
+                    Sipariş Detayları
+                  </h4>
                   <div className="space-y-2">
                     {order.items.map((item, index) => (
-                      <div key={index} className="flex justify-between items-center py-2">
+                      <div
+                        key={index}
+                        className="flex justify-between items-center py-2"
+                      >
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
                             <span className="text-red-600 text-sm">🍕</span>
@@ -402,13 +443,16 @@ export default function PizzaAdminDashboard() {
 
                 {/* Delivery Info */}
                 <div className="border-t border-gray-100 pt-4 mb-4">
-                  <h4 className="font-medium text-gray-900 mb-2">Teslimat Bilgileri</h4>
+                  <h4 className="font-medium text-gray-900 mb-2">
+                    Teslimat Bilgileri
+                  </h4>
                   <div className="bg-gray-50 p-3 rounded-lg">
                     <p className="text-sm text-gray-600">
                       <strong>Adres:</strong> {order.address}
                     </p>
                     <p className="text-sm text-gray-600">
-                      <strong>Telefon:</strong> <PhoneDisplay phone={order.phone} />
+                      <strong>Telefon:</strong>{' '}
+                      <PhoneDisplay phone={order.phone} />
                     </p>
                     {order.notes && (
                       <p className="text-sm text-gray-600">
@@ -420,7 +464,9 @@ export default function PizzaAdminDashboard() {
 
                 {/* Status Update */}
                 <div className="border-t border-gray-100 pt-4">
-                  <h4 className="font-medium text-gray-900 mb-3">Durum Güncelle</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">
+                    Durum Güncelle
+                  </h4>
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => updateOrderStatus(order.id, 'approved')}
@@ -460,7 +506,3 @@ export default function PizzaAdminDashboard() {
     </div>
   );
 }
-
-
-
-

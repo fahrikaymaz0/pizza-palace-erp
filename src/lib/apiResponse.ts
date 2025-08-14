@@ -40,10 +40,10 @@ export const ERROR_CODES = {
   INVALID_JSON: 'INVALID_JSON',
   INVALID_CODE: 'INVALID_CODE',
   USER_NOT_FOUND: 'USER_NOT_FOUND',
-  DUPLICATE_RECORD: 'DUPLICATE_RECORD'
+  DUPLICATE_RECORD: 'DUPLICATE_RECORD',
 };
 
-export type ErrorCode = typeof ERROR_CODES[keyof typeof ERROR_CODES];
+export type ErrorCode = (typeof ERROR_CODES)[keyof typeof ERROR_CODES];
 
 /**
  * Success Response Builder
@@ -54,18 +54,21 @@ export const createSuccessResponse = (
   requestId: string,
   status: number = 200
 ) => {
-  return new Response(JSON.stringify({
-    success: true,
-    message,
-    data,
-    requestId,
-    timestamp: new Date().toISOString()
-  }), {
-    status,
-    headers: {
-      'Content-Type': 'application/json'
+  return new Response(
+    JSON.stringify({
+      success: true,
+      message,
+      data,
+      requestId,
+      timestamp: new Date().toISOString(),
+    }),
+    {
+      status,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }
-  });
+  );
 };
 
 /**
@@ -77,18 +80,21 @@ export const createErrorResponse = (
   requestId: string,
   status: number = 500
 ) => {
-  return new Response(JSON.stringify({
-    success: false,
-    error: message,
-    code,
-    requestId,
-    timestamp: new Date().toISOString()
-  }), {
-    status,
-    headers: {
-      'Content-Type': 'application/json'
+  return new Response(
+    JSON.stringify({
+      success: false,
+      error: message,
+      code,
+      requestId,
+      timestamp: new Date().toISOString(),
+    }),
+    {
+      status,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     }
-  });
+  );
 };
 
 /**
@@ -154,7 +160,12 @@ export class InputValidator {
   }
 
   // String length validation
-  validateLength(value: string, min: number, max: number, fieldName: string): this {
+  validateLength(
+    value: string,
+    min: number,
+    max: number,
+    fieldName: string
+  ): this {
     if (typeof value === 'string') {
       if (value.length < min) {
         this.errors.push(`${fieldName} en az ${min} karakter olmalıdır`);
@@ -184,14 +195,17 @@ export class InputValidator {
   // Create error response if validation failed
   createErrorResponse(requestId?: string): NextResponse | null {
     if (this.isValid()) return null;
-    
-    return NextResponse.json({
-      success: false,
-      error: this.errors.join(', '),
-      code: ERROR_CODES.VALIDATION_ERROR,
-      requestId,
-      timestamp: new Date().toISOString()
-    }, { status: 400 });
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: this.errors.join(', '),
+        code: ERROR_CODES.VALIDATION_ERROR,
+        requestId,
+        timestamp: new Date().toISOString(),
+      },
+      { status: 400 }
+    );
   }
 }
 
@@ -205,27 +219,37 @@ export function generateRequestId(): string {
 /**
  * Database Error Handler
  */
-export const handleDatabaseError = (error: any, operation: string, requestId?: string): NextResponse => {
+export const handleDatabaseError = (
+  error: any,
+  operation: string,
+  requestId?: string
+): NextResponse => {
   console.error(`💾 Database Error [${requestId}] - ${operation}:`, error);
-  
+
   // Check for specific database errors
   if (error?.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-    return NextResponse.json({
-      success: false,
-      error: 'Bu kayıt zaten mevcut',
-      code: ERROR_CODES.DUPLICATE_RECORD,
-      requestId,
-      timestamp: new Date().toISOString()
-    }, { status: 409 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Bu kayıt zaten mevcut',
+        code: ERROR_CODES.DUPLICATE_RECORD,
+        requestId,
+        timestamp: new Date().toISOString(),
+      },
+      { status: 409 }
+    );
   }
-  
-  return NextResponse.json({
-    success: false,
-    error: 'Veritabanı hatası oluştu',
-    code: ERROR_CODES.DATABASE_QUERY_ERROR,
-    requestId,
-    timestamp: new Date().toISOString()
-  }, { status: 500 });
+
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'Veritabanı hatası oluştu',
+      code: ERROR_CODES.DATABASE_QUERY_ERROR,
+      requestId,
+      timestamp: new Date().toISOString(),
+    },
+    { status: 500 }
+  );
 };
 
 /**

@@ -15,11 +15,11 @@ Bu proje, [PayTR Direkt API](https://dev.paytr.com/direkt-api) dokümantasyonuna
 
 Sistem aşağıdaki PayTR test kartlarını otomatik olarak algılar:
 
-| Kart Türü | Kart Numarası | CVV | Son Kullanım |
-|-----------|---------------|-----|--------------|
-| VISA | 4355084355084358 | 000 | 12/30 |
-| MasterCard | 5406675406675403 | 000 | 12/30 |
-| Troy | 9792030394440796 | 000 | 12/30 |
+| Kart Türü  | Kart Numarası    | CVV | Son Kullanım |
+| ---------- | ---------------- | --- | ------------ |
+| VISA       | 4355084355084358 | 000 | 12/30        |
+| MasterCard | 5406675406675403 | 000 | 12/30        |
+| Troy       | 9792030394440796 | 000 | 12/30        |
 
 ## 🛠️ Kurulum
 
@@ -90,16 +90,19 @@ src/
 ## 🔧 API Endpoints
 
 ### 1. Direkt API Token Oluşturma
+
 ```
 POST /api/paytr/direkt-api
 ```
 
 ### 2. Test Kartları
+
 ```
 GET /api/paytr/test-cards
 ```
 
 ### 3. PayTR Callback
+
 ```
 POST /api/paytr/callback
 ```
@@ -121,21 +124,21 @@ POST /api/paytr/callback
 ```typescript
 const detectCardType = (cardNumber: string) => {
   const cleanNumber = cardNumber.replace(/\s/g, '');
-  
+
   // PayTR Test Kartlarını Kontrol Et
-  const testCard = PAYTR_TEST_CARDS.find(card => 
+  const testCard = PAYTR_TEST_CARDS.find(card =>
     card.pattern.test(cleanNumber)
   );
-  
+
   if (testCard) {
     return {
       type: 'test',
       brand: testCard.brand,
       card: testCard,
-      message: `PayTR Direkt API ${testCard.name} algılandı!`
+      message: `PayTR Direkt API ${testCard.name} algılandı!`,
     };
   }
-  
+
   // Gerçek kart türleri...
 };
 ```
@@ -167,6 +170,7 @@ const detectCardType = (cardNumber: string) => {
 ## 📞 Destek
 
 PayTR Direkt API entegrasyonu ile ilgili sorularınız için:
+
 - [PayTR Direkt API Dokümantasyon](https://dev.paytr.com/direkt-api)
 - [PayTR Test Kartları](https://dev.paytr.com/direkt-api)
 - [PayTR Destek](https://www.paytr.com/destek)
@@ -195,8 +199,3 @@ PayTR Direkt API entegrasyonu ile ilgili sorularınız için:
 ---
 
 **Not**: Bu sistem [PayTR Direkt API](https://dev.paytr.com/direkt-api) dokümantasyonuna göre oluşturulmuştur ve sadece test amaçlıdır. Canlı ortamda kullanmadan önce PayTR ile iletişime geçin.
-
-
-
-
-

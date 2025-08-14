@@ -11,7 +11,7 @@ export default function RegisterPage() {
     name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   });
   const [verificationCode, setVerificationCode] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ export default function RegisterPage() {
   const handleInputChange = (e: any) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -31,7 +31,12 @@ export default function RegisterPage() {
     setError('');
 
     // Form validasyonu
-    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
       setError('Tüm alanları doldurunuz');
       setLoading(false);
       return;
@@ -53,13 +58,13 @@ export default function RegisterPage() {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          password: formData.password
-        })
+          password: formData.password,
+        }),
       });
 
       const data = await response.json();
@@ -92,18 +97,20 @@ export default function RegisterPage() {
       const response = await fetch('/api/auth/verify-email', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: formData.email,
-          code: verificationCode
-        })
+          code: verificationCode,
+        }),
       });
 
       const data = await response.json();
 
       if (data.success) {
-        setSuccess('Email başarıyla doğrulandı! Giriş sayfasına yönlendiriliyorsunuz...');
+        setSuccess(
+          'Email başarıyla doğrulandı! Giriş sayfasına yönlendiriliyorsunuz...'
+        );
         setTimeout(() => {
           router.push('/pizza/login');
         }, 2000);
@@ -125,11 +132,11 @@ export default function RegisterPage() {
       const response = await fetch('/api/auth/resend-code', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: formData.email
-        })
+          email: formData.email,
+        }),
       });
 
       const data = await response.json();
@@ -155,7 +162,9 @@ export default function RegisterPage() {
             {step === 1 ? 'Hesap Oluştur' : 'Email Doğrula'}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            {step === 1 ? 'Pizza Palace hesabınızı oluşturun' : 'Email adresinizi doğrulayın'}
+            {step === 1
+              ? 'Pizza Palace hesabınızı oluşturun'
+              : 'Email adresinizi doğrulayın'}
           </p>
         </div>
 
@@ -164,7 +173,10 @@ export default function RegisterPage() {
           <form className="mt-8 space-y-6" onSubmit={handleRegister}>
             <div className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Ad Soyad
                 </label>
                 <input
@@ -180,7 +192,10 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Email Adresi
                 </label>
                 <input
@@ -196,7 +211,10 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="password"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Şifre
                 </label>
                 <input
@@ -212,7 +230,10 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700"
+                >
                   Şifre Tekrar
                 </label>
                 <input
@@ -245,7 +266,10 @@ export default function RegisterPage() {
             </div>
 
             <div className="text-center">
-              <Link href="/pizza/login" className="text-red-600 hover:text-red-500">
+              <Link
+                href="/pizza/login"
+                className="text-red-600 hover:text-red-500"
+              >
                 Zaten hesabınız var mı? Giriş yapın
               </Link>
             </div>
@@ -264,10 +288,12 @@ export default function RegisterPage() {
                   </h3>
                   <div className="mt-2 text-sm text-blue-700">
                     <p>
-                      <strong>{formData.email}</strong> adresine 6 haneli doğrulama kodu gönderdik.
+                      <strong>{formData.email}</strong> adresine 6 haneli
+                      doğrulama kodu gönderdik.
                     </p>
                     <p className="mt-1">
-                      Kodunuzu güvenli bir yerde saklayın ve kimseyle paylaşmayın.
+                      Kodunuzu güvenli bir yerde saklayın ve kimseyle
+                      paylaşmayın.
                     </p>
                   </div>
                 </div>
@@ -275,7 +301,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="verificationCode" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="verificationCode"
+                className="block text-sm font-medium text-gray-700"
+              >
                 6 Haneli Doğrulama Kodu
               </label>
               <input
@@ -285,7 +314,9 @@ export default function RegisterPage() {
                 required
                 maxLength={6}
                 value={verificationCode}
-                onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, ''))}
+                onChange={e =>
+                  setVerificationCode(e.target.value.replace(/\D/g, ''))
+                }
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500 text-center text-2xl font-mono tracking-widest"
                 placeholder="000000"
               />
@@ -336,4 +367,4 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-} 
+}

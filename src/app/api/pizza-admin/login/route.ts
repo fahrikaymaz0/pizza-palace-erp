@@ -19,11 +19,15 @@ export async function POST(request: NextRequest) {
     const database = getDatabase();
 
     // Kullanıcıyı e-posta ile bul
-    const user = database.prepare(`
+    const user = database
+      .prepare(
+        `
       SELECT id, email, password, role
       FROM users 
       WHERE email = ? AND role = 'pizza_admin'
-    `).get(email) as any;
+    `
+      )
+      .get(email) as any;
 
     if (!user) {
       return NextResponse.json(
@@ -43,10 +47,10 @@ export async function POST(request: NextRequest) {
 
     // JWT token oluştur
     const token = jwt.sign(
-      { 
-        userId: user.id, 
-        email: user.email, 
-        role: user.role 
+      {
+        userId: user.id,
+        email: user.email,
+        role: user.role,
       },
       JWT_SECRET,
       { expiresIn: '24h' }
@@ -59,19 +63,18 @@ export async function POST(request: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
-        role: user.role
-      }
+        role: user.role,
+      },
     });
 
     response.cookies.set('pizza_admin_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 24 * 60 * 60 // 24 saat
+      maxAge: 24 * 60 * 60, // 24 saat
     });
 
     return response;
-
   } catch (error) {
     console.error('Pizza admin login error:', error);
     return NextResponse.json(
@@ -80,7 +83,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-
-
-

@@ -8,16 +8,20 @@ const createTransporter = () => {
     secure: true, // SSL true
     auth: {
       user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
+      pass: process.env.EMAIL_PASS,
+    },
   });
 };
 
 // Hoş geldin emaili gönder
-export const sendWelcomeEmail = async (email: string, name: string, clientId: string) => {
+export const sendWelcomeEmail = async (
+  email: string,
+  name: string,
+  clientId: string
+) => {
   try {
     const transporter = createTransporter();
-    
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
@@ -56,15 +60,17 @@ export const sendWelcomeEmail = async (email: string, name: string, clientId: st
             </div>
           </div>
         </div>
-      `
+      `,
     };
 
     const result = await transporter.sendMail(mailOptions);
     console.log('Hoş geldin emaili gönderildi:', result.messageId);
     return { success: true, messageId: result.messageId };
-    
   } catch (error) {
     console.error('Email gönderimi hatası:', error);
-    return { success: false, error: error instanceof Error ? error.message : 'Bilinmeyen hata' };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Bilinmeyen hata',
+    };
   }
 };

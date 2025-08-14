@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     const response = NextResponse.json({
       success: true,
-      message: 'Çıkış başarılı'
+      message: 'Çıkış başarılı',
     });
 
     // Cookie'yi sil
@@ -12,11 +12,10 @@ export async function POST(request: NextRequest) {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      maxAge: 0 // Hemen sil
+      maxAge: 0, // Hemen sil
     });
 
     return response;
-
   } catch (error) {
     console.error('Logout error:', error);
     return NextResponse.json(
@@ -24,4 +23,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

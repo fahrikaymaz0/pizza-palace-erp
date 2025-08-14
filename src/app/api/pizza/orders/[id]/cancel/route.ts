@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/sqlite';
 import jwt from 'jsonwebtoken';
-import { createSuccessResponse, createErrorResponse, generateRequestId } from '@/lib/apiResponse';
+import {
+  createSuccessResponse,
+  createErrorResponse,
+  generateRequestId,
+} from '@/lib/apiResponse';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
@@ -10,11 +14,13 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   const requestId = generateRequestId();
-  console.log(`❌ [${requestId}] Sipariş iptal API başladı - Sipariş ID: ${params.id}`);
-  
+  console.log(
+    `❌ [${requestId}] Sipariş iptal API başladı - Sipariş ID: ${params.id}`
+  );
+
   try {
     const token = request.cookies.get('auth-token')?.value;
-    
+
     if (!token) {
       return createErrorResponse(
         'Giriş yapmış olmanız gerekiyor',
@@ -37,13 +43,17 @@ export async function PUT(
     }
 
     const database = getDatabase();
-    
+
     // Siparişin kullanıcıya ait olduğunu ve onay beklediğini kontrol et
-    const order = database.prepare(`
+    const order = database
+      .prepare(
+        `
       SELECT id, user_id, status, total_amount
       FROM orders 
       WHERE id = ? AND user_id = ? AND status = 0
-    `).get(orderId, decoded.userId) as any;
+    `
+      )
+      .get(orderId, decoded.userId) as any;
 
     if (!order) {
       return createErrorResponse(
@@ -55,9 +65,13 @@ export async function PUT(
     }
 
     // Siparişi iptal et (status = -1)
-    const result = database.prepare(`
+    const result = database
+      .prepare(
+        `
       UPDATE orders SET status = -1 WHERE id = ?
-    `).run(orderId);
+    `
+      )
+      .run(orderId);
 
     if (result.changes === 0) {
       return createErrorResponse(
@@ -72,14 +86,13 @@ export async function PUT(
 
     return createSuccessResponse(
       'Sipariş başarıyla iptal edildi',
-      { 
+      {
         orderId,
-        message: 'Siparişiniz iptal edildi'
+        message: 'Siparişiniz iptal edildi',
       },
       requestId,
       200
     );
-
   } catch (error) {
     console.error(`❌ [${requestId}] Sipariş iptal hatası:`, error);
     return createErrorResponse(
@@ -90,7 +103,3 @@ export async function PUT(
     );
   }
 }
-
-
-
-

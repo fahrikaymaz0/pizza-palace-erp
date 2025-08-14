@@ -17,7 +17,7 @@ export default function SuccessPage() {
       setPaymentDetails({
         merchant_oid,
         status,
-        total_amount: (parseInt(total_amount) / 100).toFixed(2) // Kuruştan TL'ye çevir
+        total_amount: (parseInt(total_amount) / 100).toFixed(2), // Kuruştan TL'ye çevir
       });
     }
   }, [searchParams]);
@@ -27,8 +27,18 @@ export default function SuccessPage() {
       <div className="max-w-md w-full bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-white/20 text-center">
         {/* Success Icon */}
         <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-          <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          <svg
+            className="w-10 h-10 text-white"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M5 13l4 4L19 7"
+            />
           </svg>
         </div>
 
@@ -47,7 +57,9 @@ export default function SuccessPage() {
               </div>
               <div className="flex justify-between">
                 <span>Tutar:</span>
-                <span className="font-bold">{paymentDetails.total_amount} TL</span>
+                <span className="font-bold">
+                  {paymentDetails.total_amount} TL
+                </span>
               </div>
               <div className="flex justify-between">
                 <span>Durum:</span>
@@ -59,14 +71,14 @@ export default function SuccessPage() {
 
         <div className="space-y-4">
           <button
-            onClick={() => window.location.href = '/paytr-test'}
+            onClick={() => (window.location.href = '/paytr-test')}
             className="w-full py-3 px-6 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold rounded-xl transition-all duration-300 transform hover:scale-105"
           >
             Yeni Test Yap
           </button>
-          
+
           <button
-            onClick={() => window.location.href = '/'}
+            onClick={() => (window.location.href = '/')}
             className="w-full py-3 px-6 bg-white/20 backdrop-blur-sm text-white font-semibold rounded-xl border border-white/30 hover:bg-white/30 transition-all duration-300"
           >
             Ana Sayfaya Dön
@@ -80,8 +92,3 @@ export default function SuccessPage() {
     </div>
   );
 }
-
-
-
-
-

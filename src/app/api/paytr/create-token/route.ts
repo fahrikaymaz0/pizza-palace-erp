@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
       user_phone,
       user_basket,
       debug_on,
-      client_lang
+      client_lang,
     } = body;
 
     // PayTR Konfigürasyonu (Environment variables'dan alınmalı)
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       merchant_key: process.env.PAYTR_MERCHANT_KEY || 'YOUR_MERCHANT_KEY',
       merchant_salt: process.env.PAYTR_MERCHANT_SALT || 'YOUR_MERCHANT_SALT',
       api_url: 'https://www.paytr.com/odeme/api/get-token',
-      test_mode: 1
+      test_mode: 1,
     };
 
     // PayTR için gerekli parametreler
@@ -63,12 +63,15 @@ export async function POST(request: NextRequest) {
       user_phone: user_phone,
       user_basket: user_basket,
       debug_on: debug_on,
-      client_lang: client_lang
+      client_lang: client_lang,
     };
 
     // Hash oluşturma (PayTR'nin beklediği format)
     const hash_str = `${PAYTR_CONFIG.merchant_id}${user_ip}${merchant_oid}${email}${payment_amount}${user_basket}${PAYTR_CONFIG.test_mode}${PAYTR_CONFIG.merchant_salt}`;
-    const paytr_token = crypto.createHmac('sha256', PAYTR_CONFIG.merchant_key).update(hash_str).digest('base64');
+    const paytr_token = crypto
+      .createHmac('sha256', PAYTR_CONFIG.merchant_key)
+      .update(hash_str)
+      .digest('base64');
 
     // PayTR API'ye istek gönderme
     const formData = new URLSearchParams();
@@ -82,7 +85,7 @@ export async function POST(request: NextRequest) {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: formData.toString()
+      body: formData.toString(),
     });
 
     const result = await response.text();
@@ -90,30 +93,30 @@ export async function POST(request: NextRequest) {
     // PayTR response parsing
     if (result.startsWith('success:')) {
       const token = result.split(':')[1];
-      return NextResponse.json({ 
-        success: true, 
+      return NextResponse.json({
+        success: true,
         token: token,
-        message: 'PayTR token başarıyla oluşturuldu'
+        message: 'PayTR token başarıyla oluşturuldu',
       });
     } else {
-      return NextResponse.json({ 
-        success: false, 
-        error: result,
-        message: 'PayTR token oluşturulamadı'
-      }, { status: 400 });
+      return NextResponse.json(
+        {
+          success: false,
+          error: result,
+          message: 'PayTR token oluşturulamadı',
+        },
+        { status: 400 }
+      );
     }
-
   } catch (error) {
     console.error('PayTR token oluşturma hatası:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: 'Token oluşturma sırasında hata oluştu',
-      details: error instanceof Error ? error.message : 'Bilinmeyen hata'
-    }, { status: 500 });
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Token oluşturma sırasında hata oluştu',
+        details: error instanceof Error ? error.message : 'Bilinmeyen hata',
+      },
+      { status: 500 }
+    );
   }
 }
-
-
-
-
-

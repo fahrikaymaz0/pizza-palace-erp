@@ -12,7 +12,7 @@ export function loadApiConfig(): ApiConfig {
   if (typeof window === 'undefined') {
     return {
       baseUrl: process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3000/api',
-      defaultHeaders: { 'Content-Type': 'application/json' }
+      defaultHeaders: { 'Content-Type': 'application/json' },
     };
   }
 
@@ -20,20 +20,26 @@ export function loadApiConfig(): ApiConfig {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) {
       return {
-        baseUrl: process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3000/api',
-        defaultHeaders: { 'Content-Type': 'application/json' }
+        baseUrl:
+          process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3000/api',
+        defaultHeaders: { 'Content-Type': 'application/json' },
       };
     }
     const parsed = JSON.parse(raw);
     return {
-      baseUrl: parsed.baseUrl || process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3000/api',
+      baseUrl:
+        parsed.baseUrl ||
+        process.env.NEXT_PUBLIC_API_BASE ||
+        'http://localhost:3000/api',
       authToken: parsed.authToken || undefined,
-      defaultHeaders: parsed.defaultHeaders || { 'Content-Type': 'application/json' }
+      defaultHeaders: parsed.defaultHeaders || {
+        'Content-Type': 'application/json',
+      },
     };
   } catch {
     return {
       baseUrl: process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:3000/api',
-      defaultHeaders: { 'Content-Type': 'application/json' }
+      defaultHeaders: { 'Content-Type': 'application/json' },
     };
   }
 }
@@ -58,12 +64,3 @@ export function getBaseUrl(): string {
   const cfg = loadApiConfig();
   return cfg.baseUrl.replace(/\/?$/, '');
 }
-
-
-
-
-
-
-
-
-

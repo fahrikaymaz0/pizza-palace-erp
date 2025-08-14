@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any;
-    
+
     if (!decoded || !decoded.isAdmin) {
       return NextResponse.json(
         { success: false, error: 'Admin yetkisi gerekli' },
@@ -26,20 +26,21 @@ export async function GET(request: NextRequest) {
     }
 
     const profanityFilter = ProfanityFilter.getInstance();
-    
+
     const status = {
       totalWords: profanityFilter.getProfanityCount(),
       lastUpdated: new Date().toISOString(),
       isUpToDate: await profanityFilter.isProfanityListUpToDate(),
       source: 'GitHub - ooguz/turkce-kufur-karaliste',
-      cacheStatus: await profanityFilter.isProfanityListUpToDate() ? 'Fresh' : 'Stale'
+      cacheStatus: (await profanityFilter.isProfanityListUpToDate())
+        ? 'Fresh'
+        : 'Stale',
     };
 
     return NextResponse.json({
       success: true,
-      status
+      status,
     });
-
   } catch (error) {
     console.error('Profanity filter status error:', error);
     return NextResponse.json(
@@ -61,7 +62,7 @@ export async function POST(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any;
-    
+
     if (!decoded || !decoded.isAdmin) {
       return NextResponse.json(
         { success: false, error: 'Admin yetkisi gerekli' },
@@ -75,21 +76,21 @@ export async function POST(request: NextRequest) {
 
     if (action === 'refresh') {
       await profanityFilter.refreshProfanityList();
-      
+
       return NextResponse.json({
         success: true,
         message: 'Profanity listesi başarıyla güncellendi',
-        totalWords: profanityFilter.getProfanityCount()
+        totalWords: profanityFilter.getProfanityCount(),
       });
     }
 
     if (action === 'getWords') {
       const words = profanityFilter.getProfanityWords();
-      
+
       return NextResponse.json({
         success: true,
         words: words.slice(0, 100), // İlk 100 kelimeyi göster
-        totalWords: words.length
+        totalWords: words.length,
       });
     }
 
@@ -97,7 +98,6 @@ export async function POST(request: NextRequest) {
       { success: false, error: 'Geçersiz işlem' },
       { status: 400 }
     );
-
   } catch (error) {
     console.error('Profanity filter action error:', error);
     return NextResponse.json(
@@ -105,4 +105,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

@@ -32,12 +32,14 @@ Bu rehber, Pizza Palace projenizi GitHub'a yükleyip canlıya almanızı sağlar
 ### Adım 3: Projeyi GitHub'a Yükleme
 
 #### Yöntem 1: Hızlı Script (Önerilen)
+
 ```bash
 # Proje klasöründe
 quick-deploy.bat
 ```
 
 #### Yöntem 2: Manuel Komutlar
+
 ```bash
 # Git repository başlat
 git init
@@ -132,13 +134,13 @@ CREATE TABLE order_items (
 );
 
 -- Örnek kullanıcılar (şifre: 123456)
-INSERT INTO users (email, password_hash, name, role) VALUES 
+INSERT INTO users (email, password_hash, name, role) VALUES
 ('admin@123', '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z', 'Kaymaz Admin', 'admin'),
 ('test@example.com', '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z', 'Test Kullanıcı', 'user'),
 ('pizzapalaceofficial00@gmail.com', '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z', 'Pizza Palace Admin', 'pizza_admin');
 
 -- Örnek ürünler
-INSERT INTO products (name, description, price, image, category, ingredients) VALUES 
+INSERT INTO products (name, description, price, image, category, ingredients) VALUES
 ('Margherita', 'Klasik İtalyan lezzeti', 45.00, '/pizzas/margherita.png', 'Klasik', 'Domates sosu, Mozzarella peyniri, Fesleğen'),
 ('Pepperoni', 'Acılı pepperoni ile', 55.00, '/pizzas/pepperoni.png', 'Etli', 'Domates sosu, Mozzarella peyniri, Pepperoni'),
 ('Quattro Stagioni', 'Dört mevsim lezzeti', 65.00, '/pizzas/quattro-stagioni.png', 'Özel', 'Domates sosu, Mozzarella peyniri, Mantar, Zeytin, Sucuk'),
@@ -174,26 +176,31 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 
 #### Environment Variables Açıklamaları:
 
-**JWT_SECRET**: 
+**JWT_SECRET**:
+
 - JWT token'ları için güvenlik anahtarı
 - En az 32 karakter uzunluğunda olmalı
 - Örnek: `JWT_SECRET=my-super-secret-jwt-key-2024-pizza-palace-123`
 
-**NODE_ENV**: 
+**NODE_ENV**:
+
 - Production ortamı için `production` olarak ayarlayın
 - Örnek: `NODE_ENV=production`
 
-**DATABASE_URL**: 
+**DATABASE_URL**:
+
 - Supabase veritabanı bağlantı URL'i
 - Supabase Dashboard > Settings > Database > Connection string'den alın
 - Örnek: `DATABASE_URL=postgresql://postgres:yourpassword@db.abcdefgh.supabase.co:5432/postgres`
 
-**SUPABASE_URL**: 
+**SUPABASE_URL**:
+
 - Supabase proje URL'i
 - Supabase Dashboard > Settings > API > Project URL'den alın
 - Örnek: `SUPABASE_URL=https://abcdefgh.supabase.co`
 
-**SUPABASE_ANON_KEY**: 
+**SUPABASE_ANON_KEY**:
+
 - Supabase anonim anahtarı
 - Supabase Dashboard > Settings > API > anon public key'den alın
 - Örnek: `SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
@@ -231,6 +238,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzd
 ```
 
 **⚠️ Önemli Notlar:**
+
 - JWT_SECRET'ı kimseyle paylaşmayın
 - Supabase bilgilerini güvenli tutun
 - Production ortamında gerçek değerleri kullanın
@@ -249,14 +257,17 @@ Vercel'de environment variables ekledikten sonra:
 Deployment tamamlandıktan sonra şu bilgilerle giriş yapabilirsiniz:
 
 ### Müşteri Girişi
+
 - **Email**: test@example.com
 - **Şifre**: 123456
 
 ### Admin Girişi
+
 - **Email**: admin@123
 - **Şifre**: 123456
 
 ### Pizza Admin Girişi
+
 - **Email**: pizzapalaceofficial00@gmail.com
 - **Şifre**: 123456
 
@@ -291,6 +302,7 @@ Vercel deployment tamamlandıktan sonra şu URL'lerde erişebilirsiniz:
 ## 📞 Destek
 
 Sorun yaşarsanız:
+
 - GitHub Issues açın
 - Vercel support'a başvurun
 - Supabase documentation'ı inceleyin
@@ -298,5 +310,3 @@ Sorun yaşarsanız:
 ---
 
 **Not**: Bu rehber production ortamı için hazırlanmıştır. Tüm adımları takip ettiğinizde projeniz canlıda çalışır durumda olacaktır.
-
-

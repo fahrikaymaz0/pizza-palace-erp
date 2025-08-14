@@ -6,8 +6,8 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'pizzapalaceofficial00@gmail.com',
-    pass: 'scgwevbmztpahfoc'
-  }
+    pass: 'scgwevbmztpahfoc',
+  },
 });
 
 // Transporter'ın çalıştığını test et
@@ -27,8 +27,8 @@ export const generateCode = (): string => {
 
 // Email gönderme
 export const sendVerificationEmail = async (
-  email: string, 
-  code: string, 
+  email: string,
+  code: string,
   userName: string = 'Kullanıcı'
 ): Promise<boolean> => {
   const mailOptions = {
@@ -77,13 +77,15 @@ export const sendVerificationEmail = async (
           </div>
         </div>
       </div>
-    `
+    `,
   };
 
   try {
     console.log(`📧 Email gönderiliyor: ${email}`);
     const result = await transporter.sendMail(mailOptions);
-    console.log(`✅ Email başarıyla gönderildi: ${email} -> MessageId: ${result.messageId}`);
+    console.log(
+      `✅ Email başarıyla gönderildi: ${email} -> MessageId: ${result.messageId}`
+    );
     return true;
   } catch (error) {
     console.error('❌ Email gönderme hatası:', error);
@@ -95,12 +97,12 @@ export const sendVerificationEmail = async (
 interface VerificationData {
   code: string;
   expiresAt: number;
-      userData?: {
-      name: string;
-      email: string;
-      password: string;
-      type?: string;
-    };
+  userData?: {
+    name: string;
+    email: string;
+    password: string;
+    type?: string;
+  };
 }
 
 // Geçici kod saklama (production'da database kullanın)
@@ -114,27 +116,37 @@ export const saveCode = (email: string, code: string): void => {
 };
 
 // Kullanıcı verisiyle kod kaydetme (SQLite Database)
-export const saveCodeWithUserData = async (email: string, code: string, userData: { name: string; email: string; password: string; type?: string }): Promise<boolean> => {
+export const saveCodeWithUserData = async (
+  email: string,
+  code: string,
+  userData: { name: string; email: string; password: string; type?: string }
+): Promise<boolean> => {
   try {
     const database = getDatabase();
-    
+
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000); // 15 dakika
     const userDataJson = JSON.stringify(userData);
-    
-    database.prepare(`
+
+    database
+      .prepare(
+        `
       INSERT INTO verification_codes (user_id, email, code, type, user_data, expires_at, created_at) 
       VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      null, // user_id henüz yok, kayıt sırasında null
-      email.toLowerCase(),
-      code,
-      userData.type || 'registration',
-      userDataJson,
-      expiresAt.toISOString(),
-      new Date().toISOString()
+    `
+      )
+      .run(
+        null, // user_id henüz yok, kayıt sırasında null
+        email.toLowerCase(),
+        code,
+        userData.type || 'registration',
+        userDataJson,
+        expiresAt.toISOString(),
+        new Date().toISOString()
+      );
+
+    console.log(
+      `💾 Kod ve kullanıcı verisi SQLite DATABASE'e kaydedildi: ${email} -> ${code} (Süre: 15 dakika)`
     );
-    
-    console.log(`💾 Kod ve kullanıcı verisi SQLite DATABASE'e kaydedildi: ${email} -> ${code} (Süre: 15 dakika)`);
     return true;
   } catch (error) {
     console.error('SQLite Database kod kaydetme hatası:', error);
@@ -143,44 +155,58 @@ export const saveCodeWithUserData = async (email: string, code: string, userData
 };
 
 // Kod doğrulama (SQLite Database)
-export const verifyCode = async (email: string, inputCode: string): Promise<{ valid: boolean; message: string; userData?: any }> => {
+export const verifyCode = async (
+  email: string,
+  inputCode: string
+): Promise<{ valid: boolean; message: string; userData?: any }> => {
   try {
     const database = getDatabase();
-    
+
     // Kod ve kullanıcı verilerini getir
-    const result = database.prepare(`
+    const result = database
+      .prepare(
+        `
       SELECT code, type, user_data, expires_at 
       FROM verification_codes 
       WHERE email = ?
-    `).get(email.toLowerCase());
-    
+    `
+      )
+      .get(email.toLowerCase());
+
     if (!result) {
       console.log(`❌ Kod SQLite DATABASE'de bulunamadı: ${email}`);
       return { valid: false, message: 'Kod bulunamadı veya süresi dolmuş' };
     }
-    
+
     // Süre kontrolü
     if (new Date() > new Date((result as any).expires_at)) {
-      database.prepare('DELETE FROM verification_codes WHERE email = ?').run(email.toLowerCase());
+      database
+        .prepare('DELETE FROM verification_codes WHERE email = ?')
+        .run(email.toLowerCase());
       console.log(`⏰ Kod süresi dolmuş: ${email}`);
       return { valid: false, message: 'Kodun süresi dolmuş' };
     }
-    
+
     // Kod kontrolü
     if ((result as any).code !== inputCode) {
-      console.log(`❌ Yanlış kod: ${email} -> Beklenen: ${(result as any).code}, Girilen: ${inputCode}`);
+      console.log(
+        `❌ Yanlış kod: ${email} -> Beklenen: ${(result as any).code}, Girilen: ${inputCode}`
+      );
       return { valid: false, message: 'Yanlış kod' };
     }
-    
+
     // Kod doğru, userData'yı al ve sonra sil
-    const userData = (result as any).user_data ? JSON.parse((result as any).user_data) : null;
-    
+    const userData = (result as any).user_data
+      ? JSON.parse((result as any).user_data)
+      : null;
+
     // Kod doğrulandıktan sonra sil
-    database.prepare('DELETE FROM verification_codes WHERE email = ?').run(email.toLowerCase());
-    
+    database
+      .prepare('DELETE FROM verification_codes WHERE email = ?')
+      .run(email.toLowerCase());
+
     console.log(`✅ Kod SQLite DATABASE'den doğrulandı: ${email}`);
     return { valid: true, message: 'Email doğrulandı', userData };
-    
   } catch (error) {
     console.error('SQLite Database kod doğrulama hatası:', error);
     return { valid: false, message: 'Kod doğrulama sırasında hata oluştu' };
@@ -230,12 +256,14 @@ export const sendOrderConfirmationEmail = async (
           </div>
         </div>
       </div>
-    `
+    `,
   };
 
   try {
     const result = await transporter.sendMail(mailOptions);
-    console.log(`✅ Sipariş onay emaili gönderildi: ${email} -> MessageId: ${result.messageId}`);
+    console.log(
+      `✅ Sipariş onay emaili gönderildi: ${email} -> MessageId: ${result.messageId}`
+    );
     return true;
   } catch (error) {
     console.error('❌ Sipariş onay emaili gönderme hatası:', error);
@@ -295,13 +323,15 @@ export const sendPasswordResetEmail = async (
           </div>
         </div>
       </div>
-    `
+    `,
   };
 
   try {
     console.log(`🔐 Şifre sıfırlama emaili gönderiliyor: ${email}`);
     const result = await transporter.sendMail(mailOptions);
-    console.log(`✅ Şifre sıfırlama emaili başarıyla gönderildi: ${email} -> MessageId: ${result.messageId}`);
+    console.log(
+      `✅ Şifre sıfırlama emaili başarıyla gönderildi: ${email} -> MessageId: ${result.messageId}`
+    );
     return true;
   } catch (error) {
     console.error('❌ Şifre sıfırlama emaili gönderme hatası:', error);

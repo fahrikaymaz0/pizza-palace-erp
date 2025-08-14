@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDatabase } from '@/lib/sqlite';
-import { generateCode, sendPasswordResetEmail, saveCodeWithUserData } from '@/lib/emailService';
+import {
+  generateCode,
+  sendPasswordResetEmail,
+  saveCodeWithUserData,
+} from '@/lib/emailService';
 import { securityMiddleware } from '../../middleware/security';
 import { createErrorResponse, ERROR_CODES } from '@/lib/apiResponse';
 
@@ -12,9 +16,9 @@ export async function POST(request: NextRequest) {
 
     // Request ID oluştur
     const requestId = Math.random().toString(36).substring(2, 15);
-    
+
     console.log('🔐 Şifremi unuttum API çağrıldı');
-    
+
     const { email } = await request.json();
     console.log('Gelen email:', email);
 
@@ -29,11 +33,13 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('Validasyon geçti, database bağlantısı kuruluyor...');
-    
+
     const database = getDatabase();
-    
+
     // Kullanıcı var mı kontrol et
-    const existingUser = database.prepare('SELECT * FROM users WHERE email = ?').get(email) as any;
+    const existingUser = database
+      .prepare('SELECT * FROM users WHERE email = ?')
+      .get(email) as any;
     if (!existingUser) {
       console.log('Email kayıtlı değil:', email);
       return NextResponse.json(
@@ -47,10 +53,14 @@ export async function POST(request: NextRequest) {
     // 6 haneli şifre sıfırlama kodu oluştur
     const resetCode = generateCode();
     console.log('Şifre sıfırlama kodu oluşturuldu:', resetCode);
-    
+
     // Email gönder
-    const emailSent = await sendPasswordResetEmail(email, resetCode, existingUser.name);
-    
+    const emailSent = await sendPasswordResetEmail(
+      email,
+      resetCode,
+      existingUser.name
+    );
+
     if (!emailSent) {
       console.error(`❌ [${requestId}] Email gönderilemedi:`, email);
       return createErrorResponse(
@@ -60,7 +70,7 @@ export async function POST(request: NextRequest) {
         500
       );
     }
-    
+
     console.log('✅ Email başarıyla gönderildi:', email);
 
     // Kodu DATABASE'e kaydet (reset type ile)
@@ -68,7 +78,7 @@ export async function POST(request: NextRequest) {
       name: existingUser.name,
       email: existingUser.email,
       password: '', // Reset için password gerekmiyor
-      type: 'password_reset'
+      type: 'password_reset',
     });
 
     if (!codeSaved) {
@@ -84,9 +94,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Şifre sıfırlama kodu email adresinize gönderildi.',
-      email: email
+      email: email,
     });
-
   } catch (error) {
     console.error('Forgot Password API hatası:', error);
     return NextResponse.json(

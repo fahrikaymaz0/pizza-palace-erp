@@ -28,9 +28,14 @@ export default function PizzaLogin() {
     setError('');
 
     // Pizza admin giriş kontrolü - pizzapalaceofficial00@gmail.com / passwordadmin123
-    if (email === 'pizzapalaceofficial00@gmail.com' && password === 'passwordadmin123') {
-      console.log('Pizza admin girişi tespit edildi - API üzerinden doğrulanıyor');
-      
+    if (
+      email === 'pizzapalaceofficial00@gmail.com' &&
+      password === 'passwordadmin123'
+    ) {
+      console.log(
+        'Pizza admin girişi tespit edildi - API üzerinden doğrulanıyor'
+      );
+
       try {
         // Pizza admin girişi için API çağrısı
         const response = await fetch('/api/auth/login', {
@@ -45,7 +50,9 @@ export default function PizzaLogin() {
         const data = await response.json();
 
         if (response.ok && data.success) {
-          console.log('Pizza admin girişi başarılı - Pizza admin panel\'e yönlendiriliyor');
+          console.log(
+            "Pizza admin girişi başarılı - Pizza admin panel'e yönlendiriliyor"
+          );
           window.location.href = '/pizza-admin'; // Redirect to pizza admin panel
         } else {
           setError(data.error || 'Pizza admin girişi başarısız');
@@ -62,7 +69,7 @@ export default function PizzaLogin() {
     // Admin giriş kontrolü - admin@123 / admin123
     if (email === 'admin@123' && password === 'admin123') {
       console.log('Admin girişi tespit edildi - API üzerinden doğrulanıyor');
-      
+
       try {
         // Admin girişi için API çağrısı
         const response = await fetch('/api/auth/admin-login', {
@@ -77,7 +84,9 @@ export default function PizzaLogin() {
         const data = await response.json();
 
         if (response.ok && data.success) {
-          console.log('Admin girişi başarılı - Admin dashboard\'a yönlendiriliyor');
+          console.log(
+            "Admin girişi başarılı - Admin dashboard'a yönlendiriliyor"
+          );
           window.location.href = '/admin'; // Redirect to admin dashboard
         } else {
           setError(data.error || 'Admin girişi başarısız');
@@ -105,7 +114,9 @@ export default function PizzaLogin() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        console.log('Normal kullanıcı girişi başarılı - Ana sayfaya yönlendiriliyor');
+        console.log(
+          'Normal kullanıcı girişi başarılı - Ana sayfaya yönlendiriliyor'
+        );
         window.location.href = '/pizza';
       } else {
         setError(data.error || 'Giriş başarısız');
@@ -123,10 +134,10 @@ export default function PizzaLogin() {
       <div className="min-h-screen bg-gradient-to-br from-red-50 to-orange-50 flex items-center justify-center">
         <div className="text-center">
           <div className="relative w-32 h-32 mx-auto">
-            <Image 
-              src="/pizza-slices.gif" 
-              alt="Loading..." 
-              width={128} 
+            <Image
+              src="/pizza-slices.gif"
+              alt="Loading..."
+              width={128}
               height={128}
               priority
             />
@@ -143,10 +154,10 @@ export default function PizzaLogin() {
         <PizzaIngredientsAnimation />
         <div className="text-center relative z-10">
           <div className="relative w-32 h-32 mx-auto">
-            <Image 
-              src="/pizza-slices.gif" 
-              alt="Loading..." 
-              width={128} 
+            <Image
+              src="/pizza-slices.gif"
+              alt="Loading..."
+              width={128}
               height={128}
               priority
             />
@@ -184,7 +195,7 @@ export default function PizzaLogin() {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={e => setEmail(e.target.value)}
               required
               className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300"
               placeholder="email@example.com"
@@ -198,7 +209,7 @@ export default function PizzaLogin() {
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={e => setPassword(e.target.value)}
               required
               className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300"
               placeholder="••••••••"
@@ -231,12 +242,18 @@ export default function PizzaLogin() {
         <div className="mt-6 text-center space-y-2">
           <p className="text-white/70 text-sm">
             Hesabınız yok mu?{' '}
-            <Link href="/pizza/register" className="text-orange-400 hover:text-orange-300 font-semibold transition-colors">
+            <Link
+              href="/pizza/register"
+              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
+            >
               Kayıt Ol
             </Link>
           </p>
           <p className="text-white/70 text-sm">
-            <Link href="/pizza/forgot-password" className="text-orange-400 hover:text-orange-300 font-semibold transition-colors">
+            <Link
+              href="/pizza/forgot-password"
+              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
+            >
               Şifremi Unuttum
             </Link>
           </p>
@@ -268,23 +285,23 @@ export default function PizzaLogin() {
           justify-content: center;
           align-items: center;
         }
-        
+
         .pizza-icon {
           width: 80px;
           height: 80px;
           position: relative;
           animation: pulse 2s ease-in-out infinite;
         }
-        
+
         .pizza-base {
           width: 100%;
           height: 100%;
           background: linear-gradient(45deg, #fbbf24, #f59e0b);
           border-radius: 50%;
           position: relative;
-          box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        
+
         .pizza-toppings {
           position: absolute;
           top: 6px;
@@ -292,7 +309,7 @@ export default function PizzaLogin() {
           right: 6px;
           bottom: 6px;
         }
-        
+
         .topping {
           width: 4px;
           height: 4px;
@@ -300,45 +317,55 @@ export default function PizzaLogin() {
           position: absolute;
           animation: bounce 1s ease-in-out infinite;
         }
-        
+
         .topping-1 {
           background: #dc2626;
           top: 20%;
           left: 30%;
           animation-delay: 0s;
         }
-        
+
         .topping-2 {
           background: #fbbf24;
           top: 40%;
           left: 60%;
           animation-delay: 0.2s;
         }
-        
+
         .topping-3 {
           background: #fde047;
           top: 60%;
           left: 20%;
           animation-delay: 0.4s;
         }
-        
+
         .topping-4 {
           background: #dc2626;
           top: 50%;
           left: 50%;
           animation-delay: 0.6s;
         }
-        
+
         @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
+          0%,
+          100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.05);
+          }
         }
-        
+
         @keyframes bounce {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-3px); }
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-3px);
+          }
         }
-        
+
         .spice {
           position: absolute;
           width: 4px;
@@ -347,13 +374,28 @@ export default function PizzaLogin() {
           border-radius: 50%;
           animation: fall 4s linear infinite;
         }
-        
-        .spice-1 { left: 5%; animation-delay: 0s; }
-        .spice-2 { left: 15%; animation-delay: 1s; }
-        .spice-3 { left: 25%; animation-delay: 2s; }
-        .spice-4 { left: 35%; animation-delay: 0.5s; }
-        .spice-5 { left: 45%; animation-delay: 1.5s; }
-        
+
+        .spice-1 {
+          left: 5%;
+          animation-delay: 0s;
+        }
+        .spice-2 {
+          left: 15%;
+          animation-delay: 1s;
+        }
+        .spice-3 {
+          left: 25%;
+          animation-delay: 2s;
+        }
+        .spice-4 {
+          left: 35%;
+          animation-delay: 0.5s;
+        }
+        .spice-5 {
+          left: 45%;
+          animation-delay: 1.5s;
+        }
+
         @keyframes fall {
           0% {
             top: -10px;
@@ -364,7 +406,7 @@ export default function PizzaLogin() {
             opacity: 0;
           }
         }
-        
+
         .pizza-loading-spinner {
           width: 20px;
           height: 20px;
@@ -373,12 +415,16 @@ export default function PizzaLogin() {
           border-radius: 50%;
           animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </div>
   );
-} 
+}

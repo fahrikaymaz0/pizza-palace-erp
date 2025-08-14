@@ -33,15 +33,14 @@ export async function POST(request) {
       id: 1, // Geçici ID
       name: name.trim(),
       email: email,
-      email_verified: false // Email değiştiği için doğrulama sıfırlanır
+      email_verified: false, // Email değiştiği için doğrulama sıfırlanır
     };
 
     return NextResponse.json({
       success: true,
       message: 'Profil başarıyla güncellendi',
-      user: updatedUser
+      user: updatedUser,
     });
-
   } catch (error) {
     console.error('Update profile error:', error);
     return NextResponse.json(
@@ -49,4 +48,4 @@ export async function POST(request) {
       { status: 500 }
     );
   }
-} 
+}

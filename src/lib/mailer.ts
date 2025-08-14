@@ -5,15 +5,19 @@ const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: 'pizzapalaceofficial00@gmail.com',
-    pass: 'scgwevbmztpahfoc'
-  }
+    pass: 'scgwevbmztpahfoc',
+  },
 });
 
 // Email doğrulama kodu gönderme
-export async function sendVerificationEmail(email: string, verificationCode: string, userName: string): Promise<boolean> {
+export async function sendVerificationEmail(
+  email: string,
+  verificationCode: string,
+  userName: string
+): Promise<boolean> {
   try {
     console.log(`Email gönderiliyor: ${email} -> ${verificationCode}`);
-    
+
     const mailOptions = {
       from: 'pizzapalaceofficial00@gmail.com',
       to: email,
@@ -50,11 +54,13 @@ export async function sendVerificationEmail(email: string, verificationCode: str
             </div>
           </div>
         </div>
-      `
+      `,
     };
 
     const result = await transporter.sendMail(mailOptions);
-    console.log(`Doğrulama email'i gönderildi: ${email} -> MessageId: ${result.messageId}`);
+    console.log(
+      `Doğrulama email'i gönderildi: ${email} -> MessageId: ${result.messageId}`
+    );
     return true;
   } catch (error) {
     console.error('Email gönderme hatası:', error);
@@ -63,10 +69,14 @@ export async function sendVerificationEmail(email: string, verificationCode: str
 }
 
 // Sipariş onay emaili gönderme
-export async function sendOrderConfirmationEmail(email: string, orderData: any, userName: string): Promise<boolean> {
+export async function sendOrderConfirmationEmail(
+  email: string,
+  orderData: any,
+  userName: string
+): Promise<boolean> {
   try {
     console.log(`Sipariş email'i gönderiliyor: ${email}`);
-    
+
     const mailOptions = {
       from: 'pizzapalaceofficial00@gmail.com',
       to: email,
@@ -95,21 +105,29 @@ export async function sendOrderConfirmationEmail(email: string, orderData: any, 
             
             <div style="background: #f9fafb; padding: 20px; border-radius: 10px; margin: 20px 0;">
               <h3 style="color: #333; margin-bottom: 15px;">Sipariş Edilen Ürünler</h3>
-              ${orderData.items.map((item: any) => `
+              ${orderData.items
+                .map(
+                  (item: any) => `
                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                   <span>${item.name} x${item.quantity}</span>
                   <span>${formatPrice(item.price * item.quantity)}</span>
                 </div>
-              `).join('')}
+              `
+                )
+                .join('')}
             </div>
             
-            ${orderData.deliveryAddress ? `
+            ${
+              orderData.deliveryAddress
+                ? `
               <div style="background: #f9fafb; padding: 20px; border-radius: 10px; margin: 20px 0;">
                 <h3 style="color: #333; margin-bottom: 15px;">Teslimat Bilgileri</h3>
                 <p><strong>Adres:</strong> ${orderData.deliveryAddress}</p>
                 ${orderData.phone ? `<p><strong>Telefon:</strong> ${orderData.phone}</p>` : ''}
               </div>
-            ` : ''}
+            `
+                : ''
+            }
             
             <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
             
@@ -119,11 +137,13 @@ export async function sendOrderConfirmationEmail(email: string, orderData: any, 
             </div>
           </div>
         </div>
-      `
+      `,
     };
 
     const result = await transporter.sendMail(mailOptions);
-    console.log(`Sipariş onay email'i gönderildi: ${email} -> MessageId: ${result.messageId}`);
+    console.log(
+      `Sipariş onay email'i gönderildi: ${email} -> MessageId: ${result.messageId}`
+    );
     return true;
   } catch (error) {
     console.error('Sipariş email gönderme hatası:', error);
@@ -134,17 +154,22 @@ export async function sendOrderConfirmationEmail(email: string, orderData: any, 
 // Yardımcı fonksiyonlar
 function getStatusText(status: string): string {
   switch (status) {
-    case 'pending': return 'Onay Bekliyor';
-    case 'approved': return 'Hazırlanıyor';
-    case 'delivering': return 'Kuryede';
-    case 'delivered': return 'Teslim Edildi';
-    default: return status;
+    case 'pending':
+      return 'Onay Bekliyor';
+    case 'approved':
+      return 'Hazırlanıyor';
+    case 'delivering':
+      return 'Kuryede';
+    case 'delivered':
+      return 'Teslim Edildi';
+    default:
+      return status;
   }
 }
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat('tr-TR', {
     style: 'currency',
-    currency: 'TRY'
+    currency: 'TRY',
   }).format(price);
-} 
+}

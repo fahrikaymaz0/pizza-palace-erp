@@ -45,11 +45,14 @@ const PizzaIngredientsAnimation = () => {
     cameraRef.current = camera;
 
     // Renderer setup
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       alpha: true,
-      antialias: true 
+      antialias: true,
     });
-    renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+    renderer.setSize(
+      mountRef.current.clientWidth,
+      mountRef.current.clientHeight
+    );
     renderer.setClearColor(0x000000, 0); // Transparent background
     mountRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
@@ -57,7 +60,7 @@ const PizzaIngredientsAnimation = () => {
     // Texture loader
     const loader = new THREE.TextureLoader();
     INGREDIENT_IMAGES.forEach(({ type, src }) => {
-      loader.load(src, (texture) => {
+      loader.load(src, texture => {
         texturesRef.current[type] = texture;
       });
     });
@@ -71,7 +74,7 @@ const PizzaIngredientsAnimation = () => {
         map: texture,
         transparent: true,
         opacity: 0.95,
-        depthWrite: false
+        depthWrite: false,
       });
       const mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(x, 8, 0);
@@ -82,7 +85,7 @@ const PizzaIngredientsAnimation = () => {
           -0.09 - Math.random() * 0.03, // Daha hızlı düşüş
           0
         ),
-        type
+        type,
       };
     };
 
@@ -92,11 +95,15 @@ const PizzaIngredientsAnimation = () => {
 
       // Genişlik oranına göre x aralığı hesapla
       const aspect = camera.aspect;
-      const xRange = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z * aspect;
+      const xRange =
+        Math.tan((camera.fov * Math.PI) / 360) * camera.position.z * aspect;
 
       // Sık sık yeni ingredient ekle
       if (Math.random() < 0.12) {
-        const random = INGREDIENT_IMAGES[Math.floor(Math.random() * INGREDIENT_IMAGES.length)];
+        const random =
+          INGREDIENT_IMAGES[
+            Math.floor(Math.random() * INGREDIENT_IMAGES.length)
+          ];
         const x = (Math.random() - 0.5) * 2 * xRange; // Tüm ekran genişliğine yayılacak
         const ingredient = createIngredient(random.type, x);
         scene.add(ingredient.mesh);
@@ -122,9 +129,13 @@ const PizzaIngredientsAnimation = () => {
     // Handle resize
     const handleResize = () => {
       if (!mountRef.current || !camera || !renderer) return;
-      camera.aspect = mountRef.current.clientWidth / mountRef.current.clientHeight;
+      camera.aspect =
+        mountRef.current.clientWidth / mountRef.current.clientHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
+      renderer.setSize(
+        mountRef.current.clientWidth,
+        mountRef.current.clientHeight
+      );
     };
     window.addEventListener('resize', handleResize);
 
@@ -143,12 +154,12 @@ const PizzaIngredientsAnimation = () => {
   }, []);
 
   return (
-    <div 
-      ref={mountRef} 
+    <div
+      ref={mountRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
       style={{ zIndex: 0 }}
     />
   );
 };
 
-export default PizzaIngredientsAnimation; 
+export default PizzaIngredientsAnimation;

@@ -31,10 +31,7 @@ export async function PUT(
     // Pizza admin yetkisi kontrolü
     const user = verifyPizzaAdminToken(request);
     if (!user) {
-      return NextResponse.json(
-        { error: 'Yetkisiz erişim' },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: 'Yetkisiz erişim' }, { status: 401 });
     }
 
     const orderId = parseInt(params.id);
@@ -58,16 +55,15 @@ export async function PUT(
     // Geçerli durumlar
     const validStatuses = [-1, 0, 1, 2, 3];
     if (!validStatuses.includes(status)) {
-      return NextResponse.json(
-        { error: 'Geçersiz durum' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Geçersiz durum' }, { status: 400 });
     }
 
     const database = getDatabase();
 
     // Siparişin var olup olmadığını kontrol et
-    const existingOrder = database.prepare('SELECT id FROM orders WHERE id = ?').get(orderId) as any;
+    const existingOrder = database
+      .prepare('SELECT id FROM orders WHERE id = ?')
+      .get(orderId) as any;
     if (!existingOrder) {
       return NextResponse.json(
         { error: 'Sipariş bulunamadı' },
@@ -76,10 +72,14 @@ export async function PUT(
     }
 
     // Sipariş durumunu güncelle
-    database.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, orderId);
+    database
+      .prepare('UPDATE orders SET status = ? WHERE id = ?')
+      .run(status, orderId);
 
     // Güncellenmiş siparişi getir
-    const updatedOrder = database.prepare(`
+    const updatedOrder = database
+      .prepare(
+        `
       SELECT 
         o.id,
         o.user_id,
@@ -94,14 +94,15 @@ export async function PUT(
       FROM orders o
       JOIN users u ON o.user_id = u.id
       WHERE o.id = ?
-    `).get(orderId) as any;
+    `
+      )
+      .get(orderId) as any;
 
     return NextResponse.json({
       success: true,
       message: 'Sipariş durumu güncellendi',
-      order: updatedOrder
+      order: updatedOrder,
     });
-
   } catch (error) {
     console.error('Pizza admin order update error:', error);
     return NextResponse.json(

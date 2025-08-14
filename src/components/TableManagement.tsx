@@ -23,15 +23,24 @@ interface TableManagementProps {
   currentTable: string | null;
 }
 
-export default function TableManagement({ clientId, onTableSelected, currentTable }: TableManagementProps) {
+export default function TableManagement({
+  clientId,
+  onTableSelected,
+  currentTable,
+}: TableManagementProps) {
   const [tables, setTables] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [formData, setFormData] = useState<TableSchema>({
     name: '',
-    columns: [{ name: 'id', type: 'INTEGER', primaryKey: true, autoIncrement: true }]
+    columns: [
+      { name: 'id', type: 'INTEGER', primaryKey: true, autoIncrement: true },
+    ],
   });
-  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   // Tabloları yükle
   const loadTables = async () => {
@@ -39,7 +48,7 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
       setLoading(true);
       const response = await fetch(`/api/clients/${clientId}/tables`);
       const result = await response.json();
-      
+
       if (result.success) {
         setTables(result.data);
       }
@@ -75,7 +84,14 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
         setShowCreateForm(false);
         setFormData({
           name: '',
-          columns: [{ name: 'id', type: 'INTEGER', primaryKey: true, autoIncrement: true }]
+          columns: [
+            {
+              name: 'id',
+              type: 'INTEGER',
+              primaryKey: true,
+              autoIncrement: true,
+            },
+          ],
         });
         loadTables();
       } else {
@@ -91,23 +107,27 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
   const addColumn = () => {
     setFormData(prev => ({
       ...prev,
-      columns: [...prev.columns, { name: '', type: 'TEXT' }]
+      columns: [...prev.columns, { name: '', type: 'TEXT' }],
     }));
   };
 
   const removeColumn = (index: number) => {
     setFormData(prev => ({
       ...prev,
-      columns: prev.columns.filter((_, i) => i !== index)
+      columns: prev.columns.filter((_, i) => i !== index),
     }));
   };
 
-  const updateColumn = (index: number, field: keyof ColumnDefinition, value: any) => {
+  const updateColumn = (
+    index: number,
+    field: keyof ColumnDefinition,
+    value: any
+  ) => {
     setFormData(prev => ({
       ...prev,
-      columns: prev.columns.map((col, i) => 
+      columns: prev.columns.map((col, i) =>
         i === index ? { ...col, [field]: value } : col
-      )
+      ),
     }));
   };
 
@@ -116,7 +136,7 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
     { value: 'INTEGER', label: 'Sayı' },
     { value: 'REAL', label: 'Ondalık' },
     { value: 'BOOLEAN', label: 'Evet/Hayır' },
-    { value: 'DATE', label: 'Tarih' }
+    { value: 'DATE', label: 'Tarih' },
   ];
 
   return (
@@ -140,10 +160,12 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600 mx-auto"></div>
           </div>
         ) : tables.length === 0 ? (
-          <p className="text-gray-600 text-center py-4">Henüz tablo bulunmuyor.</p>
+          <p className="text-gray-600 text-center py-4">
+            Henüz tablo bulunmuyor.
+          </p>
         ) : (
           <div className="grid gap-2">
-            {tables.map((tableName) => (
+            {tables.map(tableName => (
               <div
                 key={tableName}
                 className={`p-3 rounded-lg border-2 cursor-pointer transition-all duration-200 ${
@@ -168,18 +190,25 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
       {/* Tablo Oluşturma Formu */}
       {showCreateForm && (
         <div className="border-t pt-6">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Yeni Tablo Oluştur</h3>
-          
+          <h3 className="text-lg font-medium text-gray-900 mb-4">
+            Yeni Tablo Oluştur
+          </h3>
+
           <form onSubmit={handleCreateTable} className="space-y-4">
             <div>
-              <label htmlFor="tableName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="tableName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Tablo Adı *
               </label>
               <input
                 type="text"
                 id="tableName"
                 value={formData.name}
-                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                onChange={e =>
+                  setFormData(prev => ({ ...prev, name: e.target.value }))
+                }
                 required
                 className="input-field"
                 placeholder="Örn: products, orders, customers"
@@ -206,14 +235,18 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
                     <input
                       type="text"
                       value={column.name}
-                      onChange={(e) => updateColumn(index, 'name', e.target.value)}
+                      onChange={e =>
+                        updateColumn(index, 'name', e.target.value)
+                      }
                       placeholder="Sütun adı"
                       className="input-field flex-1"
                       required
                     />
                     <select
                       value={column.type}
-                      onChange={(e) => updateColumn(index, 'type', e.target.value)}
+                      onChange={e =>
+                        updateColumn(index, 'type', e.target.value)
+                      }
                       className="input-field w-32"
                     >
                       {getTypeOptions().map(option => (
@@ -226,7 +259,9 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
                       <input
                         type="checkbox"
                         checked={column.primaryKey || false}
-                        onChange={(e) => updateColumn(index, 'primaryKey', e.target.checked)}
+                        onChange={e =>
+                          updateColumn(index, 'primaryKey', e.target.checked)
+                        }
                         className="mr-1"
                       />
                       <span className="text-xs">PK</span>
@@ -235,7 +270,9 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
                       <input
                         type="checkbox"
                         checked={column.autoIncrement || false}
-                        onChange={(e) => updateColumn(index, 'autoIncrement', e.target.checked)}
+                        onChange={e =>
+                          updateColumn(index, 'autoIncrement', e.target.checked)
+                        }
                         className="mr-1"
                       />
                       <span className="text-xs">AI</span>
@@ -266,14 +303,16 @@ export default function TableManagement({ clientId, onTableSelected, currentTabl
       )}
 
       {message && (
-        <div className={`mt-4 p-3 rounded-lg ${
-          message.type === 'success' 
-            ? 'bg-green-100 text-green-700 border border-green-200' 
-            : 'bg-red-100 text-red-700 border border-red-200'
-        }`}>
+        <div
+          className={`mt-4 p-3 rounded-lg ${
+            message.type === 'success'
+              ? 'bg-green-100 text-green-700 border border-green-200'
+              : 'bg-red-100 text-red-700 border border-red-200'
+          }`}
+        >
           {message.text}
         </div>
       )}
     </div>
   );
-} 
+}

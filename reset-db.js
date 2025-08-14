@@ -13,6 +13,5 @@ if (fs.existsSync(dbPath)) {
   console.log('ℹ️ Database zaten yok');
 }
 
-console.log('🔄 Next.js server\'ı yeniden başlat');
+console.log("🔄 Next.js server'ı yeniden başlat");
 console.log('Database otomatik olarak yeniden oluşturulacak');
-

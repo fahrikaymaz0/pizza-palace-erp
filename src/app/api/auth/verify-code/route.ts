@@ -21,13 +21,10 @@ export async function POST(request: NextRequest) {
 
     // Kodu doğrula
     const result = await verifyCode(email, code);
-    
+
     if (!result.valid) {
       console.log(`Kod doğrulanamadı: ${email} -> ${result.message}`);
-      return NextResponse.json(
-        { error: result.message },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: result.message }, { status: 400 });
     }
 
     console.log(`Kod doğrulandı, kullanıcı kaydediliyor: ${email}`);
@@ -46,30 +43,36 @@ export async function POST(request: NextRequest) {
         INSERT INTO users (email, password_hash, name, created_at) 
         VALUES (?, ?, ?, ?)
       `);
-      
+
       const userResult = insertUser.run(
         email.toLowerCase(),
         hashedPassword,
         name.trim(),
         new Date().toISOString()
       );
-      
+
       const userId = userResult.lastInsertRowid;
 
       // Kullanıcı profilini oluştur
-      database.prepare(`
+      database
+        .prepare(
+          `
         INSERT INTO user_profiles (user_id, email, email_verified, created_at) 
         VALUES (?, ?, ?, ?)
-      `).run(
-        userId,
-        email.toLowerCase(),
-        1, // email_verified = true
-        new Date().toISOString()
-      );
+      `
+        )
+        .run(
+          userId,
+          email.toLowerCase(),
+          1, // email_verified = true
+          new Date().toISOString()
+        );
 
       // Kullanıcıyı getir
-      const user = database.prepare('SELECT * FROM users WHERE id = ?').get(userId) as any;
-      
+      const user = database
+        .prepare('SELECT * FROM users WHERE id = ?')
+        .get(userId) as any;
+
       if (!user || !user.id) {
         throw new Error('Kullanıcı oluşturulamadı');
       }
@@ -93,9 +96,9 @@ export async function POST(request: NextRequest) {
         user: {
           id: user.id,
           email: user.email,
-          name: user.name
+          name: user.name,
         },
-        token
+        token,
       });
 
       // Secure cookie ayarla
@@ -104,17 +107,15 @@ export async function POST(request: NextRequest) {
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge: 7 * 24 * 60 * 60, // 7 gün
-        path: '/'
+        path: '/',
       });
 
       return response;
-
     } catch (error) {
       // Hata durumunda rollback
       database.prepare('ROLLBACK').run();
       throw error;
     }
-
   } catch (error) {
     console.error('Kod doğrulama hatası:', error);
     return NextResponse.json(
@@ -122,4 +123,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

@@ -5,7 +5,7 @@ import {
   createSuccessResponse,
   createErrorResponse,
   ERROR_CODES,
-  generateRequestId
+  generateRequestId,
 } from '@/lib/apiResponse';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
@@ -13,7 +13,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 // Pizza admin token doğrulama
 function verifyPizzaAdminToken(request: NextRequest) {
   const token = request.cookies.get('pizza_admin_token')?.value;
-  
+
   if (!token) {
     return null;
   }
@@ -32,10 +32,10 @@ function verifyPizzaAdminToken(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const requestId = generateRequestId();
   console.log(`🍕 [${requestId}] Pizza Admin Orders API GET başladı`);
-  
+
   try {
     const admin = verifyPizzaAdminToken(request);
-    
+
     if (!admin) {
       return createErrorResponse(
         'Pizza admin yetkisi gereklidir',
@@ -48,7 +48,9 @@ export async function GET(request: NextRequest) {
     const database = getDatabase();
 
     // Tüm siparişleri getir (kullanıcı bilgileriyle birlikte)
-    const ordersResult = database.prepare(`
+    const ordersResult = database
+      .prepare(
+        `
         SELECT o.*, 
                u.name as customer_name,
                u.email as customer_email,
@@ -58,7 +60,9 @@ export async function GET(request: NextRequest) {
         LEFT JOIN order_items oi ON o.id = oi.order_id
         GROUP BY o.id, o.user_id, o.total_amount, o.status, o.delivery_address, o.phone, o.notes, o.created_at, u.name, u.email
         ORDER BY o.created_at DESC
-      `).all();
+      `
+      )
+      .all();
 
     const orders = ordersResult.map((order: any) => ({
       id: order.id,
@@ -71,37 +75,42 @@ export async function GET(request: NextRequest) {
       notes: order.notes,
       itemCount: order.item_count,
       createdAt: order.created_at,
-      items: [] as any[]
+      items: [] as any[],
     }));
 
     // Her sipariş için detayları getir
     for (let order of orders) {
-      const itemsResult = database.prepare(`
+      const itemsResult = database
+        .prepare(
+          `
           SELECT oi.*, p.name as product_name, p.image
           FROM order_items oi
           JOIN products p ON oi.product_id = p.id
           WHERE oi.order_id = ?
-        `).all(order.id);
-      
+        `
+        )
+        .all(order.id);
+
       order.items = itemsResult.map((item: any) => ({
         id: item.id,
         productId: item.product_id,
         name: item.product_name,
         price: parseFloat(item.price),
         quantity: item.quantity,
-        image: item.image
+        image: item.image,
       }));
     }
 
-    console.log(`✅ [${requestId}] ${orders.length} sipariş pizza admin için getirildi`);
-    
+    console.log(
+      `✅ [${requestId}] ${orders.length} sipariş pizza admin için getirildi`
+    );
+
     return createSuccessResponse(
       'Siparişler başarıyla getirildi',
       { orders },
       requestId,
       200
     );
-
   } catch (error) {
     console.error(`❌ [${requestId}] Pizza admin orders GET error:`, error);
     return createErrorResponse(
@@ -116,10 +125,10 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const requestId = generateRequestId();
   console.log(`🍕 [${requestId}] Pizza Admin Orders API PATCH başladı`);
-  
+
   try {
     const admin = verifyPizzaAdminToken(request);
-    
+
     if (!admin) {
       return createErrorResponse(
         'Pizza admin yetkisi gereklidir',
@@ -142,10 +151,12 @@ export async function PATCH(request: NextRequest) {
     }
 
     const database = getDatabase();
-    
+
     // Siparişin var olduğunu kontrol et
-    const order = database.prepare('SELECT * FROM orders WHERE id = ?').get(orderId) as any;
-    
+    const order = database
+      .prepare('SELECT * FROM orders WHERE id = ?')
+      .get(orderId) as any;
+
     if (!order) {
       return createErrorResponse(
         'Sipariş bulunamadı',
@@ -156,17 +167,20 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Sipariş durumunu güncelle
-    database.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, orderId);
+    database
+      .prepare('UPDATE orders SET status = ? WHERE id = ?')
+      .run(status, orderId);
 
-    console.log(`✅ [${requestId}] Pizza admin sipariş durumu güncellendi: ${orderId} -> ${status}`);
-    
+    console.log(
+      `✅ [${requestId}] Pizza admin sipariş durumu güncellendi: ${orderId} -> ${status}`
+    );
+
     return createSuccessResponse(
       'Sipariş durumu güncellendi',
       { orderId, status },
       requestId,
       200
     );
-
   } catch (error) {
     console.error(`❌ [${requestId}] Pizza admin orders PATCH error:`, error);
     return createErrorResponse(
@@ -177,9 +191,3 @@ export async function PATCH(request: NextRequest) {
     );
   }
 }
-
-
-
-
-
-

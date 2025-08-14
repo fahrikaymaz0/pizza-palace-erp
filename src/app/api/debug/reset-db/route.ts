@@ -15,10 +15,10 @@ export async function POST(request: NextRequest) {
     resetDatabase();
 
     return NextResponse.json(
-      { 
-        success: true, 
+      {
+        success: true,
         message: 'Veritabanı başarıyla sıfırlandı',
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       },
       { status: 200 }
     );
@@ -30,7 +30,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-
-
-

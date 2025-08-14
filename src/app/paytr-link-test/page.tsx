@@ -9,7 +9,7 @@ export default function PayTRLinkTestPage() {
     user_name: 'Test User',
     user_address: 'Test Address',
     user_phone: '05555555555',
-    user_basket: JSON.stringify([['Test Product', '100.00', 1]])
+    user_basket: JSON.stringify([['Test Product', '100.00', 1]]),
   });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
@@ -31,7 +31,7 @@ export default function PayTRLinkTestPage() {
       if ((linkResult as any).success) {
         console.log('✅ PayTR Link API test başarılı!');
         console.log('🔗 Ödeme URL:', (linkResult as any).payment_url);
-        
+
         // Kullanıcıyı PayTR ödeme sayfasına yönlendir
         if ((linkResult as any).payment_url) {
           window.location.href = (linkResult as any).payment_url;
@@ -43,7 +43,7 @@ export default function PayTRLinkTestPage() {
       console.error('❌ PayTR Link API test hatası:', error);
       setResult({
         success: false,
-        error: error.message || 'Bilinmeyen hata'
+        error: error.message || 'Bilinmeyen hata',
       });
     } finally {
       setLoading(false);
@@ -68,7 +68,7 @@ export default function PayTRLinkTestPage() {
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
               📋 Test Bilgileri
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -77,12 +77,14 @@ export default function PayTRLinkTestPage() {
                 <input
                   type="email"
                   value={paymentData.email}
-                  onChange={(e) => setPaymentData({...paymentData, email: e.target.value})}
+                  onChange={e =>
+                    setPaymentData({ ...paymentData, email: e.target.value })
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="test@paytr.com"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Tutar (TL) *
@@ -90,12 +92,17 @@ export default function PayTRLinkTestPage() {
                 <input
                   type="number"
                   value={paymentData.amount}
-                  onChange={(e) => setPaymentData({...paymentData, amount: parseFloat(e.target.value) || 0})}
+                  onChange={e =>
+                    setPaymentData({
+                      ...paymentData,
+                      amount: parseFloat(e.target.value) || 0,
+                    })
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="100"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Kullanıcı Adı
@@ -103,12 +110,17 @@ export default function PayTRLinkTestPage() {
                 <input
                   type="text"
                   value={paymentData.user_name}
-                  onChange={(e) => setPaymentData({...paymentData, user_name: e.target.value})}
+                  onChange={e =>
+                    setPaymentData({
+                      ...paymentData,
+                      user_name: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Test User"
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Telefon
@@ -116,12 +128,17 @@ export default function PayTRLinkTestPage() {
                 <input
                   type="text"
                   value={paymentData.user_phone}
-                  onChange={(e) => setPaymentData({...paymentData, user_phone: e.target.value})}
+                  onChange={e =>
+                    setPaymentData({
+                      ...paymentData,
+                      user_phone: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="05555555555"
                 />
               </div>
-              
+
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Adres
@@ -129,7 +146,12 @@ export default function PayTRLinkTestPage() {
                 <input
                   type="text"
                   value={paymentData.user_address}
-                  onChange={(e) => setPaymentData({...paymentData, user_address: e.target.value})}
+                  onChange={e =>
+                    setPaymentData({
+                      ...paymentData,
+                      user_address: e.target.value,
+                    })
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   placeholder="Test Address"
                 />
@@ -146,9 +168,25 @@ export default function PayTRLinkTestPage() {
             >
               {loading ? (
                 <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                   🔗 Test Linki Oluşturuluyor...
                 </span>
@@ -164,61 +202,72 @@ export default function PayTRLinkTestPage() {
               <h3 className="text-lg font-semibold text-gray-800 mb-4">
                 📡 Test Sonucu
               </h3>
-              
+
               <div className="space-y-4">
                 <div>
                   <span className="font-medium">Durum:</span>
-                  <span className={`ml-2 px-2 py-1 rounded text-sm font-medium ${
-                    result.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                  }`}>
+                  <span
+                    className={`ml-2 px-2 py-1 rounded text-sm font-medium ${
+                      result.success
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
+                    }`}
+                  >
                     {result.success ? '✅ Başarılı' : '❌ Başarısız'}
                   </span>
                 </div>
-                
+
                 {result.success && (
                   <>
                     <div>
                       <span className="font-medium">İşlem No:</span>
-                      <span className="ml-2 font-mono text-sm">{result.transactionId}</span>
+                      <span className="ml-2 font-mono text-sm">
+                        {result.transactionId}
+                      </span>
                     </div>
-                    
+
                     <div>
                       <span className="font-medium">Token:</span>
-                      <span className="ml-2 font-mono text-sm break-all">{result.token}</span>
+                      <span className="ml-2 font-mono text-sm break-all">
+                        {result.token}
+                      </span>
                     </div>
-                    
+
                     <div>
                       <span className="font-medium">Ödeme URL:</span>
-                      <a 
-                        href={result.payment_url} 
-                        target="_blank" 
+                      <a
+                        href={result.payment_url}
+                        target="_blank"
                         rel="noopener noreferrer"
                         className="ml-2 text-blue-600 hover:text-blue-800 underline break-all"
                       >
                         {result.payment_url}
                       </a>
                     </div>
-                    
+
                     <div>
                       <span className="font-medium">Tutar:</span>
                       <span className="ml-2">₺{result.amount}</span>
                     </div>
-                    
+
                     <div>
                       <span className="font-medium">Mesaj:</span>
-                      <span className="ml-2 text-gray-600">{result.message}</span>
+                      <span className="ml-2 text-gray-600">
+                        {result.message}
+                      </span>
                     </div>
-                    
+
                     {(result as any).isSimulated && (
                       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                         <span className="text-yellow-800 text-sm">
-                          🎮 Bu bir simüle edilmiş test sonucudur. Environment variables ayarlanmamış.
+                          🎮 Bu bir simüle edilmiş test sonucudur. Environment
+                          variables ayarlanmamış.
                         </span>
                       </div>
                     )}
                   </>
                 )}
-                
+
                 {result.error && (
                   <div>
                     <span className="font-medium">Hata:</span>
@@ -235,11 +284,19 @@ export default function PayTRLinkTestPage() {
               ℹ️ PayTR Link API Test Hakkında
             </h3>
             <ul className="text-blue-700 space-y-1 text-sm">
-              <li>• PayTR Link API, ödeme linki oluşturur ve kullanıcıyı PayTR ödeme sayfasına yönlendirir</li>
-              <li>• Kredi kartı bilgileri PayTR tarafında güvenli şekilde işlenir</li>
+              <li>
+                • PayTR Link API, ödeme linki oluşturur ve kullanıcıyı PayTR
+                ödeme sayfasına yönlendirir
+              </li>
+              <li>
+                • Kredi kartı bilgileri PayTR tarafında güvenli şekilde işlenir
+              </li>
               <li>• Test modunda çalışır, gerçek ödeme yapılmaz</li>
               <li>• Environment variables ayarlanmamışsa simülasyon çalışır</li>
-              <li>• Başarılı test sonrası PayTR ödeme sayfasına otomatik yönlendirme yapılır</li>
+              <li>
+                • Başarılı test sonrası PayTR ödeme sayfasına otomatik
+                yönlendirme yapılır
+              </li>
             </ul>
           </div>
         </div>
@@ -247,7 +304,3 @@ export default function PayTRLinkTestPage() {
     </div>
   );
 }
-
-
-
-

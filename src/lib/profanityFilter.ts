@@ -5,7 +5,9 @@ export class ProfanityFilter {
   private constructor() {
     // Türkçe küfür kelimeleri (örnek)
     this.profanityWords = new Set([
-      'küfür1', 'küfür2', 'küfür3' // Gerçek kelimeler yerine placeholder
+      'küfür1',
+      'küfür2',
+      'küfür3', // Gerçek kelimeler yerine placeholder
     ]);
   }
 
@@ -19,17 +21,17 @@ export class ProfanityFilter {
   public getProfanityCount(text: string): number {
     const words = text.toLowerCase().split(/\s+/);
     let count = 0;
-    
+
     for (const word of words) {
       if (this.profanityWords.has(word)) {
         count++;
       }
     }
-    
+
     return count;
   }
 
   public hasProfanity(text: string): boolean {
     return this.getProfanityCount(text) > 0;
   }
-} 
+}

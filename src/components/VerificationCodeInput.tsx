@@ -17,7 +17,7 @@ export default function VerificationCodeInput({
   onResend,
   isLoading = false,
   error,
-  success
+  success,
 }: VerificationCodeInputProps) {
   const [code, setCode] = useState<string[]>(new Array(length).fill(''));
   const [focusedIndex, setFocusedIndex] = useState<number>(0);
@@ -53,7 +53,10 @@ export default function VerificationCodeInput({
     }
   };
 
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     // Backspace ile önceki input'a geç
     if (e.key === 'Backspace' && !code[index] && index > 0) {
       setFocusedIndex(index - 1);
@@ -64,7 +67,7 @@ export default function VerificationCodeInput({
   const handlePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
     const pastedData = e.clipboardData.getData('text/plain').replace(/\D/g, '');
-    
+
     if (pastedData.length === length) {
       const newCode = pastedData.split('').slice(0, length);
       setCode(newCode);
@@ -86,21 +89,22 @@ export default function VerificationCodeInput({
         {code.map((digit, index) => (
           <div key={index} className="relative">
             <input
-                             ref={(el) => {
-                 inputRefs.current[index] = el;
-               }}
+              ref={el => {
+                inputRefs.current[index] = el;
+              }}
               type="text"
               maxLength={1}
               value={digit}
-              onChange={(e) => handleChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
+              onChange={e => handleChange(index, e.target.value)}
+              onKeyDown={e => handleKeyDown(index, e)}
               onPaste={handlePaste}
               onFocus={() => setFocusedIndex(index)}
               className={`
                 w-12 h-12 text-center text-2xl font-bold rounded-xl border-2 transition-all duration-300
-                ${focusedIndex === index 
-                  ? 'border-orange-500 bg-orange-50 text-orange-600' 
-                  : 'border-gray-300 bg-white text-gray-700'
+                ${
+                  focusedIndex === index
+                    ? 'border-orange-500 bg-orange-50 text-orange-600'
+                    : 'border-gray-300 bg-white text-gray-700'
                 }
                 ${error ? 'border-red-500 bg-red-50' : ''}
                 ${success ? 'border-green-500 bg-green-50' : ''}
@@ -110,13 +114,16 @@ export default function VerificationCodeInput({
               disabled={isLoading}
             />
             {/* Animasyonlu alt çizgi */}
-            <div className={`
+            <div
+              className={`
               absolute bottom-0 left-0 right-0 h-0.5 transition-all duration-300
-              ${focusedIndex === index 
-                ? 'bg-orange-500 scale-x-100' 
-                : 'bg-transparent scale-x-0'
+              ${
+                focusedIndex === index
+                  ? 'bg-orange-500 scale-x-100'
+                  : 'bg-transparent scale-x-0'
               }
-            `} />
+            `}
+            />
           </div>
         ))}
       </div>
@@ -143,7 +150,7 @@ export default function VerificationCodeInput({
         >
           Temizle
         </button>
-        
+
         <button
           onClick={onResend}
           disabled={isLoading}
@@ -165,11 +172,17 @@ export default function VerificationCodeInput({
         <div className="flex justify-center">
           <div className="flex space-x-1">
             <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"></div>
-            <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-            <div className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+            <div
+              className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"
+              style={{ animationDelay: '0.1s' }}
+            ></div>
+            <div
+              className="w-2 h-2 bg-orange-500 rounded-full animate-bounce"
+              style={{ animationDelay: '0.2s' }}
+            ></div>
           </div>
         </div>
       )}
     </div>
   );
-} 
+}

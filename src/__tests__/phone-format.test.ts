@@ -2,7 +2,7 @@
 describe('Phone Number Formatting', () => {
   const formatPhoneNumber = (value: string) => {
     const numbers = value.replace(/\D/g, '');
-    
+
     if (numbers.length <= 3) {
       return numbers;
     } else if (numbers.length <= 6) {
@@ -61,5 +61,3 @@ describe('Phone Number Formatting', () => {
     expect(validatePhoneNumber(input)).toBe(false);
   });
 });
-
-

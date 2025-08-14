@@ -18,7 +18,11 @@ interface Project {
   priority: 'low' | 'medium' | 'high' | 'critical';
 }
 
-export default function EditProject({ params }: { params: { projectId: string } }) {
+export default function EditProject({
+  params,
+}: {
+  params: { projectId: string };
+}) {
   const router = useRouter();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,14 +39,36 @@ export default function EditProject({ params }: { params: { projectId: string } 
       startDate: '2024-01-15',
       endDate: '2024-06-30',
       team: [
-        { id: '1', name: 'Fahri Kaymaz', role: 'Lead Developer', status: 'online' },
-        { id: '2', name: 'Fahri Kaymaz', role: 'UI/UX Designer', status: 'online' },
-        { id: '3', name: 'Fahri Kaymaz', role: 'Backend Developer', status: 'busy' }
+        {
+          id: '1',
+          name: 'Fahri Kaymaz',
+          role: 'Lead Developer',
+          status: 'online',
+        },
+        {
+          id: '2',
+          name: 'Fahri Kaymaz',
+          role: 'UI/UX Designer',
+          status: 'online',
+        },
+        {
+          id: '3',
+          name: 'Fahri Kaymaz',
+          role: 'Backend Developer',
+          status: 'busy',
+        },
       ],
-      description: 'Modern pizza ordering mobile application with real-time tracking and payment integration.',
-      technologies: ['React Native', 'Node.js', 'MongoDB', 'Firebase', 'Stripe'],
+      description:
+        'Modern pizza ordering mobile application with real-time tracking and payment integration.',
+      technologies: [
+        'React Native',
+        'Node.js',
+        'MongoDB',
+        'Firebase',
+        'Stripe',
+      ],
       budget: 50000,
-      priority: 'high'
+      priority: 'high',
     };
 
     setProject(mockProject);
@@ -76,8 +102,10 @@ export default function EditProject({ params }: { params: { projectId: string } 
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Proje Bulunamadı</h2>
-          <button 
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Proje Bulunamadı
+          </h2>
+          <button
             onClick={() => router.back()}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg"
           >
@@ -94,25 +122,27 @@ export default function EditProject({ params }: { params: { projectId: string } 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
-            <button 
+            <button
               onClick={() => router.back()}
               className="text-gray-600 hover:text-gray-800"
             >
               <i className="fas fa-arrow-left text-xl"></i>
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Proje Düzenle</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Proje Düzenle
+              </h1>
               <p className="text-gray-600">{project.name}</p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <button 
+            <button
               onClick={handleCancel}
               className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium"
             >
               İptal
             </button>
-            <button 
+            <button
               onClick={handleSave}
               disabled={saving}
               className="bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-lg font-medium transition-colors"
@@ -267,7 +297,10 @@ export default function EditProject({ params }: { params: { projectId: string } 
                 </label>
                 <div className="space-y-2">
                   {project.team.map((member, index) => (
-                    <div key={member.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div
+                      key={member.id}
+                      className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg"
+                    >
                       <div className="flex-1">
                         <input
                           type="text"
@@ -315,4 +348,4 @@ export default function EditProject({ params }: { params: { projectId: string } 
       </div>
     </div>
   );
-} 
+}

@@ -43,13 +43,13 @@ export default function DatabaseViewer() {
     try {
       setLoading(true);
       const response = await fetch('/api/admin/database-viewer');
-      
+
       if (!response.ok) {
         throw new Error('Veritabanı bilgileri alınamadı');
       }
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setDatabaseInfo(data.database);
         setTables(data.tables);
@@ -67,17 +67,17 @@ export default function DatabaseViewer() {
     try {
       setLoading(true);
       const offset = (page - 1) * itemsPerPage;
-      
+
       const response = await fetch(
         `/api/admin/database-viewer?table=${tableName}&limit=${itemsPerPage}&offset=${offset}`
       );
-      
+
       if (!response.ok) {
         throw new Error('Tablo verileri alınamadı');
       }
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         setTableData(data.data);
         setTotalCount(data.totalCount);
@@ -103,10 +103,17 @@ export default function DatabaseViewer() {
   };
 
   const maskSensitiveData = (key: string, value: any) => {
-    if (key.toLowerCase().includes('password') || key.toLowerCase().includes('hash')) {
+    if (
+      key.toLowerCase().includes('password') ||
+      key.toLowerCase().includes('hash')
+    ) {
       return '********';
     }
-    if (key.toLowerCase().includes('code') && typeof value === 'string' && value.length > 2) {
+    if (
+      key.toLowerCase().includes('code') &&
+      typeof value === 'string' &&
+      value.length > 2
+    ) {
       return value.substring(0, 2) + '****';
     }
     if (key.toLowerCase().includes('email') && typeof value === 'string') {
@@ -125,7 +132,9 @@ export default function DatabaseViewer() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Veritabanı bilgileri yükleniyor...</p>
+          <p className="mt-4 text-gray-600">
+            Veritabanı bilgileri yükleniyor...
+          </p>
         </div>
       </div>
     );
@@ -156,8 +165,12 @@ export default function DatabaseViewer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">🔒 Güvenli Veritabanı Görüntüleyici</h1>
-              <p className="text-gray-600">Sadece görüntüleme - Değişiklik yapılamaz</p>
+              <h1 className="text-2xl font-bold text-gray-900">
+                🔒 Güvenli Veritabanı Görüntüleyici
+              </h1>
+              <p className="text-gray-600">
+                Sadece görüntüleme - Değişiklik yapılamaz
+              </p>
             </div>
             <button
               onClick={() => router.push('/admin')}
@@ -173,22 +186,32 @@ export default function DatabaseViewer() {
         {/* Database Overview */}
         {databaseInfo && (
           <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">📊 Veritabanı Genel Bakış</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              📊 Veritabanı Genel Bakış
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div className="bg-blue-50 p-4 rounded-lg">
-                <div className="text-2xl font-bold text-blue-600">{databaseInfo.sizeFormatted}</div>
+                <div className="text-2xl font-bold text-blue-600">
+                  {databaseInfo.sizeFormatted}
+                </div>
                 <div className="text-sm text-gray-600">Veritabanı Boyutu</div>
               </div>
               <div className="bg-green-50 p-4 rounded-lg">
-                <div className="text-2xl font-bold text-green-600">{databaseInfo.tables}</div>
+                <div className="text-2xl font-bold text-green-600">
+                  {databaseInfo.tables}
+                </div>
                 <div className="text-sm text-gray-600">Toplam Tablo</div>
               </div>
               <div className="bg-purple-50 p-4 rounded-lg">
-                <div className="text-2xl font-bold text-purple-600">{databaseInfo.stats.users}</div>
+                <div className="text-2xl font-bold text-purple-600">
+                  {databaseInfo.stats.users}
+                </div>
                 <div className="text-sm text-gray-600">Kullanıcı</div>
               </div>
               <div className="bg-orange-50 p-4 rounded-lg">
-                <div className="text-2xl font-bold text-orange-600">{databaseInfo.stats.products}</div>
+                <div className="text-2xl font-bold text-orange-600">
+                  {databaseInfo.stats.products}
+                </div>
                 <div className="text-sm text-gray-600">Ürün</div>
               </div>
             </div>
@@ -200,10 +223,12 @@ export default function DatabaseViewer() {
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-sm border">
               <div className="p-4 border-b">
-                <h3 className="text-lg font-semibold text-gray-900">📋 Tablolar</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  📋 Tablolar
+                </h3>
               </div>
               <div className="p-4">
-                {tables.map((table) => (
+                {tables.map(table => (
                   <button
                     key={table.name}
                     onClick={() => handleTableSelect(table.name)}
@@ -230,21 +255,26 @@ export default function DatabaseViewer() {
             <div className="bg-white rounded-lg shadow-sm border">
               <div className="p-4 border-b">
                 <h3 className="text-lg font-semibold text-gray-900">
-                  {selectedTable ? `📄 ${selectedTable} Tablosu` : '📄 Tablo Seçin'}
+                  {selectedTable
+                    ? `📄 ${selectedTable} Tablosu`
+                    : '📄 Tablo Seçin'}
                 </h3>
                 {selectedTable && (
                   <p className="text-sm text-gray-600 mt-1">
-                    Toplam {totalCount} kayıt • Sayfa {currentPage} / {totalPages}
+                    Toplam {totalCount} kayıt • Sayfa {currentPage} /{' '}
+                    {totalPages}
                   </p>
                 )}
               </div>
-              
+
               {selectedTable && (
                 <div className="p-4">
                   {loading ? (
                     <div className="text-center py-8">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-                      <p className="mt-2 text-gray-600">Veriler yükleniyor...</p>
+                      <p className="mt-2 text-gray-600">
+                        Veriler yükleniyor...
+                      </p>
                     </div>
                   ) : (
                     <>
@@ -253,7 +283,7 @@ export default function DatabaseViewer() {
                           <thead className="bg-gray-50">
                             <tr>
                               {tableData.length > 0 &&
-                                Object.keys(tableData[0]).map((key) => (
+                                Object.keys(tableData[0]).map(key => (
                                   <th
                                     key={key}
                                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
@@ -292,11 +322,11 @@ export default function DatabaseViewer() {
                           >
                             ← Önceki
                           </button>
-                          
+
                           <span className="text-sm text-gray-600">
                             Sayfa {currentPage} / {totalPages}
                           </span>
-                          
+
                           <button
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage === totalPages}
@@ -310,7 +340,7 @@ export default function DatabaseViewer() {
                   )}
                 </div>
               )}
-              
+
               {!selectedTable && (
                 <div className="p-8 text-center text-gray-500">
                   <div className="text-4xl mb-4">📋</div>
@@ -328,11 +358,14 @@ export default function DatabaseViewer() {
               <div className="text-yellow-400 text-xl">🔒</div>
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-yellow-800">Güvenlik Uyarısı</h3>
+              <h3 className="text-sm font-medium text-yellow-800">
+                Güvenlik Uyarısı
+              </h3>
               <div className="mt-2 text-sm text-yellow-700">
                 <p>
-                  Bu panel sadece veri görüntüleme amaçlıdır. Hassas veriler (şifreler, kodlar) 
-                  otomatik olarak maskelenir. Veri değişikliği yapılamaz.
+                  Bu panel sadece veri görüntüleme amaçlıdır. Hassas veriler
+                  (şifreler, kodlar) otomatik olarak maskelenir. Veri
+                  değişikliği yapılamaz.
                 </p>
               </div>
             </div>

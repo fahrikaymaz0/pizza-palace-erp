@@ -77,7 +77,9 @@ export default function ForgotPasswordPage() {
       const data = await response.json();
 
       if (data.success) {
-        setSuccess('Şifreniz başarıyla güncellendi! Ana sayfaya yönlendiriliyorsunuz...');
+        setSuccess(
+          'Şifreniz başarıyla güncellendi! Ana sayfaya yönlendiriliyorsunuz...'
+        );
         setTimeout(() => {
           router.push('/pizza');
         }, 2000);
@@ -95,7 +97,7 @@ export default function ForgotPasswordPage() {
     <div className="min-h-screen bg-gradient-to-b from-yellow-300 via-orange-400 to-orange-600 flex items-center justify-center relative overflow-hidden">
       {/* Düşen malzemeler animasyonu */}
       <PizzaIngredientsAnimation />
-      
+
       <div className="relative z-10 w-full max-w-md mx-auto p-8 bg-orange-900/60 rounded-2xl shadow-lg border border-orange-200">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -117,10 +119,9 @@ export default function ForgotPasswordPage() {
             {step === 'email' ? '🔐 Şifremi Unuttum' : '🔑 Yeni Şifre Belirle'}
           </h2>
           <p className="text-white/70 text-sm">
-            {step === 'email' 
+            {step === 'email'
               ? 'Email adresinizi girin, size şifre sıfırlama kodu gönderelim'
-              : 'Email\'inize gelen kodu girin ve yeni şifrenizi belirleyin'
-            }
+              : "Email'inize gelen kodu girin ve yeni şifrenizi belirleyin"}
           </p>
         </div>
 
@@ -134,7 +135,7 @@ export default function ForgotPasswordPage() {
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 required
                 className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300"
                 placeholder="email@example.com"
@@ -178,7 +179,7 @@ export default function ForgotPasswordPage() {
               <input
                 type="text"
                 value={code}
-                onChange={(e) => setCode(e.target.value)}
+                onChange={e => setCode(e.target.value)}
                 required
                 maxLength={6}
                 className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300 text-center text-2xl tracking-widest"
@@ -193,7 +194,7 @@ export default function ForgotPasswordPage() {
               <input
                 type="password"
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={e => setNewPassword(e.target.value)}
                 required
                 minLength={6}
                 className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300"
@@ -208,7 +209,7 @@ export default function ForgotPasswordPage() {
               <input
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={e => setConfirmPassword(e.target.value)}
                 required
                 minLength={6}
                 className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300"
@@ -257,7 +258,10 @@ export default function ForgotPasswordPage() {
         <div className="mt-6 text-center">
           <p className="text-white/70 text-sm">
             Şifrenizi hatırladınız mı?{' '}
-            <Link href="/pizza/login" className="text-orange-400 hover:text-orange-300 font-semibold transition-colors">
+            <Link
+              href="/pizza/login"
+              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
+            >
               Giriş Yap
             </Link>
           </p>
@@ -273,13 +277,16 @@ export default function ForgotPasswordPage() {
           border-radius: 50%;
           animation: spin 1s linear infinite;
         }
-        
+
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </div>
   );
 }
-

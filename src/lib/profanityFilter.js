@@ -2,42 +2,38 @@
 class ProfanityFilter {
   constructor() {
     // Türkçe küfür listesi (örnek)
-    this.badWords = [
-      'küfür1',
-      'küfür2',
-      'küfür3'
-    ];
+    this.badWords = ['küfür1', 'küfür2', 'küfür3'];
   }
 
   // Metni kontrol et
   check(text) {
     if (!text) return { isClean: true, foundWords: [] };
-    
+
     const lowerText = text.toLowerCase();
     const foundWords = [];
-    
+
     for (const word of this.badWords) {
       if (lowerText.includes(word.toLowerCase())) {
         foundWords.push(word);
       }
     }
-    
+
     return {
       isClean: foundWords.length === 0,
-      foundWords: foundWords
+      foundWords: foundWords,
     };
   }
 
   // Metni temizle
   clean(text) {
     if (!text) return text;
-    
+
     let cleanText = text;
     for (const word of this.badWords) {
       const regex = new RegExp(word, 'gi');
       cleanText = cleanText.replace(regex, '*'.repeat(word.length));
     }
-    
+
     return cleanText;
   }
 

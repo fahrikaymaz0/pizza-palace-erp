@@ -22,14 +22,18 @@ export default function LandingPage() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
               <div className="text-3xl mr-3">🏢</div>
-              <h1 className="text-2xl font-bold text-[#40B1D1]">Kaymaz Digital Solutions</h1>
+              <h1 className="text-2xl font-bold text-[#40B1D1]">
+                Kaymaz Digital Solutions
+              </h1>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">
-                {mounted ? currentTime.toLocaleTimeString('en-US', { 
-                  hour12: false 
-                }) : '--:--:--'}
+                {mounted
+                  ? currentTime.toLocaleTimeString('en-US', {
+                      hour12: false,
+                    })
+                  : '--:--:--'}
               </span>
             </div>
           </div>
@@ -49,13 +53,14 @@ export default function LandingPage() {
               priority
             />
           </div>
-          
+
           <h1 className="text-5xl font-bold text-gray-900 mb-6">
             Enterprise Resource Planning
           </h1>
           <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-            Profesyonel ERP sistemi ile işletmenizi dijitalleştirin. 
-            Müşteri yönetimi, proje takibi ve geliştirme süreçlerinizi tek platformda yönetin.
+            Profesyonel ERP sistemi ile işletmenizi dijitalleştirin. Müşteri
+            yönetimi, proje takibi ve geliştirme süreçlerinizi tek platformda
+            yönetin.
           </p>
 
           {/* Action Buttons */}
@@ -101,27 +106,37 @@ export default function LandingPage() {
 
           {/* System Status */}
           <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 text-center">Sistem Durumu</h2>
+            <h2 className="text-2xl font-bold mb-6 text-center">
+              Sistem Durumu
+            </h2>
             <div className="grid grid-cols-2 gap-6">
               <div className="text-center">
                 <div className="text-3xl font-bold text-green-600 mb-2">✅</div>
                 <div className="text-sm text-gray-600">Admin Panel</div>
-                <div className="text-lg font-semibold text-green-600">Aktif</div>
+                <div className="text-lg font-semibold text-green-600">
+                  Aktif
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-green-600 mb-2">✅</div>
                 <div className="text-sm text-gray-600">Pizza Web Sitesi</div>
-                <div className="text-lg font-semibold text-green-600">Hazır</div>
+                <div className="text-lg font-semibold text-green-600">
+                  Hazır
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-green-600 mb-2">✅</div>
                 <div className="text-sm text-gray-600">Veritabanı</div>
-                <div className="text-lg font-semibold text-green-600">Çalışıyor</div>
+                <div className="text-lg font-semibold text-green-600">
+                  Çalışıyor
+                </div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-green-600 mb-2">✅</div>
                 <div className="text-sm text-gray-600">API Sistemi</div>
-                <div className="text-lg font-semibold text-green-600">Aktif</div>
+                <div className="text-lg font-semibold text-green-600">
+                  Aktif
+                </div>
               </div>
             </div>
           </div>
@@ -132,12 +147,22 @@ export default function LandingPage() {
       <footer className="bg-gray-800 text-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <p className="font-semibold mb-2">© 2024 Kaymaz Digital Solutions</p>
-          <p className="text-sm text-gray-400 mb-4">Enterprise Resource Planning System</p>
+          <p className="text-sm text-gray-400 mb-4">
+            Enterprise Resource Planning System
+          </p>
           <p className="text-xs text-gray-500">
-            Developed by <a href="https://github.com/fahoexe42" target="_blank" rel="noopener noreferrer" className="text-[#40B1D1] hover:text-[#3a9bc7] font-semibold">@fahoexe42</a>
+            Developed by{' '}
+            <a
+              href="https://github.com/fahoexe42"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#40B1D1] hover:text-[#3a9bc7] font-semibold"
+            >
+              @fahoexe42
+            </a>
           </p>
         </div>
       </footer>
     </div>
   );
-} 
+}

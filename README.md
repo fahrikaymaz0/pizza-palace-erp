@@ -5,6 +5,7 @@ Modern API-first yaklaşım ile geliştirilmiş, Next.js tabanlı pizza sipariş
 ## ✨ Özellikler
 
 ### 🍕 Müşteri Tarafı
+
 - **Modern UI/UX**: Tailwind CSS ile responsive tasarım
 - **Sipariş Sistemi**: Sepet yönetimi ve ödeme entegrasyonu
 - **Kupon Sistemi**: Çeşitli indirim kuponları
@@ -13,12 +14,14 @@ Modern API-first yaklaşım ile geliştirilmiş, Next.js tabanlı pizza sipariş
 - **Gerçek Zamanlı Güncellemeler**: Sipariş durumu takibi
 
 ### 👨‍💼 Admin Paneli
+
 - **Sipariş Yönetimi**: Tüm siparişleri görüntüleme ve durum güncelleme
 - **Telefon Entegrasyonu**: Tıklanabilir telefon numaraları
 - **Dashboard**: Gerçek zamanlı istatistikler
 - **Kullanıcı Yönetimi**: Müşteri bilgileri ve sipariş geçmişi
 
 ### 🔧 Teknik Özellikler
+
 - **Next.js 14**: App Router ile modern React framework
 - **TypeScript**: Tip güvenliği ve geliştirici deneyimi
 - **SQLite**: Hafif ve güvenilir veritabanı
@@ -29,33 +32,39 @@ Modern API-first yaklaşım ile geliştirilmiş, Next.js tabanlı pizza sipariş
 ## 🚀 Hızlı Başlangıç
 
 ### Gereksinimler
+
 - Node.js 18+
 - npm veya yarn
 
 ### Kurulum
 
 1. **Projeyi klonlayın**
+
 ```bash
 git clone https://github.com/yourusername/dinamik-erp-nextjs.git
 cd dinamik-erp-nextjs
 ```
 
 2. **Bağımlılıkları yükleyin**
+
 ```bash
 npm install
 ```
 
 3. **Veritabanını başlatın**
+
 ```bash
 npm run db:seed
 ```
 
 4. **Geliştirme sunucusunu başlatın**
+
 ```bash
 npm run dev
 ```
 
 5. **Tarayıcıda açın**
+
 ```
 http://localhost:3000
 ```
@@ -63,20 +72,24 @@ http://localhost:3000
 ## 📱 Kullanım
 
 ### Müşteri Girişi
+
 - **Email**: test@example.com
 - **Şifre**: 123456
 
 ### Admin Girişi
+
 - **Email**: admin@123
 - **Şifre**: admin123
 
 ### Pizza Admin Girişi
+
 - **Email**: pizzapalaceofficial00@gmail.com
 - **Şifre**: passwordadmin123
 
 ## 🛠️ Geliştirme
 
 ### Scripts
+
 ```bash
 # Geliştirme
 npm run dev              # Geliştirme sunucusu
@@ -132,6 +145,7 @@ dinamik-erp-nextjs/
 ## 🔌 API Endpoints
 
 ### Kimlik Doğrulama
+
 ```
 POST   /api/auth/login         # Giriş
 POST   /api/auth/register      # Kayıt
@@ -140,6 +154,7 @@ GET    /api/auth/verify        # Token doğrulama
 ```
 
 ### Siparişler
+
 ```
 GET    /api/pizza/orders       # Kullanıcı siparişleri
 POST   /api/pizza/orders       # Yeni sipariş
@@ -147,12 +162,14 @@ PATCH  /api/pizza/orders       # Sipariş güncelleme
 ```
 
 ### Admin
+
 ```
 GET    /api/pizza-admin/orders # Tüm siparişler
 PATCH  /api/pizza-admin/orders # Sipariş durumu güncelleme
 ```
 
 ### Sistem
+
 ```
 GET    /api/health             # Sistem durumu
 ```
@@ -160,6 +177,7 @@ GET    /api/health             # Sistem durumu
 ## 🎨 Özelleştirme
 
 ### Telefon Numarası Formatı
+
 ```typescript
 // Türkiye telefon numarası formatı
 const formatPhoneNumber = (phone: string) => {
@@ -172,6 +190,7 @@ const formatPhoneNumber = (phone: string) => {
 ```
 
 ### Kupon Sistemi
+
 ```typescript
 // Kupon tipleri
 type CouponType = 'percentage' | 'fixed' | 'buy_x_get_y';
@@ -188,18 +207,21 @@ interface Coupon {
 ## 🚀 Deployment
 
 ### Vercel (Önerilen)
+
 ```bash
 npm run build
 vercel --prod
 ```
 
 ### Docker
+
 ```bash
 docker build -t pizza-palace .
 docker run -p 3000:3000 pizza-palace
 ```
 
 ### Manuel
+
 ```bash
 npm run build
 npm run start
@@ -250,4 +272,4 @@ Bu proje MIT lisansı altında lisanslanmıştır.
 
 ---
 
-**Not**: Bu sistem modern web teknolojileri ile geliştirilmiştir ve production ortamında kullanıma hazırdır. 
+**Not**: Bu sistem modern web teknolojileri ile geliştirilmiştir ve production ortamında kullanıma hazırdır.

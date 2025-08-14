@@ -29,7 +29,9 @@ export default function AdminLogin() {
       const data = await response.json();
 
       if (response.ok && data.success) {
-        console.log('Admin girişi başarılı - Admin dashboard\'a yönlendiriliyor');
+        console.log(
+          "Admin girişi başarılı - Admin dashboard'a yönlendiriliyor"
+        );
         router.push('/admin');
       } else {
         setError(data.error || 'Admin girişi başarısız');
@@ -60,18 +62,16 @@ export default function AdminLogin() {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-8">
-              <img 
-                src="/kaymaz-logo.png" 
-                alt="Kaymaz Digital Solutions" 
+              <img
+                src="/kaymaz-logo.png"
+                alt="Kaymaz Digital Solutions"
                 className="h-32 w-auto"
               />
             </div>
             <h1 className="text-4xl font-bold text-white mb-3">
               Kaymaz Digital Solutions
             </h1>
-            <p className="text-xl text-white/80 text-lg">
-              Admin Panel Girişi
-            </p>
+            <p className="text-xl text-white/80 text-lg">Admin Panel Girişi</p>
           </div>
 
           {/* Login Form */}
@@ -83,14 +83,17 @@ export default function AdminLogin() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white/90 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-white/90 mb-2"
+              >
                 Email Adresi
               </label>
               <input
                 type="email"
                 id="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={e => setEmail(e.target.value)}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="admin@kaymaz.digital"
                 required
@@ -98,14 +101,17 @@ export default function AdminLogin() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-white/90 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-white/90 mb-2"
+              >
                 Şifre
               </label>
               <input
                 type="password"
                 id="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="••••••••"
                 required
@@ -127,8 +133,8 @@ export default function AdminLogin() {
               Enterprise Resource Planning System
             </p>
             <div className="border-t border-white/20 pt-4">
-              <Link 
-                href="/pizza/login" 
+              <Link
+                href="/pizza/login"
                 className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium rounded-lg transition-colors"
               >
                 <span className="mr-2">🍕</span>
@@ -140,4 +146,4 @@ export default function AdminLogin() {
       </div>
     </div>
   );
-} 
+}

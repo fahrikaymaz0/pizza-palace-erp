@@ -4,7 +4,7 @@ export async function POST(request: NextRequest) {
   try {
     const response = NextResponse.json({
       success: true,
-      message: 'Başarıyla çıkış yapıldı'
+      message: 'Başarıyla çıkış yapıldı',
     });
 
     // Auth token cookie'sini temizle
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 0, // Cookie'yi hemen sil
-      path: '/'
+      path: '/',
     });
 
     // Admin token cookie'sini temizle
@@ -22,16 +22,19 @@ export async function POST(request: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       maxAge: 0, // Cookie'yi hemen sil
-      path: '/'
+      path: '/',
     });
 
     return response;
   } catch (error) {
     console.error('Çıkış hatası:', error);
-    
-    return NextResponse.json({
-      success: false,
-      error: 'Çıkış yapılamadı'
-    }, { status: 500 });
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Çıkış yapılamadı',
+      },
+      { status: 500 }
+    );
   }
-} 
+}
