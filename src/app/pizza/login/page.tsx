@@ -1,44 +1,28 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import { useState } from 'react';
 import Image from 'next/image';
-import PizzaIngredientsAnimation from '@/components/PizzaIngredientsAnimation';
+import Link from 'next/link';
 
 export default function PizzaLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
-
-  useEffect(() => {
-    // Sayfa yüklendiğinde loading animasyonunu göster
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
-    // Pizza admin giriş kontrolü - pizzapalaceofficial00@gmail.com / passwordadmin123
-    if (
-      email === 'pizzapalaceofficial00@gmail.com' &&
-      password === 'passwordadmin123'
-    ) {
+    // Pizza admin giriş kontrolü
+    if (email === 'pizzapalaceofficial00@gmail.com' && password === '123456') {
       console.log(
         'Pizza admin girişi tespit edildi - API üzerinden doğrulanıyor'
       );
 
       try {
-        // Pizza admin girişi için Vercel API çağrısı
-        const response = await fetch('/api/auth/vercel-login', {
+        const response = await fetch('/api/v2/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -51,9 +35,9 @@ export default function PizzaLogin() {
 
         if (response.ok && data.success) {
           console.log(
-            "Pizza admin girişi başarılı - Pizza admin panel'e yönlendiriliyor"
+            "Pizza admin girişi başarılı - Pizza admin dashboard'a yönlendiriliyor"
           );
-          window.location.href = '/pizza-admin'; // Redirect to pizza admin panel
+          window.location.href = '/pizza-admin';
         } else {
           setError(data.error || 'Pizza admin girişi başarısız');
         }
@@ -66,44 +50,9 @@ export default function PizzaLogin() {
       return;
     }
 
-    // Admin giriş kontrolü - admin@123 / admin123
-    if (email === 'admin@123' && password === 'admin123') {
-      console.log('Admin girişi tespit edildi - API üzerinden doğrulanıyor');
-
-      try {
-        // Admin girişi için Vercel API çağrısı
-        const response = await fetch('/api/auth/vercel-login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) {
-          console.log(
-            "Admin girişi başarılı - Admin dashboard'a yönlendiriliyor"
-          );
-          window.location.href = '/admin'; // Redirect to admin dashboard
-        } else {
-          setError(data.error || 'Admin girişi başarısız');
-        }
-      } catch (error) {
-        console.error('Admin login error:', error);
-        setError('Bağlantı hatası');
-      } finally {
-        setLoading(false);
-      }
-      return;
-    }
-
     // Normal kullanıcı girişi
     try {
-      // Vercel endpoint'ini kullan
-      const response = await fetch('/api/auth/vercel-login', {
+      const response = await fetch('/api/v2/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,281 +97,160 @@ export default function PizzaLogin() {
     );
   }
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-yellow-300 via-orange-400 to-orange-600 flex items-center justify-center relative overflow-hidden">
-        {/* Düşen malzemeler animasyonu */}
-        <PizzaIngredientsAnimation />
-        <div className="text-center relative z-10">
-          <div className="relative w-32 h-32 mx-auto">
-            <Image
-              src="/pizza-slices.gif"
-              alt="Loading..."
-              width={128}
-              height={128}
-              priority
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-yellow-300 via-orange-400 to-orange-600 flex items-center justify-center relative overflow-hidden">
-      {/* Düşen malzemeler animasyonu */}
-      <PizzaIngredientsAnimation />
-      <div className="relative z-10 w-full max-w-md mx-auto p-8 bg-orange-900/60 rounded-2xl shadow-lg border border-orange-200">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="relative w-48 h-36 mx-auto">
-            <Image
-              src="/Pizza Krallığı Logosu.png"
-              alt="Pizza Krallığı"
-              width={192}
-              height={144}
-              priority
-              style={{ objectFit: 'contain', width: '100%', height: '100%' }}
-            />
-          </div>
-        </div>
+      {/* Animated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-red-400 via-orange-400 to-yellow-400 animate-gradient">
+        <div className="absolute inset-0 bg-black/20"></div>
+      </div>
 
-        {/* Login Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-white/90 mb-2">
-              Email Adresi
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              required
-              className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300"
-              placeholder="email@example.com"
-            />
+      {/* Floating Pizza Slices */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute animate-float"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${i * 0.5}s`,
+              animationDuration: `${3 + Math.random() * 2}s`,
+            }}
+          >
+            <div className="text-4xl opacity-20">🍕</div>
           </div>
+        ))}
+      </div>
 
-          <div>
-            <label className="block text-sm font-medium text-white/90 mb-2">
-              Şifre
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              required
-              className="w-full px-4 py-3 bg-white/20 border border-white/30 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent backdrop-blur-sm transition-all duration-300"
-              placeholder="••••••••"
-            />
+      <div className="relative z-10 w-full max-w-md mx-4">
+        <div className="bg-white rounded-2xl shadow-2xl p-8">
+          <div className="text-center mb-8">
+            <div className="relative w-24 h-24 mx-auto mb-4">
+              <Image
+                src="/Pizza Krallığı Logosu.png"
+                alt="Pizza Krallığı"
+                width={96}
+                height={96}
+                className="rounded-lg"
+                priority
+              />
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+              Hoş Geldiniz
+            </h2>
+            <p className="text-gray-600">Hesabınıza giriş yapın</p>
           </div>
 
           {error && (
-            <div className="bg-red-500/20 border border-red-500/30 rounded-xl p-4 text-red-200 text-sm">
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6 flex items-center">
+              <span className="mr-2">⚠️</span>
               {error}
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
-          >
-            {loading ? (
-              <div className="flex items-center justify-center">
-                <div className="pizza-loading-spinner mr-2"></div>
-                Giriş yapılıyor...
-              </div>
-            ) : (
-              'Giriş Yap'
-            )}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Email Adresi
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
+                placeholder="ornek@email.com"
+                required
+              />
+            </div>
 
-        {/* Register Link */}
-        <div className="mt-6 text-center space-y-2">
-          <p className="text-white/70 text-sm">
-            Hesabınız yok mu?{' '}
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
+                Şifre
+              </label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-red-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-red-700 hover:to-orange-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+            >
+              {loading ? (
+                <>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  Giriş Yapılıyor...
+                </>
+              ) : (
+                'Giriş Yap'
+              )}
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
             <Link
               href="/pizza/register"
-              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
+              className="text-red-600 hover:text-red-700 font-medium transition-colors"
             >
-              Kayıt Ol
+              Hesabınız yok mu? Kayıt olun
             </Link>
-          </p>
-          <p className="text-white/70 text-sm">
-            <Link
-              href="/pizza/forgot-password"
-              className="text-orange-400 hover:text-orange-300 font-semibold transition-colors"
-            >
-              Şifremi Unuttum
-            </Link>
-          </p>
-          <div className="pt-4 mt-2 border-t border-white/20 space-y-2">
-            <Link
-              href="/admin/login"
-              className="inline-flex items-center px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white text-sm font-medium rounded-lg transition-colors"
-            >
-              🔑 ERP Admin Girişi
-            </Link>
+          </div>
+
+          <div className="mt-6 pt-6 border-t border-gray-200">
             <div className="text-center">
-              <Link
-                href="/pizza-admin/login"
-                className="inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors"
-              >
-                🍕 Pizza Admin Girişi
-              </Link>
+              <p className="text-sm text-gray-600 mb-4">
+                Test Hesap Bilgileri:
+              </p>
+              <div className="space-y-2 text-xs text-gray-500">
+                <div>👤 Normal Kullanıcı: test@example.com / 123456</div>
+                <div>
+                  👨‍🍳 Pizza Admin: pizzapalaceofficial00@gmail.com / 123456
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Footer */}
-        {/* Admin Girişi bilgilendirmesini kaldırdım */}
       </div>
 
       <style jsx>{`
-        .pizza-logo {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        .pizza-icon {
-          width: 80px;
-          height: 80px;
-          position: relative;
-          animation: pulse 2s ease-in-out infinite;
-        }
-
-        .pizza-base {
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(45deg, #fbbf24, #f59e0b);
-          border-radius: 50%;
-          position: relative;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .pizza-toppings {
-          position: absolute;
-          top: 6px;
-          left: 6px;
-          right: 6px;
-          bottom: 6px;
-        }
-
-        .topping {
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
-          position: absolute;
-          animation: bounce 1s ease-in-out infinite;
-        }
-
-        .topping-1 {
-          background: #dc2626;
-          top: 20%;
-          left: 30%;
-          animation-delay: 0s;
-        }
-
-        .topping-2 {
-          background: #fbbf24;
-          top: 40%;
-          left: 60%;
-          animation-delay: 0.2s;
-        }
-
-        .topping-3 {
-          background: #fde047;
-          top: 60%;
-          left: 20%;
-          animation-delay: 0.4s;
-        }
-
-        .topping-4 {
-          background: #dc2626;
-          top: 50%;
-          left: 50%;
-          animation-delay: 0.6s;
-        }
-
-        @keyframes pulse {
+        @keyframes float {
           0%,
           100% {
-            transform: scale(1);
+            transform: translateY(0px) rotate(0deg);
           }
           50% {
-            transform: scale(1.05);
+            transform: translateY(-20px) rotate(180deg);
           }
         }
-
-        @keyframes bounce {
-          0%,
-          100% {
-            transform: translateY(0px);
+        .animate-float {
+          animation: float 3s ease-in-out infinite;
+        }
+        .animate-gradient {
+          background-size: 400% 400%;
+          animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+          0% {
+            background-position: 0% 50%;
           }
           50% {
-            transform: translateY(-3px);
-          }
-        }
-
-        .spice {
-          position: absolute;
-          width: 4px;
-          height: 4px;
-          background: #fbbf24;
-          border-radius: 50%;
-          animation: fall 4s linear infinite;
-        }
-
-        .spice-1 {
-          left: 5%;
-          animation-delay: 0s;
-        }
-        .spice-2 {
-          left: 15%;
-          animation-delay: 1s;
-        }
-        .spice-3 {
-          left: 25%;
-          animation-delay: 2s;
-        }
-        .spice-4 {
-          left: 35%;
-          animation-delay: 0.5s;
-        }
-        .spice-5 {
-          left: 45%;
-          animation-delay: 1.5s;
-        }
-
-        @keyframes fall {
-          0% {
-            top: -10px;
-            opacity: 1;
+            background-position: 100% 50%;
           }
           100% {
-            top: 100vh;
-            opacity: 0;
-          }
-        }
-
-        .pizza-loading-spinner {
-          width: 20px;
-          height: 20px;
-          border: 2px solid #ffffff;
-          border-top: 2px solid transparent;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
+            background-position: 0% 50%;
           }
         }
       `}</style>

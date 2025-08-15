@@ -5,12 +5,18 @@ import * as THREE from 'three';
 
 // Base64 encoded ingredient images - optimize edilmiş
 const INGREDIENT_BASE64 = {
-  domates: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
-  biber: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
-  mantar: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
-  mısır: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
-  sucuk: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
-  zeytin: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
+  domates:
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
+  biber:
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
+  mantar:
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
+  mısır:
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
+  sucuk:
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
+  zeytin:
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', // Placeholder
 };
 
 const INGREDIENT_TYPES = Object.keys(INGREDIENT_BASE64);
@@ -39,9 +45,10 @@ const PizzaIngredientsAnimationOptimized = () => {
     const loader = new THREE.TextureLoader();
     const totalTextures = INGREDIENT_TYPES.length;
 
-    INGREDIENT_TYPES.forEach((type) => {
-      const base64Data = INGREDIENT_BASE64[type as keyof typeof INGREDIENT_BASE64];
-      
+    INGREDIENT_TYPES.forEach(type => {
+      const base64Data =
+        INGREDIENT_BASE64[type as keyof typeof INGREDIENT_BASE64];
+
       loader.load(
         base64Data, // Base64 data URL
         texture => {
@@ -50,7 +57,7 @@ const PizzaIngredientsAnimationOptimized = () => {
           texture.magFilter = THREE.LinearFilter;
           texture.generateMipmaps = false; // Performans için mipmap'leri kapat
           texture.flipY = false; // UV koordinatları için
-          
+
           texturesRef.current[type] = texture;
           texturesLoadedRef.current++;
 
@@ -110,10 +117,10 @@ const PizzaIngredientsAnimationOptimized = () => {
       const createIngredient = (type: string, x: number): Ingredient => {
         const texture = texturesRef.current[type] || null;
         const size = 0.9;
-        
+
         // Geometry'yi paylaş (memory optimization)
         const geometry = new THREE.PlaneGeometry(size, size);
-        
+
         const material = new THREE.MeshBasicMaterial({
           map: texture,
           transparent: true,
@@ -121,10 +128,10 @@ const PizzaIngredientsAnimationOptimized = () => {
           depthWrite: false,
           side: THREE.DoubleSide, // Çift taraflı görünürlük
         });
-        
+
         const mesh = new THREE.Mesh(geometry, material);
         mesh.position.set(x, 8, 0);
-        
+
         return {
           mesh,
           velocity: new THREE.Vector3(
@@ -142,11 +149,16 @@ const PizzaIngredientsAnimationOptimized = () => {
 
         // Genişlik oranına göre x aralığı hesapla
         const aspect = camera.aspect;
-        const xRange = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z * aspect;
+        const xRange =
+          Math.tan((camera.fov * Math.PI) / 360) * camera.position.z * aspect;
 
         // Daha sık yeni ingredient ekle - PERFORMANS ARTTI
-        if (Math.random() < 0.2) { // %20 şans
-          const randomType = INGREDIENT_TYPES[Math.floor(Math.random() * INGREDIENT_TYPES.length)];
+        if (Math.random() < 0.2) {
+          // %20 şans
+          const randomType =
+            INGREDIENT_TYPES[
+              Math.floor(Math.random() * INGREDIENT_TYPES.length)
+            ];
           const x = (Math.random() - 0.5) * 2 * xRange;
           const ingredient = createIngredient(randomType, x);
           scene.add(ingredient.mesh);
@@ -175,15 +187,15 @@ const PizzaIngredientsAnimationOptimized = () => {
       // Handle resize - OPTİMİZE EDİLMİŞ
       const handleResize = () => {
         if (!mountRef.current || !camera || !renderer) return;
-        
+
         const width = mountRef.current.clientWidth;
         const height = mountRef.current.clientHeight;
-        
+
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
         renderer.setSize(width, height);
       };
-      
+
       window.addEventListener('resize', handleResize);
 
       return () => {
@@ -236,4 +248,4 @@ const PizzaIngredientsAnimationOptimized = () => {
   );
 };
 
-export default PizzaIngredientsAnimationOptimized; 
+export default PizzaIngredientsAnimationOptimized;

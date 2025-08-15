@@ -27,26 +27,27 @@ export async function POST(request: NextRequest) {
         email: 'test@example.com',
         password: '123456',
         name: 'Test Kullanıcı',
-        role: 'user'
+        role: 'user',
       },
       {
         email: 'admin@123',
         password: '123456',
         name: 'Kaymaz Admin',
-        role: 'admin'
+        role: 'admin',
       },
       {
         email: 'pizzapalaceofficial00@gmail.com',
         password: '123456',
         name: 'Pizza Palace Admin',
-        role: 'pizza_admin'
-      }
+        role: 'pizza_admin',
+      },
     ];
 
     // Test kullanıcısını bul
-    const testUser = testUsers.find(user => 
-      user.email.toLowerCase() === email.toLowerCase() && 
-      user.password === password
+    const testUser = testUsers.find(
+      user =>
+        user.email.toLowerCase() === email.toLowerCase() &&
+        user.password === password
     );
 
     if (!testUser) {
@@ -101,7 +102,6 @@ export async function POST(request: NextRequest) {
     });
 
     return response;
-
   } catch (error) {
     console.error('Test login hatası:', error);
     return NextResponse.json(
@@ -112,4 +112,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

@@ -18,14 +18,16 @@ export default function Base64FileUpload({
   maxSizeMB = 10,
   showPreview = true,
   label = 'Dosya Seç',
-  className = ''
+  className = '',
 }: Base64FileUploadProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [preview, setPreview] = useState<string>('');
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -40,7 +42,7 @@ export default function Base64FileUpload({
 
       // Base64'e çevir
       const base64 = await Base64Utils.fileToBase64(file);
-      
+
       // Boyut kontrolü
       if (!Base64Utils.validateFileSize(base64, maxSizeMB)) {
         throw new Error(`Base64 boyutu ${maxSizeMB}MB'dan büyük`);
@@ -67,9 +69,10 @@ export default function Base64FileUpload({
 
       // Callback'i çağır
       onFileSelect(optimizedBase64, file.name, mimeType);
-
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Dosya yüklenirken hata oluştu');
+      setError(
+        err instanceof Error ? err.message : 'Dosya yüklenirken hata oluştu'
+      );
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +88,7 @@ export default function Base64FileUpload({
       const dataTransfer = new DataTransfer();
       dataTransfer.items.add(file);
       fileInputRef.current.files = dataTransfer.files;
-      
+
       // Event tetikle
       const changeEvent = new Event('change', { bubbles: true });
       fileInputRef.current.dispatchEvent(changeEvent);
@@ -108,7 +111,7 @@ export default function Base64FileUpload({
           padding: '20px',
           textAlign: 'center',
           cursor: 'pointer',
-          transition: 'border-color 0.3s ease'
+          transition: 'border-color 0.3s ease',
         }}
         onClick={() => fileInputRef.current?.click()}
       >
@@ -119,7 +122,7 @@ export default function Base64FileUpload({
           onChange={handleFileSelect}
           style={{ display: 'none' }}
         />
-        
+
         {isLoading ? (
           <div className="loading">
             <div className="spinner"></div>
@@ -127,7 +130,10 @@ export default function Base64FileUpload({
           </div>
         ) : (
           <div className="upload-content">
-            <i className="fas fa-cloud-upload-alt" style={{ fontSize: '2rem', color: '#666' }}></i>
+            <i
+              className="fas fa-cloud-upload-alt"
+              style={{ fontSize: '2rem', color: '#666' }}
+            ></i>
             <p style={{ margin: '10px 0', color: '#666' }}>{label}</p>
             <p style={{ fontSize: '0.8rem', color: '#999' }}>
               Maksimum boyut: {maxSizeMB}MB
@@ -137,7 +143,10 @@ export default function Base64FileUpload({
       </div>
 
       {error && (
-        <div className="error" style={{ color: 'red', marginTop: '10px', fontSize: '0.9rem' }}>
+        <div
+          className="error"
+          style={{ color: 'red', marginTop: '10px', fontSize: '0.9rem' }}
+        >
           {error}
         </div>
       )}
@@ -145,10 +154,16 @@ export default function Base64FileUpload({
       {showPreview && preview && (
         <div className="preview" style={{ marginTop: '15px' }}>
           <h6>Önizleme:</h6>
-          <div style={{ maxWidth: '200px', maxHeight: '200px', overflow: 'hidden' }}>
-            <img 
-              src={preview} 
-              alt="Preview" 
+          <div
+            style={{
+              maxWidth: '200px',
+              maxHeight: '200px',
+              overflow: 'hidden',
+            }}
+          >
+            <img
+              src={preview}
+              alt="Preview"
               style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
             />
           </div>
@@ -159,11 +174,11 @@ export default function Base64FileUpload({
         .base64-upload {
           margin: 15px 0;
         }
-        
+
         .upload-area:hover {
           border-color: #007bff !important;
         }
-        
+
         .loading .spinner {
           border: 3px solid #f3f3f3;
           border-top: 3px solid #007bff;
@@ -173,12 +188,16 @@ export default function Base64FileUpload({
           animation: spin 1s linear infinite;
           margin: 0 auto 10px;
         }
-        
+
         @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </div>
   );
-} 
+}

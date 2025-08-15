@@ -12,4 +12,3 @@ export default function PizzaLayout({
 }) {
   return <div>{children}</div>;
 }
-

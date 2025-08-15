@@ -10,22 +10,22 @@ const VERCEL_USERS = [
     email: 'test@example.com',
     password: '123456',
     name: 'Test Kullanıcı',
-    role: 'user'
+    role: 'user',
   },
   {
     id: '2',
     email: 'admin@123',
     password: '123456',
     name: 'Kaymaz Admin',
-    role: 'admin'
+    role: 'admin',
   },
   {
     id: '3',
     email: 'pizzapalaceofficial00@gmail.com',
     password: '123456',
     name: 'Pizza Palace Admin',
-    role: 'pizza_admin'
-  }
+    role: 'pizza_admin',
+  },
 ];
 
 // GET metodu - Vercel'deki 405 hatasını çözmek için
@@ -44,7 +44,9 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    console.log('🔐 Vercel Login isteği:', { email: email?.substring(0, 3) + '***' });
+    console.log('🔐 Vercel Login isteği:', {
+      email: email?.substring(0, 3) + '***',
+    });
 
     // Input validation
     if (!email || !password) {
@@ -59,9 +61,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Kullanıcıyı bul
-    const user = VERCEL_USERS.find(u => 
-      u.email.toLowerCase() === email.toLowerCase() && 
-      u.password === password
+    const user = VERCEL_USERS.find(
+      u =>
+        u.email.toLowerCase() === email.toLowerCase() && u.password === password
     );
 
     if (!user) {
@@ -121,7 +123,6 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ Vercel login tamamlandı:', user.email);
     return response;
-
   } catch (error) {
     console.error('❌ Vercel login hatası:', error);
     return NextResponse.json(
@@ -133,4 +134,4 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

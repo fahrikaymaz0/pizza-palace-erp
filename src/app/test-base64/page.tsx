@@ -7,9 +7,13 @@ export default function TestBase64Page() {
   const [uploadedFiles, setUploadedFiles] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const handleFileUpload = async (base64: string, filename: string, mimeType: string) => {
+  const handleFileUpload = async (
+    base64: string,
+    filename: string,
+    mimeType: string
+  ) => {
     setLoading(true);
-    
+
     try {
       const response = await fetch('/api/upload/base64', {
         method: 'POST',
@@ -20,7 +24,7 @@ export default function TestBase64Page() {
           base64,
           filename,
           mimeType,
-          category: 'test'
+          category: 'test',
         }),
       });
 
@@ -42,7 +46,7 @@ export default function TestBase64Page() {
   const displayFile = (file: any) => {
     if (file.mimeType.startsWith('image/')) {
       return (
-        <img 
+        <img
           src={`data:${file.mimeType};base64,${file.base64}`}
           alt={file.originalName}
           style={{ maxWidth: '200px', maxHeight: '200px' }}
@@ -50,11 +54,11 @@ export default function TestBase64Page() {
       );
     } else if (file.mimeType.startsWith('video/')) {
       return (
-        <video 
-          controls
-          style={{ maxWidth: '200px', maxHeight: '200px' }}
-        >
-          <source src={`data:${file.mimeType};base64,${file.base64}`} type={file.mimeType} />
+        <video controls style={{ maxWidth: '200px', maxHeight: '200px' }}>
+          <source
+            src={`data:${file.mimeType};base64,${file.base64}`}
+            type={file.mimeType}
+          />
           Tarayıcınız video oynatmayı desteklemiyor.
         </video>
       );
@@ -72,12 +76,12 @@ export default function TestBase64Page() {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-3xl font-bold mb-6">Base64 Dosya Yükleme Testi</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Yükleme Alanı */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Dosya Yükle</h2>
-          
+
           <Base64FileUpload
             onFileSelect={handleFileUpload}
             accept="image/*,video/*"
@@ -96,7 +100,7 @@ export default function TestBase64Page() {
         {/* Yüklenen Dosyalar */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Yüklenen Dosyalar</h2>
-          
+
           {uploadedFiles.length === 0 ? (
             <p className="text-gray-500">Henüz dosya yüklenmedi</p>
           ) : (
@@ -104,9 +108,7 @@ export default function TestBase64Page() {
               {uploadedFiles.map((file, index) => (
                 <div key={index} className="border rounded p-3">
                   <h3 className="font-medium mb-2">{file.originalName}</h3>
-                  <div className="mb-2">
-                    {displayFile(file)}
-                  </div>
+                  <div className="mb-2">{displayFile(file)}</div>
                   <div className="text-sm text-gray-600">
                     <p>Boyut: {file.size.toFixed(2)} MB</p>
                     <p>Tür: {file.mimeType}</p>
@@ -154,4 +156,4 @@ export default function TestBase64Page() {
       </div>
     </div>
   );
-} 
+}

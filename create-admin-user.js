@@ -38,4 +38,3 @@ async function createAdminUser() {
 }
 
 createAdminUser();
-

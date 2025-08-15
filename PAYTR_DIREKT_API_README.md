@@ -199,4 +199,3 @@ PayTR Direkt API entegrasyonu ile ilgili sorularınız için:
 ---
 
 **Not**: Bu sistem [PayTR Direkt API](https://dev.paytr.com/direkt-api) dokümantasyonuna göre oluşturulmuştur ve sadece test amaçlıdır. Canlı ortamda kullanmadan önce PayTR ile iletişime geçin.
-

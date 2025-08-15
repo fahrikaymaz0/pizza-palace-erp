@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Dosya boyutu 10MB\'dan büyük olamaz',
+          error: "Dosya boyutu 10MB'dan büyük olamaz",
         },
         { status: 400 }
       );
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
       'video/avi',
       'video/mov',
       'video/webm',
-      'application/pdf'
+      'application/pdf',
     ];
 
     if (!allowedTypes.includes(mimeType)) {
@@ -96,7 +96,6 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-
   } catch (error) {
     console.error('Base64 yükleme hatası:', error);
     return NextResponse.json(
@@ -127,7 +126,6 @@ export async function GET(request: NextRequest) {
       },
       { status: 200 }
     );
-
   } catch (error) {
     console.error('Dosya listesi alma hatası:', error);
     return NextResponse.json(
@@ -138,4 +136,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-} 
+}

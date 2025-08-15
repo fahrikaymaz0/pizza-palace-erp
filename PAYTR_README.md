@@ -169,4 +169,3 @@ PayTR API entegrasyonu ile ilgili sorularınız için:
 ---
 
 **Not**: Bu sistem sadece test amaçlıdır. Canlı ortamda kullanmadan önce PayTR ile iletişime geçin.
-

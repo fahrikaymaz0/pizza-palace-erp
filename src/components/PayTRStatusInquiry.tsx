@@ -366,4 +366,3 @@ const PayTRStatusInquiry = () => {
 };
 
 export default PayTRStatusInquiry;
-

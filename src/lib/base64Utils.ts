@@ -1,6 +1,5 @@
 // Base64 dosya işlemleri için yardımcı fonksiyonlar
 export class Base64Utils {
-  
   // Dosyayı Base64'e çevir
   static async fileToBase64(file: File): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -17,17 +16,21 @@ export class Base64Utils {
   }
 
   // Base64'ü dosyaya çevir
-  static base64ToFile(base64: string, filename: string, mimeType: string): File {
+  static base64ToFile(
+    base64: string,
+    filename: string,
+    mimeType: string
+  ): File {
     const byteCharacters = atob(base64);
     const byteNumbers = new Array(byteCharacters.length);
-    
+
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
-    
+
     const byteArray = new Uint8Array(byteNumbers);
     const blob = new Blob([byteArray], { type: mimeType });
-    
+
     return new File([blob], filename, { type: mimeType });
   }
 
@@ -42,16 +45,16 @@ export class Base64Utils {
   static getMimeType(filename: string): string {
     const ext = filename.toLowerCase().split('.').pop();
     const mimeTypes: { [key: string]: string } = {
-      'jpg': 'image/jpeg',
-      'jpeg': 'image/jpeg',
-      'png': 'image/png',
-      'gif': 'image/gif',
-      'webp': 'image/webp',
-      'mp4': 'video/mp4',
-      'avi': 'video/avi',
-      'mov': 'video/quicktime',
-      'webm': 'video/webm',
-      'pdf': 'application/pdf'
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      png: 'image/png',
+      gif: 'image/gif',
+      webp: 'image/webp',
+      mp4: 'video/mp4',
+      avi: 'video/avi',
+      mov: 'video/quicktime',
+      webm: 'video/webm',
+      pdf: 'application/pdf',
     };
     return mimeTypes[ext || ''] || 'application/octet-stream';
   }
@@ -63,13 +66,16 @@ export class Base64Utils {
   }
 
   // Base64'ü optimize et (resimler için)
-  static async optimizeImage(base64: string, maxWidth: number = 800): Promise<string> {
-    return new Promise((resolve) => {
+  static async optimizeImage(
+    base64: string,
+    maxWidth: number = 800
+  ): Promise<string> {
+    return new Promise(resolve => {
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
+
         if (!ctx) {
           resolve(base64);
           return;
@@ -84,15 +90,15 @@ export class Base64Utils {
 
         canvas.width = width;
         canvas.height = height;
-        
+
         // Resmi çiz
         ctx.drawImage(img, 0, 0, width, height);
-        
+
         // JPEG olarak kaydet (kalite: 0.8)
         const optimizedBase64 = canvas.toDataURL('image/jpeg', 0.8);
         resolve(optimizedBase64.split(',')[1]);
       };
-      
+
       img.onerror = () => resolve(base64);
       img.src = `data:image/jpeg;base64,${base64}`;
     });
@@ -104,7 +110,7 @@ export class Base64Utils {
       const video = document.createElement('video');
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (!ctx) {
         reject(new Error('Canvas context alınamadı'));
         return;
@@ -119,7 +125,7 @@ export class Base64Utils {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0);
-        
+
         const thumbnail = canvas.toDataURL('image/jpeg', 0.8);
         resolve(thumbnail.split(',')[1]);
       };
@@ -128,4 +134,4 @@ export class Base64Utils {
       video.src = URL.createObjectURL(videoFile);
     });
   }
-} 
+}
