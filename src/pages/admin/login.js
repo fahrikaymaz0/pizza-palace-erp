@@ -9,10 +9,15 @@ export default function AdminLoginPage() {
   const [error, setError] = useState('');
   const [debug, setDebug] = useState('');
 
+  // API URL - Production'da localhost'a yönlendir
+  const API_BASE = process.env.NODE_ENV === 'production' 
+    ? 'http://localhost:3001/api' 
+    : '/api';
+
   const testHealthAPI = async () => {
     try {
-      console.log('🧪 Testing Health API (Pages Router)...');
-      const response = await fetch('/api/health');
+      console.log('🧪 Testing Health API...');
+      const response = await fetch(`${API_BASE}/health`);
       console.log('📡 Health API Status:', response.status);
       console.log('📡 Health API Headers:', response.headers);
       
@@ -31,8 +36,8 @@ export default function AdminLoginPage() {
 
   const testAdminAPI = async () => {
     try {
-      console.log('🧪 Testing Admin Login API (Pages Router)...');
-      const response = await fetch('/api/auth/admin-login', {
+      console.log('🧪 Testing Admin Login API...');
+      const response = await fetch(`${API_BASE}/auth/admin-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,9 +70,9 @@ export default function AdminLoginPage() {
     setDebug('');
 
     try {
-      console.log('🔄 ADMIN LOGIN - Pages Router version...');
+      console.log('🔄 ADMIN LOGIN - LOCALHOST BACKEND...');
       
-      const response = await fetch('/api/auth/admin-login', {
+      const response = await fetch(`${API_BASE}/auth/admin-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -104,7 +109,7 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-white bg-opacity-20">
@@ -114,7 +119,7 @@ export default function AdminLoginPage() {
             Admin Girişi
           </h2>
           <p className="mt-2 text-center text-sm text-blue-100">
-            Pages Router Version - API Test
+            Localhost Backend'e Bağlanıyor
           </p>
         </div>
 
@@ -207,7 +212,9 @@ export default function AdminLoginPage() {
         <div className="text-center bg-white bg-opacity-10 p-4 rounded-lg">
           <p className="text-sm text-white font-medium mb-2">Test Admin:</p>
           <p className="text-xs text-blue-100">admin@123 / 123456</p>
-          <p className="text-xs text-blue-100 mt-1">Pages Router API</p>
+          <p className="text-xs text-blue-100 mt-1">pizzapalaceofficial00@gmail.com / 123456</p>
+          <p className="text-xs text-blue-100 mt-1">Backend: {API_BASE}</p>
+          <p className="text-xs text-blue-100 mt-1">Environment: {process.env.NODE_ENV}</p>
         </div>
       </div>
     </div>

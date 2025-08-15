@@ -1,9 +1,7 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
-export default function AdminLoginPage() {
+export default function AdminTestPage() {
   const router = useRouter();
   const [email, setEmail] = useState('admin@123');
   const [password, setPassword] = useState('123456');
@@ -11,10 +9,15 @@ export default function AdminLoginPage() {
   const [error, setError] = useState('');
   const [debug, setDebug] = useState('');
 
+  // API URL - Production'da localhost'a yönlendir
+  const API_BASE = process.env.NODE_ENV === 'production' 
+    ? 'http://localhost:3001/api' 
+    : '/api';
+
   const testHealthAPI = async () => {
     try {
-      console.log('�� Testing Health API (Pages Router)...');
-      const response = await fetch('/api/health');
+      console.log('🧪 Testing Health API...');
+      const response = await fetch(`${API_BASE}/health`);
       console.log('📡 Health API Status:', response.status);
       console.log('📡 Health API Headers:', response.headers);
       
@@ -33,8 +36,8 @@ export default function AdminLoginPage() {
 
   const testAdminAPI = async () => {
     try {
-      console.log('🧪 Testing Admin Login API (Pages Router)...');
-      const response = await fetch('/api/auth/admin-login', {
+      console.log('🧪 Testing Admin Login API...');
+      const response = await fetch(`${API_BASE}/auth/admin-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,16 +63,16 @@ export default function AdminLoginPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setDebug('');
 
     try {
-      console.log('🔄 ADMIN LOGIN - Pages Router version...');
+      console.log('🔄 ADMIN LOGIN - LOCALHOST BACKEND...');
       
-      const response = await fetch('/api/auth/admin-login', {
+      const response = await fetch(`${API_BASE}/auth/admin-login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,17 +109,17 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-green-600 via-blue-600 to-purple-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-white bg-opacity-20">
-            <span className="text-2xl">👨‍💼</span>
+            <span className="text-2xl">🧪</span>
           </div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Admin Girişi
+            Admin Test Sayfası
           </h2>
           <p className="mt-2 text-center text-sm text-blue-100">
-            Pages Router Version - API Test
+            Localhost Backend'e Bağlanıyor
           </p>
         </div>
 
@@ -167,7 +170,7 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
@@ -209,10 +212,11 @@ export default function AdminLoginPage() {
         <div className="text-center bg-white bg-opacity-10 p-4 rounded-lg">
           <p className="text-sm text-white font-medium mb-2">Test Admin:</p>
           <p className="text-xs text-blue-100">admin@123 / 123456</p>
-          <p className="text-xs text-blue-100 mt-1">Pages Router API</p>
+          <p className="text-xs text-blue-100 mt-1">pizzapalaceofficial00@gmail.com / 123456</p>
+          <p className="text-xs text-blue-100 mt-1">Backend: {API_BASE}</p>
+          <p className="text-xs text-blue-100 mt-1">Environment: {process.env.NODE_ENV}</p>
         </div>
       </div>
     </div>
   );
-}
-
+} 

@@ -1,13 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // App Router'ı devre dışı bırak, Pages Router kullan
+  // Pages Router kullanıyoruz
   experimental: {
-    appDir: false,
+    appDir: false
   },
-  // Cache busting için
+  
+  // Cache busting
   generateBuildId: async () => {
     return 'build-' + Date.now();
   },
+  
   // API routes için cache'i devre dışı bırak
   async headers() {
     return [
