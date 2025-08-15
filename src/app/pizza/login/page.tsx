@@ -37,8 +37,8 @@ export default function PizzaLogin() {
       );
 
       try {
-        // Pizza admin girişi için test API çağrısı
-        const response = await fetch('/api/auth/test-login', {
+        // Pizza admin girişi için Vercel API çağrısı
+        const response = await fetch('/api/auth/vercel-login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -71,8 +71,8 @@ export default function PizzaLogin() {
       console.log('Admin girişi tespit edildi - API üzerinden doğrulanıyor');
 
       try {
-        // Admin girişi için test API çağrısı
-        const response = await fetch('/api/auth/test-login', {
+        // Admin girişi için Vercel API çağrısı
+        const response = await fetch('/api/auth/vercel-login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -102,8 +102,8 @@ export default function PizzaLogin() {
 
     // Normal kullanıcı girişi
     try {
-      // Test endpoint'ini kullan
-      const response = await fetch('/api/auth/test-login', {
+      // Vercel endpoint'ini kullan
+      const response = await fetch('/api/auth/vercel-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

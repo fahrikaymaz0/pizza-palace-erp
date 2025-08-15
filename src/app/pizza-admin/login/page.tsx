@@ -15,7 +15,7 @@ export default function PizzaAdminLoginPage() {
     setError(null);
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/test-login', {
+      const res = await fetch('/api/auth/vercel-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

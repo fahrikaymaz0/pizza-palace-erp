@@ -17,7 +17,7 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/test-login', {
+      const response = await fetch('/api/auth/vercel-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

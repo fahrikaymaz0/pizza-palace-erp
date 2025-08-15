@@ -13,7 +13,7 @@ export default function TestAuthPage() {
     setResult(null);
 
     try {
-      const response = await fetch('/api/auth/test-login', {
+      const response = await fetch('/api/auth/vercel-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export default function TestAuthPage() {
     setResult(null);
 
     try {
-      const response = await fetch('/api/auth/verify', {
+      const response = await fetch('/api/auth/vercel-verify', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
