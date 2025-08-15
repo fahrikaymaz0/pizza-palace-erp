@@ -184,7 +184,7 @@ export default function ModernAdminDashboard() {
         // Pizza Palace API'leri - Authentication
         {
           name: 'Login API',
-          url: '/api/auth/login',
+          url: '/api/auth/test-login',
           method: 'POST' as const,
           requiresAuth: false,
           body: { email: 'admin@kaymaz.digital', password: 'KaymazAdmin2024!' },

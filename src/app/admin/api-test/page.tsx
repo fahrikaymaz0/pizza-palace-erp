@@ -26,7 +26,7 @@ export default function ApiTestPage() {
       id: '1',
       name: 'User Login',
       method: 'POST',
-      path: '/api/auth/login',
+              path: '/api/auth/test-login',
       status: 'success',
       responseTime: 45,
       lastTested: '2024-01-15 14:30',

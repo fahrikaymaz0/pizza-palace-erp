@@ -37,8 +37,8 @@ export default function PizzaLogin() {
       );
 
       try {
-        // Pizza admin girişi için API çağrısı
-        const response = await fetch('/api/auth/login', {
+        // Pizza admin girişi için test API çağrısı
+        const response = await fetch('/api/auth/test-login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
