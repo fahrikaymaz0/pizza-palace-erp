@@ -71,8 +71,8 @@ export default function PizzaLogin() {
       console.log('Admin girişi tespit edildi - API üzerinden doğrulanıyor');
 
       try {
-        // Admin girişi için API çağrısı
-        const response = await fetch('/api/auth/admin-login', {
+        // Admin girişi için test API çağrısı
+        const response = await fetch('/api/auth/test-login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +102,8 @@ export default function PizzaLogin() {
 
     // Normal kullanıcı girişi
     try {
-      const response = await fetch('/api/auth/login', {
+      // Test endpoint'ini kullan
+      const response = await fetch('/api/auth/test-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -12,3 +12,4 @@ export default function PizzaAdminLayout({
 }) {
   return <div>{children}</div>;
 }
+

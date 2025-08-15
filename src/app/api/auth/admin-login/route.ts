@@ -5,6 +5,18 @@ import { generateRequestId } from '@/lib/apiResponse';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
+// GET metodu - Vercel'deki 405 hatasını çözmek için
+export async function GET(request: NextRequest) {
+  return NextResponse.json(
+    {
+      success: false,
+      error: 'GET metodu desteklenmiyor. POST kullanın.',
+      code: 'METHOD_NOT_ALLOWED',
+    },
+    { status: 405 }
+  );
+}
+
 export async function POST(request: NextRequest) {
   const requestId = generateRequestId();
   console.log(`🔐 [${requestId}] Admin Login API başladı`);

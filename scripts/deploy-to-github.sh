@@ -108,3 +108,4 @@ echo -e "5. Deploy edin!"
 echo -e "${GREEN}🎉 İşlem tamamlandı!${NC}"
 
 
+

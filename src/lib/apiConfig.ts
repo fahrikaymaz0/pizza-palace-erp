@@ -64,3 +64,4 @@ export function getBaseUrl(): string {
   const cfg = loadApiConfig();
   return cfg.baseUrl.replace(/\/?$/, '');
 }
+

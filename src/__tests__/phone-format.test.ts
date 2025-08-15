@@ -61,3 +61,4 @@ describe('Phone Number Formatting', () => {
     expect(validatePhoneNumber(input)).toBe(false);
   });
 });
+
