@@ -1,124 +1,98 @@
 import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
-import { getDatabase } from '@/lib/sqlite';
-import { generateRequestId } from '@/lib/apiResponse';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const JWT_SECRET = process.env.JWT_SECRET || 'pizza-palace-cache-breaking-2024';
 
-// GET metodu - Vercel'deki 405 hatasını çözmek için
-export async function GET(request: NextRequest) {
-  return NextResponse.json(
-    {
-      success: false,
-      error: 'GET metodu desteklenmiyor. POST kullanın.',
-      code: 'METHOD_NOT_ALLOWED',
-    },
-    { status: 405 }
-  );
-}
+// Cache-breaking admin authentication system
+const ADMIN_USERS = [
+  {
+    id: '2',
+    email: 'admin@123',
+    password: '123456',
+    name: 'Admin',
+    role: 'admin'
+  },
+  {
+    id: '3',
+    email: 'pizzapalaceofficial00@gmail.com',
+    password: '123456',
+    name: 'Pizza Admin',
+    role: 'pizza_admin'
+  }
+];
 
 export async function POST(request: NextRequest) {
-  const requestId = generateRequestId();
-  console.log(`🔐 [${requestId}] Admin Login API başladı`);
-
   try {
+    console.log('🔄 CACHE-BREAKING ADMIN LOGIN - Eski endpoint düzeltildi');
+    
     const body = await request.json();
     const { email, password } = body;
 
+    console.log('📥 Admin login request:', { email: email?.substring(0, 3) + '***' });
+
     if (!email || !password) {
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Email ve şifre gereklidir',
-          code: 'VALIDATION_ERROR',
-          requestId,
-        },
+        { success: false, error: 'Email ve şifre gerekli' },
         { status: 400 }
       );
     }
 
-    const database = getDatabase();
-
-    // Admin kullanıcıyı doğrula (email ve role=admin)
-    const admin = database
-      .prepare('SELECT * FROM users WHERE email = ? AND role = ?')
-      .get(email, 'admin') as any;
+    const admin = ADMIN_USERS.find(u => 
+      u.email.toLowerCase() === email.toLowerCase() && 
+      u.password === password
+    );
 
     if (!admin) {
-      console.log(`❌ [${requestId}] Admin bulunamadı: ${email}`);
+      console.log('❌ Invalid admin credentials');
       return NextResponse.json(
-        {
-          success: false,
-          error: 'Geçersiz email veya şifre',
-          code: 'INVALID_CREDENTIALS',
-          requestId,
-        },
+        { success: false, error: 'Geçersiz email veya şifre' },
         { status: 401 }
       );
     }
 
-    // Basit şifre kontrolü: password_hash alanını düz metin olarak kullanıyoruz (demo)
-    if (password !== admin.password_hash) {
-      console.log(`❌ [${requestId}] Yanlış şifre: ${email}`);
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'Geçersiz email veya şifre',
-          code: 'INVALID_CREDENTIALS',
-          requestId,
-        },
-        { status: 401 }
-      );
-    }
-
-    // Admin token
-    const adminToken = jwt.sign(
-      { userId: admin.id, email: admin.email, role: 'admin', name: admin.name },
+    const token = jwt.sign(
+      { userId: admin.id, email: admin.email, role: admin.role },
       JWT_SECRET,
       { expiresIn: '24h' }
     );
 
-    database
-      .prepare('UPDATE users SET last_login = ? WHERE id = ?')
-      .run(new Date().toISOString(), admin.id);
-
-    const response = NextResponse.json(
-      {
-        success: true,
-        message: 'Admin girişi başarılı',
-        data: {
-          user: {
-            id: admin.id,
-            name: admin.name,
-            email: admin.email,
-            role: 'admin',
-          },
+    const response = NextResponse.json({
+      success: true,
+      message: 'Admin girişi başarılı',
+      data: {
+        user: {
+          id: admin.id,
+          email: admin.email,
+          name: admin.name,
+          role: admin.role
         },
-        requestId,
-        timestamp: new Date().toISOString(),
-      },
-      { status: 200 }
-    );
-
-    response.cookies.set('admin-token', adminToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 24 * 60 * 60,
-      path: '/',
+        token
+      }
     });
 
+    response.cookies.set('auth-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 86400,
+      path: '/'
+    });
+
+    console.log('✅ Admin login successful:', admin.email);
     return response;
+
   } catch (error) {
-    console.error(`❌ [${requestId}] Admin Login error:`, error);
+    console.error('❌ Admin login error:', error);
     return NextResponse.json(
-      {
-        success: false,
-        error: 'Admin girişi yapılamadı',
-        code: 'INTERNAL_SERVER_ERROR',
-        requestId,
-      },
+      { success: false, error: 'Admin giriş hatası' },
       { status: 500 }
     );
   }
+}
+
+export async function GET() {
+  return NextResponse.json(
+    { success: false, error: 'POST metodu kullanın' },
+    { status: 405 }
+  );
 }

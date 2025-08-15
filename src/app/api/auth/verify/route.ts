@@ -1,37 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { SimpleAuthService } from '@/lib/simple-auth';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'pizza-palace-cache-breaking-2024';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('🔄 CACHE-BREAKING VERIFY - Eski endpoint düzeltildi');
+    
     const token = request.cookies.get('auth-token')?.value;
 
     if (!token) {
+      console.log('❌ No token found');
       return NextResponse.json(
         { success: false, error: 'Token bulunamadı' },
         { status: 401 }
       );
     }
 
-    const result = await SimpleAuthService.verifyToken(token);
-
-    if (!result.success) {
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET) as any;
+      
+      console.log('✅ Token verified for user:', decoded.email);
+      
+      return NextResponse.json({
+        success: true,
+        data: {
+          user: {
+            id: decoded.userId,
+            email: decoded.email,
+            name: decoded.name || 'User',
+            role: decoded.role
+          }
+        }
+      });
+    } catch (jwtError) {
+      console.log('❌ Invalid token');
       return NextResponse.json(
-        { success: false, error: result.error },
+        { success: false, error: 'Geçersiz token' },
         { status: 401 }
       );
     }
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        user: result.user
-      }
-    });
-
   } catch (error) {
-    console.error('Verify API error:', error);
+    console.error('❌ Verify error:', error);
     return NextResponse.json(
-      { success: false, error: 'Sunucu hatası' },
+      { success: false, error: 'Doğrulama hatası' },
       { status: 500 }
     );
   }
