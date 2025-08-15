@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -13,7 +11,7 @@ export default function AdminLoginPage() {
 
   const testHealthAPI = async () => {
     try {
-      console.log('�� Testing Health API (Pages Router)...');
+      console.log('🧪 Testing Health API (Pages Router)...');
       const response = await fetch('/api/health');
       console.log('📡 Health API Status:', response.status);
       console.log('📡 Health API Headers:', response.headers);
@@ -60,7 +58,7 @@ export default function AdminLoginPage() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -214,5 +212,4 @@ export default function AdminLoginPage() {
       </div>
     </div>
   );
-}
-
+} 

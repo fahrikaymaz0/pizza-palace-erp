@@ -1,98 +1,98 @@
 import { NextRequest, NextResponse } from 'next/server';
-import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'pizza-palace-cache-breaking-2024';
-
-// Cache-breaking admin authentication system
+// Basit admin kullanıcıları
 const ADMIN_USERS = [
   {
-    id: '2',
     email: 'admin@123',
     password: '123456',
-    name: 'Admin',
+    name: 'Kaymaz Admin',
     role: 'admin'
   },
   {
-    id: '3',
     email: 'pizzapalaceofficial00@gmail.com',
     password: '123456',
-    name: 'Pizza Admin',
+    name: 'Pizza Palace Admin',
     role: 'pizza_admin'
   }
 ];
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🔄 CACHE-BREAKING ADMIN LOGIN - Eski endpoint düzeltildi');
+    console.log('🔐 Admin login attempt - Cache busting version...');
     
     const body = await request.json();
     const { email, password } = body;
 
-    console.log('📥 Admin login request:', { email: email?.substring(0, 3) + '***' });
+    console.log('📧 Email:', email);
+    console.log('🔑 Password check...');
 
-    if (!email || !password) {
-      return NextResponse.json(
-        { success: false, error: 'Email ve şifre gerekli' },
-        { status: 400 }
-      );
+    // Kullanıcıyı bul
+    const user = ADMIN_USERS.find(u => u.email === email && u.password === password);
+
+    if (!user) {
+      console.log('❌ Invalid credentials');
+      return NextResponse.json({
+        success: false,
+        error: 'Geçersiz email veya şifre'
+      }, { 
+        status: 401,
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
     }
 
-    const admin = ADMIN_USERS.find(u => 
-      u.email.toLowerCase() === email.toLowerCase() && 
-      u.password === password
-    );
+    console.log('✅ Admin login successful:', user.email);
 
-    if (!admin) {
-      console.log('❌ Invalid admin credentials');
-      return NextResponse.json(
-        { success: false, error: 'Geçersiz email veya şifre' },
-        { status: 401 }
-      );
-    }
-
-    const token = jwt.sign(
-      { userId: admin.id, email: admin.email, role: admin.role },
-      JWT_SECRET,
-      { expiresIn: '24h' }
-    );
-
-    const response = NextResponse.json({
+    // Başarılı giriş
+    return NextResponse.json({
       success: true,
       message: 'Admin girişi başarılı',
       data: {
         user: {
-          id: admin.id,
-          email: admin.email,
-          name: admin.name,
-          role: admin.role
+          id: '1',
+          email: user.email,
+          name: user.name,
+          role: user.role
         },
-        token
+        token: 'admin-token-' + Date.now()
+      }
+    }, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       }
     });
 
-    response.cookies.set('auth-token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 86400,
-      path: '/'
-    });
-
-    console.log('✅ Admin login successful:', admin.email);
-    return response;
-
   } catch (error) {
     console.error('❌ Admin login error:', error);
-    return NextResponse.json(
-      { success: false, error: 'Admin giriş hatası' },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      success: false,
+      error: 'Sunucu hatası'
+    }, { 
+      status: 500,
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      }
+    });
   }
 }
 
 export async function GET() {
-  return NextResponse.json(
-    { success: false, error: 'POST metodu kullanın' },
-    { status: 405 }
-  );
+  return NextResponse.json({
+    success: false,
+    error: 'POST metodu kullanın'
+  }, { 
+    status: 405,
+    headers: {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    }
+  });
 }

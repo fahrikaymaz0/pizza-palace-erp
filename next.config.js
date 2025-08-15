@@ -1,41 +1,32 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // App Router'ı devre dışı bırak, Pages Router kullan
   experimental: {
-    appDir: true,
+    appDir: false,
   },
-  output: 'standalone',
-  images: {
-    domains: ['localhost'],
-    unoptimized: true,
+  // Cache busting için
+  generateBuildId: async () => {
+    return 'build-' + Date.now();
   },
-  env: {
-    CUSTOM_KEY: process.env.CUSTOM_KEY,
-  },
+  // API routes için cache'i devre dışı bırak
   async headers() {
     return [
       {
         source: '/api/:path*',
         headers: [
-          { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: '*' },
           {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET,DELETE,PATCH,POST,PUT',
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
           },
           {
-            key: 'Access-Control-Allow-Headers',
-            value:
-              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
           },
         ],
-      },
-    ];
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/api/health',
-        destination: '/api/health',
       },
     ];
   },

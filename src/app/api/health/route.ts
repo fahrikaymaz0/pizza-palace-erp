@@ -1,40 +1,22 @@
-import { NextResponse } from 'next/server';
-import { getDatabase } from '@/lib/sqlite';
+import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET() {
-  try {
-    // Veritabanı bağlantısını kontrol et
-    const database = getDatabase();
-    const result = database.prepare('SELECT 1 as health').get() as {
-      health: number;
-    };
+export async function GET(request: NextRequest) {
+  return NextResponse.json({
+    status: 'OK',
+    message: 'API çalışıyor!',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development',
+    version: '1.0.0'
+  });
+}
 
-    if (result.health !== 1) {
-      throw new Error('Database health check failed');
-    }
-
-    return NextResponse.json(
-      {
-        status: 'healthy',
-        timestamp: new Date().toISOString(),
-        uptime: process.uptime(),
-        environment: process.env.NODE_ENV || 'development',
-        version: process.env.npm_package_version || '1.0.0',
-        database: 'connected',
-      },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error('Health check failed:', error);
-
-    return NextResponse.json(
-      {
-        status: 'unhealthy',
-        timestamp: new Date().toISOString(),
-        error: error instanceof Error ? error.message : 'Unknown error',
-        database: 'disconnected',
-      },
-      { status: 503 }
-    );
-  }
+export async function POST(request: NextRequest) {
+  const body = await request.json();
+  
+  return NextResponse.json({
+    status: 'OK',
+    message: 'POST API çalışıyor!',
+    receivedData: body,
+    timestamp: new Date().toISOString()
+  });
 }
