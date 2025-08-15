@@ -16,28 +16,29 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      const response = await fetch('/api/v2/auth/login', {
+      console.log('🔄 ADMIN LOGIN - Doğru endpoint kullanılıyor');
+      
+      const response = await fetch('/api/auth/admin-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache'
         },
-        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
+      console.log('📡 Admin login response:', data);
 
       if (response.ok && data.success) {
-        if (data.data.user.role === 'admin') {
-          router.push('/admin');
-        } else {
-          setError('Bu sayfa sadece admin kullanıcılar içindir');
-        }
+        console.log('✅ Admin login successful, redirecting...');
+        router.push('/admin');
       } else {
         setError(data.error || 'Giriş başarısız');
       }
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('❌ Admin login error:', error);
       setError('Bağlantı hatası');
     } finally {
       setLoading(false);
@@ -45,30 +46,34 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-blue-100">
+          <div className="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-white bg-opacity-20">
             <span className="text-2xl">👨‍💼</span>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
             Admin Girişi
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-blue-100">
             Yönetim paneline erişim
           </p>
+          <div className="bg-blue-50 p-3 rounded-lg mt-4 text-sm">
+            <p className="text-blue-800 font-semibold">🔄 Cache-Breaking Version</p>
+            <p className="text-blue-600">Doğru endpoint kullanılıyor</p>
+          </div>
         </div>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            {error}
+          <div className="bg-red-50 border-l-4 border-red-500 p-4">
+            <p className="text-red-700">{error}</p>
           </div>
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-white">
                 Email Adresi
               </label>
               <input
@@ -80,12 +85,12 @@ export default function AdminLoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="admin@example.com"
+                placeholder="admin@123"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="password" className="block text-sm font-medium text-white">
                 Şifre
               </label>
               <input
@@ -97,7 +102,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                placeholder="Şifrenizi girin"
+                placeholder="123456"
               />
             </div>
           </div>
@@ -120,10 +125,12 @@ export default function AdminLoginPage() {
           </div>
         </form>
 
-        <div className="text-center">
-          <p className="text-sm text-gray-600">
-            Test Admin: admin@123 / 123456
-          </p>
+        <div className="text-center bg-white bg-opacity-10 p-4 rounded-lg">
+          <p className="text-sm text-white font-medium mb-2">Test Admin Hesapları:</p>
+          <div className="space-y-1 text-xs text-blue-100">
+            <p><strong>Admin:</strong> admin@123 / 123456</p>
+            <p><strong>Pizza Admin:</strong> pizzapalaceofficial00@gmail.com / 123456</p>
+          </div>
         </div>
       </div>
     </div>
