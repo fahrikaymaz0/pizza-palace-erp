@@ -3,32 +3,15 @@ import bcrypt from 'bcryptjs';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'pizza-palace-secret-2024';
 
-// Basit in-memory kullanıcı sistemi (Vercel için)
-const USERS = [
-  {
-    id: '1',
-    email: 'test@example.com',
-    password: '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z', // 123456
-    name: 'Test Kullanıcı',
-    role: 'user'
-  },
-  {
-    id: '2',
-    email: 'admin@123',
-    password: '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z', // 123456
-    name: 'Admin',
-    role: 'admin'
-  },
-  {
-    id: '3',
-    email: 'pizzapalaceofficial00@gmail.com',
-    password: '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z', // 123456
-    name: 'Pizza Admin',
-    role: 'pizza_admin'
-  }
-];
-
 export interface User {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+  password_hash: string;
+}
+
+export interface UserResponse {
   id: string;
   email: string;
   name: string;
@@ -37,12 +20,37 @@ export interface User {
 
 export interface AuthResult {
   success: boolean;
-  user?: User;
+  user?: UserResponse;
   token?: string;
   error?: string;
 }
 
-export class AuthService {
+// Basit in-memory kullanıcı sistemi
+const USERS: User[] = [
+  {
+    id: '1',
+    email: 'test@example.com',
+    password_hash: '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z',
+    name: 'Test Kullanıcı',
+    role: 'user'
+  },
+  {
+    id: '2',
+    email: 'admin@123',
+    password_hash: '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z',
+    name: 'Admin',
+    role: 'admin'
+  },
+  {
+    id: '3',
+    email: 'pizzapalaceofficial00@gmail.com',
+    password_hash: '$2a$10$rQZ8K9L2M1N0P9Q8R7S6T5U4V3W2X1Y0Z',
+    name: 'Pizza Admin',
+    role: 'pizza_admin'
+  }
+];
+
+export class SimpleAuthService {
   // Kullanıcı girişi
   static async login(email: string, password: string): Promise<AuthResult> {
     try {
@@ -52,8 +60,8 @@ export class AuthService {
         return { success: false, error: 'Email veya şifre hatalı' };
       }
 
-      // Basit şifre kontrolü (gerçek uygulamada bcrypt.compare kullanılır)
-      const isValidPassword = password === '123456' || await bcrypt.compare(password, user.password);
+      // Basit şifre kontrolü (123456 için)
+      const isValidPassword = password === '123456' || await bcrypt.compare(password, user.password_hash);
       
       if (!isValidPassword) {
         return { success: false, error: 'Email veya şifre hatalı' };
@@ -95,10 +103,10 @@ export class AuthService {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Yeni kullanıcı oluştur
-      const newUser = {
+      const newUser: User = {
         id: (USERS.length + 1).toString(),
         email: email.toLowerCase(),
-        password: hashedPassword,
+        password_hash: hashedPassword,
         name: name.trim(),
         role: 'user'
       };
@@ -152,4 +160,14 @@ export class AuthService {
       return { success: false, error: 'Geçersiz token' };
     }
   }
-}
+
+  // Tüm kullanıcıları getir (admin için)
+  static async getAllUsers(): Promise<UserResponse[]> {
+    return USERS.map(user => ({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      role: user.role
+    }));
+  }
+} 

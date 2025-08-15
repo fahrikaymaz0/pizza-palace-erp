@@ -179,19 +179,19 @@ export default function ModernAdminDashboard() {
   // Real API Endpoints with Live Data - Sadece Pizza Palace API'leri
   const loadApiEndpoints = useCallback(async () => {
     try {
-      // Sadece Pizza Palace ile ilgili API endpoint&apos;lerini kontrol et
+      // Sadece Pizza Palace ile ilgili API endpoint'lerini kontrol et
       const apiChecks = [
         // Pizza Palace API'leri - Authentication
         {
-          name: 'Login API',
-          url: '/api/auth/test-login',
+          name: 'Login API (v2)',
+          url: '/api/v2/auth/login',
           method: 'POST' as const,
           requiresAuth: false,
-          body: { email: 'admin@kaymaz.digital', password: 'KaymazAdmin2024!' },
+          body: { email: 'test@example.com', password: '123456' },
         },
         {
-          name: 'Register API',
-          url: '/api/auth/register',
+          name: 'Register API (v2)',
+          url: '/api/v2/auth/register',
           method: 'POST' as const,
           requiresAuth: false,
           body: {
@@ -201,94 +201,34 @@ export default function ModernAdminDashboard() {
           },
         },
         {
-          name: 'Logout API',
-          url: '/api/auth/logout',
-          method: 'POST' as const,
-          requiresAuth: true,
-          body: null,
-        },
-        {
-          name: 'Verify Token API',
-          url: '/api/auth/verify',
+          name: 'Verify API (v2)',
+          url: '/api/v2/auth/verify',
           method: 'GET' as const,
           requiresAuth: true,
           body: null,
-        },
-        {
-          name: 'Verify Email API',
-          url: '/api/auth/verify-email',
-          method: 'POST' as const,
-          requiresAuth: false,
-          body: { email: 'testapi@test.com', code: '000000' },
-        },
-        {
-          name: 'Forgot Password API',
-          url: '/api/auth/forgot-password',
-          method: 'POST' as const,
-          requiresAuth: false,
-          body: { email: 'test@test.com' },
-        },
-        {
-          name: 'Reset Password API',
-          url: '/api/auth/reset-password',
-          method: 'POST' as const,
-          requiresAuth: false,
-          body: {
-            email: 'test@test.com',
-            code: '123456',
-            newPassword: 'newpass123',
-          },
         },
 
         // Pizza Palace API'leri - Pizza Operations
         {
-          name: 'Pizza Menu API',
-          url: '/api/pizza/menu',
+          name: 'Pizza Menu API (v2)',
+          url: '/api/v2/pizza/menu',
           method: 'GET' as const,
           requiresAuth: false,
           body: null,
         },
         {
-          name: 'Pizza Orders API',
-          url: '/api/pizza/orders',
+          name: 'Pizza Orders API (v2)',
+          url: '/api/v2/pizza/orders',
           method: 'GET' as const,
           requiresAuth: true,
           body: null,
         },
         {
-          name: 'Pizza Orders Create API',
-          url: '/api/pizza/orders',
+          name: 'Pizza Orders Create API (v2)',
+          url: '/api/v2/pizza/orders',
           method: 'POST' as const,
           requiresAuth: true,
-          body: { items: [{ name: 'Test Pizza', price: 50, quantity: 1 }] },
-        },
-        {
-          name: 'Pizza Profile API',
-          url: '/api/pizza/profile',
-          method: 'GET' as const,
-          requiresAuth: true,
-          body: null,
-        },
-        {
-          name: 'Pizza Reviews API',
-          url: '/api/pizza/reviews',
-          method: 'GET' as const,
-          requiresAuth: false,
-          body: null,
-        },
-        {
-          name: 'Pizza Reviews Create API',
-          url: '/api/pizza/reviews',
-          method: 'POST' as const,
-          requiresAuth: true,
-          body: { rating: 5, comment: 'Test review' },
-        },
-        {
-          name: 'Pizza Campaigns API',
-          url: '/api/pizza/campaigns',
-          method: 'GET' as const,
-          requiresAuth: true,
-          body: null,
+          body: { items: [{ product_id: 1, quantity: 1, price: 50 }] },
         },
       ];
 
