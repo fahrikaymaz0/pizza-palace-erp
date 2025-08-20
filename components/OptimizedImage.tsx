@@ -75,7 +75,10 @@ export default function OptimizedImage({
   };
 
   const format = getBestFormat();
-  const optimizedSrc = format !== 'png' ? getOptimizedImageUrl(src, 'large', format) : src;
+  let optimizedSrc = src;
+  if (format !== 'png') {
+    optimizedSrc = getOptimizedImageUrl(src, 'large', format);
+  }
 
   if (hasError) {
     return (

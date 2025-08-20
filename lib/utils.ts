@@ -12,9 +12,11 @@ export function getOptimizedImageUrl(
   format: 'webp' | 'avif' = 'webp'
 ): string {
   const pathWithoutExt = originalPath.replace(/\.[^/.]+$/, '');
-  const folder = pathWithoutExt.split('/').slice(0, -1).join('/');
+  // Klasörün başındaki '/' işaretini kaldırarak // oluşumunu engelle
+  const folderRaw = pathWithoutExt.split('/').slice(0, -1).join('/');
+  const folder = folderRaw.replace(/^\/+/, '');
   const filename = pathWithoutExt.split('/').pop();
-  
+
   return `/optimized/${folder}/${filename}-${size}.${format}`;
 }
 
