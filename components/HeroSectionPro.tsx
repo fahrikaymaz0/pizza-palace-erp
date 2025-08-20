@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Play, Star, Clock, Truck } from 'lucide-react';
 import { cn } from '../lib/utils';
@@ -44,6 +44,20 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   // removed rotating images
+
+  // Hafif, premium bokeh partikülleri (performans dostu)
+  const bokehDots = useMemo(
+    () =>
+      Array.from({ length: 12 }, (_, i) => ({
+        left: 8 + Math.random() * 84,
+        top: 10 + Math.random() * 60,
+        size: 10 + Math.random() * 22,
+        duration: 10 + Math.random() * 8,
+        delay: Math.random() * 4,
+        opacity: 0.06 + Math.random() * 0.08,
+      })),
+    []
+  );
 
   // Intersection observer for animations
   useEffect(() => {
@@ -145,6 +159,27 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
             filter: 'blur(24px)',
           }}
         />
+
+        {/* Premium bokeh partikülleri (yumuşak ve hareketli) */}
+        {bokehDots.map((dot, idx) => (
+          <motion.div
+            key={idx}
+            className="absolute rounded-full"
+            style={{
+              left: `${dot.left}%`,
+              top: `${dot.top}%`,
+              width: `${dot.size}vmin`,
+              height: `${dot.size}vmin`,
+              background:
+                'radial-gradient(circle at 40% 40%, rgba(255,255,255,0.35), rgba(255, 193, 7, 0.22) 40%, rgba(255, 160, 0, 0.10) 70%, transparent 75%)',
+              filter: 'blur(8px)',
+              opacity: dot.opacity,
+            }}
+            initial={{ y: 0, scale: 1, opacity: dot.opacity }}
+            animate={{ y: [0, -12, 0], scale: [1, 1.06, 1] }}
+            transition={{ duration: dot.duration, delay: dot.delay, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        ))}
       </div>
 
       {/* Main Content */}
