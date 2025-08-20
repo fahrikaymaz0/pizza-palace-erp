@@ -37,13 +37,7 @@ const nextConfig = {
   },
 
   webpack: (config, { dev, isServer }) => {
-    // Three.js optimizasyonu
-    config.externals = config.externals || [];
-    if (!isServer) {
-      config.externals.push({
-        'three': 'THREE',
-      });
-    }
+    // Three.js'i global değişken olarak dışa alma kaldırıldı; standart bundle'a dahil edilecek.
 
     // SVG optimizasyonu
     config.module.rules.push({
@@ -121,6 +115,16 @@ const nextConfig = {
         source: '/home',
         destination: '/',
         permanent: true,
+      },
+      {
+        source: '/pizza',
+        destination: '/',
+        permanent: false,
+      },
+      {
+        source: '/pizza/:path*',
+        destination: '/',
+        permanent: false,
       },
     ];
   },

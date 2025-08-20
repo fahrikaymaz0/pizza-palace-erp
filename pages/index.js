@@ -212,6 +212,7 @@ export default function HomePage() {
         {/* PWA Meta Tags */}
         <meta name="theme-color" content="#dc2626" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Pizza Palace" />
         <link rel="apple-touch-icon" href="/Pizza Krallığı Logosu.png" />

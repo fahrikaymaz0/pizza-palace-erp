@@ -96,10 +96,12 @@ export default function OptimizedImage({
       <Image
         src={optimizedSrc}
         alt={alt}
-        width={width}
-        height={height}
+        {...(width && height
+          ? { width, height }
+          : { fill: true })}
         className={cn(
           'transition-opacity duration-300',
+          !width || !height ? 'object-cover w-full h-full' : '',
           isLoading ? 'opacity-0' : 'opacity-100'
         )}
         priority={priority}
