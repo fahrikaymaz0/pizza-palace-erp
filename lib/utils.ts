@@ -17,6 +17,11 @@ export function getOptimizedImageUrl(
   const folder = folderRaw.replace(/^\/+/, '');
   const filename = pathWithoutExt.split('/').pop();
 
+  // AVIF için optimize scripti boyut varyantı üretmiyor -> doğrudan filename.avif kullan
+  if (format === 'avif') {
+    return `/optimized/${folder}/${filename}.avif`;
+  }
+
   return `/optimized/${folder}/${filename}-${size}.${format}`;
 }
 
