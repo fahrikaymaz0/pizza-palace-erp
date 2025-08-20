@@ -84,7 +84,68 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
       )}
     >
 
-      
+      {/* Profesyonel arkaplan katmanları (hafif ve performanslı) */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        {/* Üst merkez yumuşak ışık vurgusu */}
+        <div
+          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: '60vmin',
+            height: '60vmin',
+            background:
+              'radial-gradient(circle at center, rgba(255, 193, 7, 0.35), rgba(255, 193, 7, 0.15) 45%, transparent 70%)',
+            filter: 'blur(10px)',
+          }}
+        />
+
+        {/* Dönen ince konik halka ışıması */}
+        <motion.div
+          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2"
+          style={{
+            width: '52vmin',
+            height: '52vmin',
+            background:
+              'conic-gradient(from 0deg, rgba(255,255,255,0.22), rgba(255, 179, 0, 0.38), rgba(255,255,255,0.22))',
+            WebkitMaskImage:
+              'radial-gradient(farthest-side, transparent 56%, black 60%, black 64%, transparent 68%)',
+            maskImage:
+              'radial-gradient(farthest-side, transparent 56%, black 60%, black 64%, transparent 68%)',
+            opacity: 0.25,
+            filter: 'blur(0.5px)',
+          }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+        />
+
+        {/* Yumuşak vinyet ve köşe aksanları */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(1200px circle at 50% 15%, rgba(255, 160, 0, 0.12), transparent 60%)',
+          }}
+        />
+        <div
+          className="absolute -top-24 -left-24 rounded-full"
+          style={{
+            width: '42vmax',
+            height: '42vmax',
+            background:
+              'radial-gradient(circle at 30% 30%, rgba(255, 111, 0, 0.12), transparent 60%)',
+            filter: 'blur(22px)',
+          }}
+        />
+        <div
+          className="absolute -bottom-28 -right-24 rounded-full"
+          style={{
+            width: '46vmax',
+            height: '46vmax',
+            background:
+              'radial-gradient(circle at 70% 70%, rgba(255, 61, 0, 0.10), transparent 60%)',
+            filter: 'blur(24px)',
+          }}
+        />
+      </div>
 
       {/* Main Content */}
       <div className="relative z-20 container mx-auto px-4 py-20">
