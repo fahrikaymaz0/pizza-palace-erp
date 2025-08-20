@@ -42,6 +42,7 @@ const PIZZA_IMAGES = [
 export default function HeroSectionPro({ className }: HeroSectionProProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   // Auto-rotate pizza images
@@ -208,14 +209,16 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
             className="relative"
           >
             {/* 3D Pizza Animation */}
-            <div className="relative h-96 lg:h-[500px] mb-8">
-              <Pizza3DPro
-                className="w-full h-full"
-                autoPlay={true}
-                ingredientCount={8}
-                showControls={false}
-              />
-            </div>
+            {!isVideoPlaying && (
+              <div className="relative h-96 lg:h-[500px] mb-8">
+                <Pizza3DPro
+                  className="w-full h-full"
+                  autoPlay={true}
+                  ingredientCount={8}
+                  showControls={false}
+                />
+              </div>
+            )}
 
             {/* Floating Pizza Images */}
             <div className="relative">
@@ -297,7 +300,7 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
         </motion.button>
       </motion.div>
 
-      {/* Video Modal */}
+      {/* Video Modal - yalnız açıldığında yüklenir, poster ve lazy config ile */}
       <AnimatePresence>
         {isVideoPlaying && (
           <motion.div
@@ -314,11 +317,22 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
               className="relative w-full max-w-4xl aspect-video"
               onClick={(e) => e.stopPropagation()}
             >
+              {isVideoLoading && (
+                <div className="absolute inset-0 grid place-items-center bg-black/30 rounded-lg">
+                  <div className="h-10 w-10 border-2 border-white/80 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
               <video
                 className="w-full h-full object-cover rounded-lg"
                 controls
                 autoPlay
+                playsInline
+                preload="none"
+                poster="/pizzas/margherita.png"
                 muted
+                controlsList="nodownload noplaybackrate"
+                onCanPlay={() => setIsVideoLoading(false)}
+                onLoadStart={() => setIsVideoLoading(true)}
               >
                 <source src="/pizzaanasayfa.mp4" type="video/mp4" />
                 Tarayıcınız video oynatmayı desteklemiyor.

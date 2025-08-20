@@ -2,6 +2,9 @@ import Head from 'next/head';
 import { useState } from 'react';
 import Navigation from '../components/Navigation';
 import HeroSectionPro from '../components/HeroSectionPro';
+import PromoMarquee from '../components/PromoMarquee';
+import StatCounters from '../components/StatCounters';
+import FlashDeal from '../components/FlashDeal';
 import CategoryFilter from '../components/CategoryFilter';
 import ProductCard from '../components/ProductCard';
 import CartSidebar from '../components/CartSidebar';
@@ -115,27 +118,7 @@ export default function HomePage() {
       reviewCount: 45,
       isSpicy: true
     },
-    {
-      id: '7',
-      name: 'Coca Cola',
-      description: '330ml soğuk içecek',
-      price: 8,
-      image: '/düşenpng/cola.png',
-      category: 'drinks',
-      rating: 4.3,
-      reviewCount: 234
-    },
-    {
-      id: '8',
-      name: 'Tiramisu',
-      description: 'İtalyan usulü tatlı',
-      price: 15,
-      image: '/düşenpng/tiramisu.png',
-      category: 'desserts',
-      rating: 4.8,
-      reviewCount: 67,
-      isNew: true
-    }
+    
   ];
 
   // Filter products by category
@@ -233,34 +216,16 @@ export default function HomePage() {
       </Head>
 
       <Navigation />
+      <PromoMarquee />
 
       <main className="min-h-screen pt-32">
         <HeroSectionPro />
+        <FlashDeal />
         
         {/* Stats Section */}
-        <section className="py-20 bg-white">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="flex justify-center mb-4">
-                    <stat.icon className="w-12 h-12 text-red-600" />
-                  </div>
-                  <div className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                    {stat.number}
-                  </div>
-                  <div className="text-gray-600 font-medium">
-                    {stat.label}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            <StatCounters />
           </div>
         </section>
 
