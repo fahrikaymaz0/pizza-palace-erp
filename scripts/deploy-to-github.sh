@@ -109,3 +109,7 @@ echo -e "${GREEN}🎉 İşlem tamamlandı!${NC}"
 
 
 
+
+
+
+
