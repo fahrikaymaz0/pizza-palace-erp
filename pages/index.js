@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navigation from '../components/Navigation';
 import HeroSectionPro from '../components/HeroSectionPro';
 import CategoryFilter from '../components/CategoryFilter';
@@ -7,13 +7,13 @@ import ProductCard from '../components/ProductCard';
 import CartSidebar from '../components/CartSidebar';
 import Footer from '../components/Footer';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Clock, Truck, Award, Users, MapPin, ShoppingCart } from 'lucide-react';
+import { Star, Award, Users, MapPin, Clock } from 'lucide-react';
 
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [favorites, setFavorites] = useState([]);
+  const [favorites] = useState([]);
 
   const stats = [
     { number: '50K+', label: 'Mutlu Müşteri', icon: Users },
@@ -190,12 +190,12 @@ export default function HomePage() {
 
   const handleQuickView = (productId) => {
     // Implement quick view modal
-    console.log('Quick view:', productId);
+    // console.log('Quick view:', productId);
   };
 
   const handleCheckout = () => {
     // Implement checkout process
-    console.log('Checkout with items:', cartItems);
+    // console.log('Checkout with items:', cartItems);
     setCartItems([]);
     setIsCartOpen(false);
   };
@@ -419,7 +419,7 @@ export default function HomePage() {
                       <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-300 italic">"{testimonial.content}"</p>
+                  <p className="text-gray-300 italic">&quot;{testimonial.content}&quot;</p>
                 </motion.div>
               ))}
             </div>
@@ -438,7 +438,7 @@ export default function HomePage() {
                 🍕 Hemen Sipariş Verin!
               </h2>
               <p className="text-xl text-red-100 mb-8 max-w-2xl mx-auto">
-                Türkiye'nin en lezzetli pizzalarını keşfetmek için hemen sipariş verin.
+                Türkiye&apos;nin en lezzetli pizzalarını keşfetmek için hemen sipariş verin.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <motion.button 

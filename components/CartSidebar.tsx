@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingCart, Plus, Minus, Trash2, ArrowRight, Clock, Truck } from 'lucide-react';
+import { X, ShoppingCart, Plus, Minus, Trash2, ArrowRight, Truck } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 interface CartItem {

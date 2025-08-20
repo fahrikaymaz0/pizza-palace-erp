@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { Base64Utils } from '../lib/base64Utils';
+import { Base64Utils } from '../../lib/base64Utils';
 
 interface Base64FileUploadProps {
   onFileSelect: (base64: string, filename: string, mimeType: string) => void;
@@ -44,7 +44,8 @@ export default function Base64FileUpload({
       const base64 = await Base64Utils.fileToBase64(file);
 
       // Boyut kontrolü
-      if (!Base64Utils.validateFileSize(base64, maxSizeMB)) {
+      const base64Size = Base64Utils.getBase64Size(base64);
+      if (base64Size > maxSizeMB * 1024 * 1024) {
         throw new Error(`Base64 boyutu ${maxSizeMB}MB'dan büyük`);
       }
 
