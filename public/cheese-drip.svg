@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="160" viewBox="0 0 1200 160" preserveAspectRatio="none">
+  <!-- Hafif, tekrarlanabilir cheddar drip şekli -->
+  <defs>
+    <linearGradient id="g" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffd166"/>
+      <stop offset="100%" stop-color="#f7c948"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="80" fill="url(#g)"/>
+  <path d="M0,80
+           C60,70 90,110 120,120
+           C160,135 160,160 200,160
+           C260,145 240,105 300,96
+           C360,88 370,135 420,145
+           C470,155 500,120 540,110
+           C600,95 600,155 660,150
+           C700,147 710,120 760,110
+           C820,98 820,160 880,150
+           C930,141 950,115 1000,108
+           C1040,102 1060,132 1100,140
+           C1130,146 1160,130 1200,125
+           L1200,160 L0,160 Z"
+        fill="url(#g)"/>
+</svg>
+
+
