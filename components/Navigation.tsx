@@ -93,6 +93,9 @@ export default function Navigation() {
               <Link href="/reviews" className="text-gray-700 hover:text-red-600 font-medium transition-colors">
                 Yorumlar
               </Link>
+              <Link href="/paytr-direkt-api" className="text-gray-700 hover:text-red-600 font-medium transition-colors">
+                Ödeme (Test)
+              </Link>
             </div>
 
             {/* Search Bar */}
@@ -227,6 +230,9 @@ export default function Navigation() {
               </Link>
               <Link href="/reviews" className="block py-2 text-gray-700 hover:text-red-600">
                 Yorumlar
+              </Link>
+              <Link href="/paytr-direkt-api" className="block py-2 text-gray-700 hover:text-red-600">
+                Ödeme (Test)
               </Link>
               <Link href="/about" className="block py-2 text-gray-700 hover:text-red-600">
                 Hakkımızda
