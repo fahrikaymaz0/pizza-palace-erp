@@ -435,10 +435,8 @@ export default function HomePage() {
       <CartSidebar
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={updateCartQuantity}
-        onRemoveItem={removeFromCart}
-        onCheckout={handleCheckout}
+        cart={cartItems}
+        setCart={setCartItems}
       />
     </>
   );

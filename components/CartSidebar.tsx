@@ -17,32 +17,28 @@ interface CartItem {
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  items: CartItem[];
-  onUpdateQuantity: (itemId: string, quantity: number) => void;
-  onRemoveItem: (itemId: string) => void;
-  onCheckout: () => void;
+  cart: any[];
+  setCart: (cart: any[]) => void;
 }
 
 export default function CartSidebar({
   isOpen,
   onClose,
-  items,
-  onUpdateQuantity,
-  onRemoveItem,
-  onCheckout
+  cart,
+  setCart
 }: CartSidebarProps) {
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [deliveryTime, setDeliveryTime] = useState('25-30');
 
   // Calculate totals
-  const subtotal = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const deliveryFee = subtotal >= 50 ? 0 : 5;
   const tax = subtotal * 0.18; // 18% KDV
   const total = subtotal + deliveryFee + tax;
 
   // Update delivery time based on order size
   useEffect(() => {
-    const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     if (totalItems > 5) {
       setDeliveryTime('35-40');
     } else if (totalItems > 3) {
@@ -50,14 +46,15 @@ export default function CartSidebar({
     } else {
       setDeliveryTime('25-30');
     }
-  }, [items]);
+  }, [cart]);
 
   const handleCheckout = () => {
     setIsCheckingOut(true);
     // Simulate checkout process
     setTimeout(() => {
-      onCheckout();
+      setCart([]);
       setIsCheckingOut(false);
+      onClose();
     }, 2000);
   };
 
@@ -88,7 +85,7 @@ export default function CartSidebar({
                 <ShoppingCart className="w-6 h-6 text-red-600" />
                 <h2 className="text-xl font-bold text-gray-900">Sepetim</h2>
                 <span className="bg-red-600 text-white text-xs px-2 py-1 rounded-full">
-                  {items.length}
+                  {cart.length}
                 </span>
               </div>
               <button
@@ -118,7 +115,7 @@ export default function CartSidebar({
 
             {/* Cart Items */}
             <div className="flex-1 overflow-y-auto p-4">
-              {items.length === 0 ? (
+              {cart.length === 0 ? (
                 <div className="text-center py-12">
                   <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -136,7 +133,7 @@ export default function CartSidebar({
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {items.map((item) => (
+                  {cart.map((item) => (
                     <motion.div
                       key={item.id}
                       layout
@@ -170,7 +167,15 @@ export default function CartSidebar({
                       {/* Quantity Controls */}
                       <div className="flex items-center space-x-2">
                         <button
-                          onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => {
+                            if (item.quantity > 1) {
+                              setCart(cart.map(cartItem => 
+                                cartItem.id === item.id 
+                                  ? { ...cartItem, quantity: cartItem.quantity - 1 }
+                                  : cartItem
+                              ));
+                            }
+                          }}
                           disabled={item.quantity <= 1}
                           className="p-1 rounded-full bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                         >
@@ -180,7 +185,13 @@ export default function CartSidebar({
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => {
+                            setCart(cart.map(cartItem => 
+                              cartItem.id === item.id 
+                                ? { ...cartItem, quantity: cartItem.quantity + 1 }
+                                : cartItem
+                            ));
+                          }}
                           className="p-1 rounded-full bg-white hover:bg-gray-100"
                         >
                           <Plus className="w-4 h-4" />
@@ -189,7 +200,9 @@ export default function CartSidebar({
 
                       {/* Remove Button */}
                       <button
-                        onClick={() => onRemoveItem(item.id)}
+                        onClick={() => {
+                          setCart(cart.filter(cartItem => cartItem.id !== item.id));
+                        }}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -201,7 +214,7 @@ export default function CartSidebar({
             </div>
 
             {/* Footer */}
-            {items.length > 0 && (
+            {cart.length > 0 && (
               <div className="border-t border-gray-200 p-4 space-y-4">
                 {/* Price Breakdown */}
                 <div className="space-y-2">
