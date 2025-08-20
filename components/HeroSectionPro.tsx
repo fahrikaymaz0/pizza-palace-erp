@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Play, Star, Clock, Truck } from 'lucide-react';
 import { cn } from '../lib/utils';
 import OptimizedImage from './OptimizedImage';
-import CheeseDrip from './CheeseDrip';
 
 interface HeroSectionProProps {
   className?: string;
@@ -84,8 +83,7 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
         className
       )}
     >
-      {/* SVG tabanlı akışkan damlama */}
-      <CheeseDrip />
+
       
 
       {/* Main Content */}
