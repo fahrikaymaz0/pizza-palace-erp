@@ -5,10 +5,11 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Star, ShoppingCart, ArrowLeft, Filter, Search, Heart, X } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import RoyalParallaxScene from '../components/RoyalParallaxScene';
 import OptimizedImage from '../components/OptimizedImage';
 
-export default function RoyalMenu() {
+function RoyalMenu() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
@@ -510,5 +511,8 @@ export default function RoyalMenu() {
     </>
   );
 }
+
+// SSR'de hatayı önlemek için bu sayfayı yalnızca istemci tarafında render et
+export default dynamic(() => Promise.resolve(RoyalMenu), { ssr: false });
 
 
