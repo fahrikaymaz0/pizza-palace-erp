@@ -75,7 +75,7 @@ export default async function handler(req, res) {
     // Hash password
     const hashedPassword = await hashPassword(password);
 
-    // Create user (emailVerified false, verificationCode)
+    // Create user (emailVerified false, verificationCode). Kayıt sonrası login token üretmiyoruz.
     const verificationCode = generateCode();
     const newUser = await prisma.user.create({
       data: {

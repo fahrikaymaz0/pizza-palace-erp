@@ -99,12 +99,8 @@ export default function RoyalRegister() {
       const data = await response.json();
 
       if (data.success) {
-        // Store token in localStorage
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        
-        alert('Kayıt başarılı! Hoş geldiniz.');
-        window.location.href = '/';
+        alert('Kayıt başarılı! E-postana gönderilen doğrulama kodunu gir.');
+        window.location.href = '/verify';
       } else {
         setErrors({ general: data.message });
         alert(data.message);

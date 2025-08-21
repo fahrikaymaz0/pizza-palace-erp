@@ -13,6 +13,7 @@ export default function RoyalPizzaKingdom() {
   const [activeCategory, setActiveCategory] = useState('all');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [isAuthed, setIsAuthed] = useState(false);
 
   const royalProducts = [
     {
@@ -143,6 +144,22 @@ export default function RoyalPizzaKingdom() {
     return () => clearInterval(interval);
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      setIsAuthed(!!token);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      setIsAuthed(false);
+      window.location.href = '/';
+    }
+  };
+
   return (
     <>
       <Head>
@@ -166,10 +183,19 @@ export default function RoyalPizzaKingdom() {
               <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
               <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
               <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
+              {isAuthed ? (
+                <button onClick={handleLogout} className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Çıkış Yap</button>
+              ) : (
+                <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
+              )}
             </div>
 
             <div className="flex items-center space-x-4">
-              <Link href="/login" className="hidden sm:inline-flex px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
+              {!isAuthed ? (
+                <Link href="/login" className="hidden sm:inline-flex px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
+              ) : (
+                <button onClick={handleLogout} className="hidden sm:inline-flex px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Çıkış Yap</button>
+              )}
               <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative p-2 text-red-500 hover:text-red-400 transition-colors"
@@ -208,7 +234,11 @@ export default function RoyalPizzaKingdom() {
                 <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
                 <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
                 <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
-                <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Giriş Yap</Link>
+                {!isAuthed ? (
+                  <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Giriş Yap</Link>
+                ) : (
+                  <button onClick={handleLogout} className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Çıkış Yap</button>
+                )}
               </div>
             </div>
           </motion.div>
@@ -216,7 +246,7 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Hero Section with Royal Parallax */}
-      <section className="relative min-h-[80vh] flex items-start justify-center pt-36 overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-start justify-center pt-44 overflow-hidden">
         <RoyalParallaxScene disableContentParallax>
           <div className="relative z-20 text-center text-white">
             <motion.div
@@ -225,8 +255,8 @@ export default function RoyalPizzaKingdom() {
               transition={{ duration: 1 }}
               className="mb-8"
             >
-              <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-2" />
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-10">
+              <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-4" />
+              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-14">
                 <span className="text-red-700">Pizza</span> <span className="text-black">Krallığı</span>
               </h1>
               <p className="text-base md:text-lg mb-6 text-gray-200 max-w-2xl mx-auto">
@@ -246,7 +276,7 @@ export default function RoyalPizzaKingdom() {
               >
                 Menüyü Keşfet
               </button>
-              <button
+              <button type="button"
                 onClick={() => setIsVideoPlaying(true)}
                 className="px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 border-2 border-black text-black hover:bg-black hover:text-white"
               >
