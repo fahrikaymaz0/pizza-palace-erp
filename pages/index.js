@@ -10,6 +10,8 @@ export default function RoyalPizzaKingdom() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
 
   const royalProducts = [
     {
@@ -240,7 +242,7 @@ export default function RoyalPizzaKingdom() {
                 Menüyü Keşfet
               </button>
               <button
-                onClick={() => setIsCartOpen(true)}
+                onClick={() => setIsVideoPlaying(true)}
                 className="px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 border-2 border-black text-black hover:bg-black hover:text-white"
               >
                 Video İzle
@@ -249,6 +251,53 @@ export default function RoyalPizzaKingdom() {
           </div>
         </RoyalParallaxScene>
       </section>
+      {/* Video Modal */}
+      <AnimatePresence>
+        {isVideoPlaying && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+            onClick={() => setIsVideoPlaying(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative w-full max-w-4xl aspect-video"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {isVideoLoading && (
+                <div className="absolute inset-0 grid place-items-center bg-black/30 rounded-lg">
+                  <div className="h-10 w-10 border-2 border-white/80 border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+              <video
+                className="w-full h-full object-cover rounded-lg"
+                controls
+                autoPlay
+                playsInline
+                preload="none"
+                poster="/pizzas/margherita.png"
+                muted
+                controlsList="nodownload noplaybackrate"
+                onCanPlay={() => setIsVideoLoading(false)}
+                onLoadStart={() => setIsVideoLoading(true)}
+              >
+                <source src="/pizzaanasayfa2.mp4" type="video/mp4" />
+                Tarayıcınız video oynatmayı desteklemiyor.
+              </video>
+              <button
+                onClick={() => setIsVideoPlaying(false)}
+                className="absolute -top-4 -right-4 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors"
+              >
+                ×
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Royal Features */}
       <section className="py-20 bg-gradient-to-b from-purple-900 to-red-900">

@@ -130,7 +130,7 @@ export default function RoyalRegister() {
       <div className="min-h-screen relative">
         <RoyalParallaxScene />
         
-        <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+        <div className="relative z-10 min-h-[80vh] flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
