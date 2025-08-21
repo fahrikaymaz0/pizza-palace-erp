@@ -358,6 +358,11 @@ export default function RoyalRegister() {
                 </motion.button>
               </form>
 
+              {/* After submit info */}
+              <div className="mt-4 text-center text-sm text-gray-300">
+                Kayıt sonrası doğrulama sayfasına gitmek için <a href="/verify" className="text-red-400 underline">buraya</a> tıklayın.
+              </div>
+
               {/* Login Link */}
               <div className="mt-6 text-center">
                 <p className="text-gray-300">
