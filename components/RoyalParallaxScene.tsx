@@ -56,22 +56,10 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
         position: 'absolute', 
         inset: 0, 
         pointerEvents: 'none',
-        background: 'linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%)'
+        background: 'radial-gradient(circle at 50% 40%, #1b2a44 0%, #0e1a2b 60%, #0a0f1a 100%)'
       }}
     >
-      {/* Animated Background Gradient */}
-      <motion.div
-        className="absolute inset-0"
-        animate={{
-          background: [
-            'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%)',
-            'radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%)',
-            'radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.3) 0%, transparent 50%)',
-            'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%)',
-          ]
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-      />
+      {/* Static dark background */}
 
       {/* No decorative crowns/gems */}
 
@@ -101,44 +89,44 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
         ))}
       </div>
 
-      {/* Bottom twin-point red-black pennant */}
+      {/* Side long pennants (left black, right dark red) */}
       <motion.div
-        className="absolute left-1/2 bottom-0"
-        style={{ transform: 'translateX(-50%)', pointerEvents: 'none' }}
-        animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+        className="absolute left-0 top-0 h-full"
+        style={{ pointerEvents: 'none' }}
+        animate={{ x: [0, 4, 0] }}
+        transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
       >
-        <svg width="520" height="140" viewBox="0 0 520 140" xmlns="http://www.w3.org/2000/svg">
+        <svg width="120" height="100%" viewBox="0 0 120 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="redBlack" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#c40000"/>
-              <stop offset="55%" stopColor="#6e0000"/>
-              <stop offset="100%" stopColor="#0a0a0a"/>
+            <linearGradient id="blackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#151515"/>
+              <stop offset="50%" stopColor="#0e0e0e"/>
+              <stop offset="100%" stopColor="#000000"/>
             </linearGradient>
           </defs>
-          <path d="M10 0 H510 V80 L455 120 L400 80 L345 120 L290 80 L235 120 L180 80 L125 120 L70 80 L10 120 Z" fill="url(#redBlack)" stroke="#1a0000" strokeWidth="3"/>
-          <rect x="10" y="0" width="500" height="10" fill="#000" opacity="0.6"/>
+          <path d="M0 0 H120 V760 L60 840 L120 900 V900 H0 Z" fill="url(#blackGrad)" stroke="#000" strokeWidth="3"/>
         </svg>
       </motion.div>
 
-      {/* Central Royal Aura */}
       <motion.div
-        className="absolute left-1/2 top-1/2 w-96 h-96"
-        style={{
-          transform: 'translate(-50%, -50%)',
-          background: 'radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(196, 30, 58, 0.1) 50%, transparent 70%)',
-          filter: 'blur(20px)',
-        }}
-        animate={{
-          scale: [1, 1.2, 1],
-          opacity: [0.5, 0.8, 0.5],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+        className="absolute right-0 top-0 h-full"
+        style={{ pointerEvents: 'none' }}
+        animate={{ x: [0, -4, 0] }}
+        transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
+      >
+        <svg width="120" height="100%" viewBox="0 0 120 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="darkRedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#7a0000"/>
+              <stop offset="50%" stopColor="#560000"/>
+              <stop offset="100%" stopColor="#2a0000"/>
+            </linearGradient>
+          </defs>
+          <path d="M120 0 H0 V760 L60 840 L0 900 V900 H120 Z" fill="url(#darkRedGrad)" stroke="#1a0000" strokeWidth="3"/>
+        </svg>
+      </motion.div>
+
+      {/* No central aura for a cleaner dark look */}
 
       {/* Parallax Content */}
       <motion.div
