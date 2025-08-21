@@ -57,7 +57,7 @@ export default function RoyalParallaxScene({ className, children, disableContent
         position: 'absolute', 
         inset: 0, 
         pointerEvents: 'none',
-        background: 'radial-gradient(circle at 50% 40%, #1b2a44 0%, #0e1a2b 60%, #0a0f1a 100%)'
+        background: '#FFF8F0'
       }}
     >
       {/* Static dark background */}
@@ -90,23 +90,22 @@ export default function RoyalParallaxScene({ className, children, disableContent
         ))}
       </div>
 
-      {/* Side long pennants (left black, right dark red) */}
+      {/* Side long pennants (palette uyumlu kırmızı/peynir sarısı) */}
       <motion.div
         className="absolute left-10 top-0 h-full"
         style={{ pointerEvents: 'none' }}
         animate={{ x: [0, 4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
       >
-        {/* Sol flama: üst düz, alt tek sivri uç (gönderdiğin örneğe yakın) */}
+        {/* Sol flama: peynir sarısı */}
         <svg width="120" height="100%" viewBox="0 0 120 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="blackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#151515"/>
-              <stop offset="50%" stopColor="#0e0e0e"/>
-              <stop offset="100%" stopColor="#000000"/>
+            <linearGradient id="cheeseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FFD166"/>
+              <stop offset="100%" stopColor="#E3B84F"/>
             </linearGradient>
           </defs>
-          <path d="M0 0 H120 V780 L60 840 L0 780 Z" fill="url(#blackGrad)" stroke="#000" strokeWidth="3"/>
+          <path d="M0 0 H120 V780 L60 840 L0 780 Z" fill="url(#cheeseGrad)" stroke="#D4A63A" strokeWidth="3"/>
         </svg>
       </motion.div>
 
@@ -116,16 +115,15 @@ export default function RoyalParallaxScene({ className, children, disableContent
         animate={{ x: [0, -4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
       >
-        {/* Sağ flama: koyu kırmızı, tek sivri uç */}
+        {/* Sağ flama: domates kırmızısı */}
         <svg width="120" height="100%" viewBox="0 0 120 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="darkRedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#7a0000"/>
-              <stop offset="50%" stopColor="#560000"/>
-              <stop offset="100%" stopColor="#2a0000"/>
+            <linearGradient id="tomatoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#E63946"/>
+              <stop offset="100%" stopColor="#C21D2B"/>
             </linearGradient>
           </defs>
-          <path d="M120 0 H0 V780 L60 840 L120 780 Z" fill="url(#darkRedGrad)" stroke="#1a0000" strokeWidth="3"/>
+          <path d="M120 0 H0 V780 L60 840 L120 780 Z" fill="url(#tomatoGrad)" stroke="#A51521" strokeWidth="3"/>
         </svg>
       </motion.div>
 
