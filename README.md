@@ -1,37 +1,62 @@
-# 🍕 Pizza Palace Pro
+# 👑 Pizza Krallığı
 
-Türkiye'nin en modern ve profesyonel pizza sipariş sitesi. Next.js 14, TypeScript, Three.js ve modern web teknolojileri ile geliştirilmiştir.
+Kraliyet lezzetlerin premium adresi - Modern web teknolojileri ile geliştirilmiş profesyonel pizza sipariş platformu.
 
-## ✨ Özellikler
+![Pizza Krallığı](https://img.shields.io/badge/Pizza-Krallığı-red?style=for-the-badge&logo=pizza)
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-18-blue?style=for-the-badge&logo=react)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Framer Motion](https://img.shields.io/badge/Framer-Motion-0055FF?style=for-the-badge&logo=framer)
 
-### 🚀 Performans
-- **%60 daha hızlı görsel yükleme** - WebP/AVIF desteği
-- **%40 daha küçük bundle boyutu** - Optimize edilmiş kod
-- **%50 daha iyi 3D FPS** - Three.js optimizasyonu
-- **%30 daha hızlı sayfa yükleme** - Modern teknikler
+## 🚀 Özellikler
 
-### 🎨 Modern UI/UX
-- **Responsive Design** - Tüm cihazlarda mükemmel
-- **3D Animasyonlar** - Three.js ile interaktif
-- **Smooth Animations** - Framer Motion
-- **Modern Icons** - Lucide React
-- **Professional Design** - Tailwind CSS
+### 👑 Kraliyet Tasarım
+- **Premium Krallık Teması**: Altın, mor ve kırmızı renk paleti
+- **Animasyonlu Parallax Sahne**: Framer Motion ile gelişmiş animasyonlar
+- **Responsive Tasarım**: Tüm cihazlarda mükemmel görünüm
+- **Glassmorphism Efektleri**: Modern cam efektli arayüz
 
-### 📱 PWA Desteği
-- **Offline Çalışma** - Service Worker
-- **App-like Experience** - Native uygulama hissi
-- **Push Notifications** - Gerçek zamanlı bildirimler
-- **Installable** - Ana ekrana eklenebilir
+### 🍕 Menü Sistemi
+- **Kategorize Edilmiş Pizzalar**: Kraliyet, İmparatorluk, Majeste kategorileri
+- **Detaylı Ürün Bilgileri**: Malzemeler, kalori, hazırlama süresi
+- **Arama ve Filtreleme**: Gelişmiş arama ve sıralama özellikleri
+- **Favori Sistemi**: Kullanıcıların favori pizzalarını kaydetmesi
 
-### 🔧 Teknik Özellikler
-- **Next.js 14** - En güncel React framework
-- **TypeScript** - Tip güvenliği
-- **Three.js** - 3D grafikler
-- **Framer Motion** - Animasyonlar
-- **Tailwind CSS** - Utility-first CSS
-- **PWA** - Progressive Web App
+### 🛒 Sepet ve Sipariş
+- **Dinamik Sepet**: Gerçek zamanlı sepet yönetimi
+- **Miktar Kontrolü**: Artırma/azaltma işlemleri
+- **Toplam Hesaplama**: Otomatik fiyat hesaplama
+- **Sipariş Tamamlama**: Güvenli ödeme süreci
 
-## 🛠️ Kurulum
+### 👤 Kullanıcı Sistemi
+- **Kayıt ve Giriş**: Güvenli kullanıcı kimlik doğrulama
+- **Profil Yönetimi**: Kullanıcı bilgileri ve adres yönetimi
+- **Sipariş Geçmişi**: Önceki siparişlerin takibi
+- **Favori Listesi**: Kişiselleştirilmiş favori ürünler
+
+## 🛠️ Teknolojiler
+
+### Frontend
+- **Next.js 14**: React framework
+- **React 18**: Modern React özellikleri
+- **TypeScript**: Tip güvenliği
+- **Tailwind CSS**: Utility-first CSS framework
+- **Framer Motion**: Animasyon kütüphanesi
+- **Lucide React**: Modern ikonlar
+
+### Backend & Veritabanı
+- **Next.js API Routes**: Backend API
+- **SQLite**: Hafif veritabanı
+- **Prisma**: ORM
+- **JWT**: Kimlik doğrulama
+- **bcryptjs**: Şifre hashleme
+
+### Deployment & Hosting
+- **Vercel**: Otomatik deployment
+- **GitHub**: Versiyon kontrolü
+- **Sharp**: Görsel optimizasyonu
+
+## 📦 Kurulum
 
 ### Gereksinimler
 - Node.js 18+ 
@@ -39,10 +64,10 @@ Türkiye'nin en modern ve profesyonel pizza sipariş sitesi. Next.js 14, TypeScr
 
 ### Adımlar
 
-1. **Repository'yi klonlayın**
+1. **Projeyi klonlayın**
 ```bash
-git clone https://github.com/your-username/pizza-palace-pro.git
-cd pizza-palace-pro
+git clone https://github.com/your-username/pizza-kralligi.git
+cd pizza-kralligi
 ```
 
 2. **Bağımlılıkları yükleyin**
@@ -50,139 +75,118 @@ cd pizza-palace-pro
 npm install
 ```
 
-3. **Görsel optimizasyonunu çalıştırın**
-```bash
-npm run optimize-images
-```
-
-4. **Geliştirme sunucusunu başlatın**
+3. **Geliştirme sunucusunu başlatın**
 ```bash
 npm run dev
 ```
 
-5. **Tarayıcıda açın**
+4. **Tarayıcıda açın**
 ```
 http://localhost:3000
 ```
 
-## 📦 Scripts
-
-```bash
-# Geliştirme
-npm run dev          # Geliştirme sunucusu
-npm run build        # Production build
-npm run start        # Production sunucusu
-
-# Optimizasyon
-npm run optimize-images  # Görsel optimizasyonu
-npm run analyze         # Bundle analizi
-npm run type-check      # TypeScript kontrolü
-
-# Linting
-npm run lint         # ESLint kontrolü
-```
-
-## 🏗️ Proje Yapısı
-
-```
-pizza-palace-pro/
-├── components/          # React component'leri
-│   ├── Navigation.tsx   # Navigasyon
-│   ├── Footer.tsx       # Footer
-│   ├── HeroSectionPro.tsx # Ana sayfa hero
-│   └── OptimizedImage.tsx # Optimize edilmiş görsel
-├── src/
-│   └── components/
-│       └── Pizza3DPro.tsx # 3D pizza animasyonu
-├── lib/                 # Utility fonksiyonları
-│   ├── utils.ts         # Genel utilities
-│   ├── db.ts           # Database bağlantısı
-│   └── apiResponse.ts  # API response helpers
-├── public/             # Statik dosyalar
-│   ├── pizzas/         # Pizza görselleri
-│   ├── optimized/      # Optimize edilmiş görseller
-│   └── manifest.json   # PWA manifest
-├── scripts/            # Build scriptleri
-│   └── optimize-images.js # Görsel optimizasyonu
-└── pages/              # Next.js sayfaları
-    └── index.js        # Ana sayfa
-```
-
-## 🎯 Özellikler Detayı
-
-### 3D Pizza Animasyonu
-- Three.js ile performanslı 3D grafikler
-- Malzeme düşme animasyonu
-- FPS optimizasyonu
-- Responsive tasarım
-
-### Görsel Optimizasyonu
-- WebP/AVIF format desteği
-- Otomatik boyutlandırma
-- Lazy loading
-- Progressive loading
-
-### Modern UI Components
-- Responsive navigation
-- Animated hero section
-- Interactive menu cards
-- Professional footer
-
-### PWA Özellikleri
-- Service Worker
-- Offline cache
-- App manifest
-- Install prompts
-
 ## 🚀 Deployment
 
-### Vercel (Önerilen)
+### Vercel ile Deployment
+
+1. **Vercel CLI'yi yükleyin**
 ```bash
-npm run build
+npm i -g vercel
+```
+
+2. **Projeyi deploy edin**
+```bash
 vercel --prod
 ```
 
-### Netlify
+### Manuel Deployment
+
+1. **Production build oluşturun**
 ```bash
 npm run build
-netlify deploy --prod
 ```
 
-### Docker
+2. **Sunucuyu başlatın**
 ```bash
-docker build -t pizza-palace-pro .
-docker run -p 3000:3000 pizza-palace-pro
+npm start
 ```
 
-## 📊 Performans Metrikleri
+## 📁 Proje Yapısı
 
-| Metrik | Değer | İyileştirme |
-|--------|-------|-------------|
-| Lighthouse Score | 95+ | %20 artış |
-| First Contentful Paint | < 1.5s | %40 iyileştirme |
-| Largest Contentful Paint | < 2.5s | %35 iyileştirme |
-| Cumulative Layout Shift | < 0.1 | %50 iyileştirme |
-| First Input Delay | < 100ms | %30 iyileştirme |
+```
+pizza-kralligi/
+├── components/          # React bileşenleri
+│   ├── RoyalParallaxScene.tsx
+│   └── ...
+├── pages/              # Next.js sayfaları
+│   ├── index.js        # Ana sayfa
+│   ├── menu.js         # Menü sayfası
+│   ├── login.js        # Giriş sayfası
+│   ├── register.js     # Kayıt sayfası
+│   └── api/            # API routes
+├── public/             # Statik dosyalar
+│   ├── pizzas/         # Pizza görselleri
+│   └── ...
+├── styles/             # CSS dosyaları
+│   └── globals.css     # Global stiller
+├── lib/                # Yardımcı fonksiyonlar
+├── tailwind.config.js  # Tailwind konfigürasyonu
+├── next.config.js      # Next.js konfigürasyonu
+└── package.json        # Proje bağımlılıkları
+```
+
+## 🎨 Tasarım Sistemi
+
+### Renk Paleti
+- **Altın**: `#d4af37` - Kraliyet vurguları
+- **Mor**: `#581c87` - Premium arka planlar
+- **Kırmızı**: `#7f1d1d` - Aksiyon butonları
+- **Beyaz**: `#ffffff` - Metin ve arka planlar
+
+### Tipografi
+- **Başlıklar**: Playfair Display (Serif)
+- **Gövde**: Inter (Sans-serif)
+
+### Animasyonlar
+- **Fade In**: Sayfa yüklenme animasyonları
+- **Slide**: Menü geçişleri
+- **Scale**: Hover efektleri
+- **Parallax**: Arka plan hareketleri
 
 ## 🔧 Konfigürasyon
 
 ### Environment Variables
 ```env
-NEXT_PUBLIC_API_URL=https://api.pizzapalace.com
-NEXT_PUBLIC_GA_ID=GA_MEASUREMENT_ID
-NEXT_PUBLIC_SITE_URL=https://pizzapalace.com
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="your-jwt-secret"
+NEXTAUTH_SECRET="your-nextauth-secret"
+NEXTAUTH_URL="http://localhost:3000"
 ```
 
-### PWA Konfigürasyonu
-```json
-{
-  "name": "Pizza Palace Pro",
-  "short_name": "Pizza Palace",
-  "theme_color": "#dc2626",
-  "background_color": "#ffffff",
-  "display": "standalone"
-}
-```
+### Tailwind CSS
+Özel renkler ve animasyonlar `tailwind.config.js` dosyasında tanımlanmıştır.
+
+## 📱 Responsive Tasarım
+
+- **Mobile First**: Mobil öncelikli tasarım
+- **Breakpoints**: 
+  - Mobile: 320px - 768px
+  - Tablet: 768px - 1024px
+  - Desktop: 1024px+
+
+## 🚀 Performans
+
+- **Image Optimization**: Next.js Image component
+- **Code Splitting**: Otomatik kod bölme
+- **Lazy Loading**: Görsel ve bileşen lazy loading
+- **Bundle Analysis**: `npm run analyze`
+
+## 🔒 Güvenlik
+
+- **JWT Authentication**: Güvenli kimlik doğrulama
+- **Password Hashing**: bcryptjs ile şifre hashleme
+- **CORS Protection**: API güvenliği
+- **Input Validation**: Form doğrulama
 
 ## 🤝 Katkıda Bulunma
 
@@ -194,22 +198,22 @@ NEXT_PUBLIC_SITE_URL=https://pizzapalace.com
 
 ## 📄 Lisans
 
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için [LICENSE](LICENSE) dosyasına bakın.
+Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakın.
 
 ## 📞 İletişim
 
-- **Website**: https://pizzapalace.com
-- **Email**: info@pizzapalace.com
-- **Phone**: 0555 123 45 67
+- **Website**: [pizza-kralligi.vercel.app](https://pizza-kralligi.vercel.app)
+- **Email**: info@pizzakralligi.com
+- **GitHub**: [@your-username](https://github.com/your-username)
 
 ## 🙏 Teşekkürler
 
 - [Next.js](https://nextjs.org/) - React framework
-- [Three.js](https://threejs.org/) - 3D grafikler
-- [Framer Motion](https://www.framer.com/motion/) - Animasyonlar
 - [Tailwind CSS](https://tailwindcss.com/) - CSS framework
-- [Lucide](https://lucide.dev/) - İkonlar
+- [Framer Motion](https://www.framer.com/motion/) - Animasyon kütüphanesi
+- [Lucide](https://lucide.dev/) - İkon kütüphanesi
+- [Vercel](https://vercel.com/) - Hosting platformu
 
 ---
 
-**Pizza Palace Pro** - Türkiye'nin en lezzetli pizzaları, modern teknoloji ile! 🍕✨
+⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!

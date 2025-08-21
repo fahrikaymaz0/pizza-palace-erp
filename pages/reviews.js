@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Star, ThumbsUp, MessageCircle, User, Calendar, Heart, Share2, Filter } from 'lucide-react';
+import RoyalParallaxScene from '../components/RoyalParallaxScene';
 
 const reviews = [
   {
@@ -200,8 +201,9 @@ export default function Reviews() {
         <Navigation />
         
         {/* Hero Section */}
-        <div className="relative bg-gradient-to-r from-orange-600 to-red-600 text-white py-16">
-          <div className="container mx-auto px-4">
+        <div className="relative bg-gradient-to-r from-orange-600 to-red-600 text-white py-20 overflow-hidden">
+          <RoyalParallaxScene />
+          <div className="container mx-auto px-4 relative z-20">
             <div className="text-center">
               <h1 className="text-4xl md:text-6xl font-bold mb-4">
                 ⭐ Müşteri Yorumları
@@ -211,7 +213,7 @@ export default function Reviews() {
               </p>
               
               {/* Overall Rating */}
-              <div className="max-w-2xl mx-auto bg-white/20 backdrop-blur-sm rounded-2xl p-8">
+              <div className="relative z-10 max-w-2xl mx-auto bg-white/20 backdrop-blur-sm rounded-2xl p-8">
                 <div className="flex items-center justify-center gap-4 mb-4">
                   <div className="text-6xl font-bold">{ratingStats.average}</div>
                   <div className="text-left">

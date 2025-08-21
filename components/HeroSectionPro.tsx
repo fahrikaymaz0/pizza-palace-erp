@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Play, Star, Clock, Truck } from 'lucide-react';
+import { ChevronDown, Play, Star, Clock, Truck, ShieldCheck, Award } from 'lucide-react';
 import { cn } from '../lib/utils';
-import OptimizedImage from './OptimizedImage';
+import RoyalPizzaBackground from './RoyalPizzaBackground';
+import RoyalParallaxScene from './RoyalParallaxScene';
 
 interface HeroSectionProProps {
   className?: string;
@@ -31,12 +32,7 @@ const FEATURES = [
   },
 ];
 
-const PIZZA_IMAGES = [
-  '/pizzas/margherita.png',
-  '/pizzas/pepperoni.png',
-  '/pizzas/supreme.png',
-  '/pizzas/vegetarian.png',
-];
+// vitrin resmi kaldırıldı
 
 export default function HeroSectionPro({ className }: HeroSectionProProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -100,6 +96,9 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
 
       {/* Profesyonel arkaplan katmanları (hafif ve performanslı) */}
       <div className="absolute inset-0 z-10 pointer-events-none">
+        {/* Tree/3D yerine: Canvas arkaplanı geçici olarak devre dışı bırakıyorum */}
+        {/* <PremiumCanvasBG className="absolute inset-0" /> */}
+        <RoyalParallaxScene />
         {/* Üst merkez yumuşak ışık vurgusu */}
         <div
           className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2"
@@ -112,23 +111,20 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
           }}
         />
 
-        {/* Dönen ince konik halka ışıması */}
+        {/* İnce konik halkalar kaldırıldı: daha sakin ve premium görünüm */}
+
+        {/* Nabız etkisi: yumuşak sarı halo soluk alır gibi */}
         <motion.div
-          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2"
+          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
-            width: '52vmin',
-            height: '52vmin',
+            width: '58vmin',
+            height: '58vmin',
             background:
-              'conic-gradient(from 0deg, rgba(255,255,255,0.22), rgba(255, 179, 0, 0.38), rgba(255,255,255,0.22))',
-            WebkitMaskImage:
-              'radial-gradient(farthest-side, transparent 56%, black 60%, black 64%, transparent 68%)',
-            maskImage:
-              'radial-gradient(farthest-side, transparent 56%, black 60%, black 64%, transparent 68%)',
-            opacity: 0.25,
-            filter: 'blur(0.5px)',
+              'radial-gradient(circle at center, rgba(255, 193, 7, 0.14), rgba(255, 193, 7, 0.06) 50%, transparent 70%)',
+            filter: 'blur(6px)',
           }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: 28, repeat: Infinity, ease: 'linear' }}
+          animate={{ scale: [0.95, 1.05, 0.95] }}
+          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
         />
 
         {/* Yumuşak vinyet ve köşe aksanları */}
@@ -180,33 +176,34 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
             transition={{ duration: dot.duration, delay: dot.delay, repeat: Infinity, ease: 'easeInOut' }}
           />
         ))}
+        {/* Eski boncuk ve halka efektleri kaldırıldı */}
       </div>
 
       {/* Main Content */}
-      <div className="relative z-20 container mx-auto px-4 py-20">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-3xl mx-auto text-center"
-        >
+      <div className="relative z-20 container mx-auto px-4 py-24">
+        <div className="relative max-w-4xl mx-auto text-center">
+          {/* Halka kaldırıldı */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-5xl lg:text-7xl font-extrabold text-gray-900 mb-6"
+              className="text-5xl lg:text-7xl font-extrabold text-gray-900 mb-6 leading-tight"
             >
               <span className="text-red-600">Pizza</span> Krallığı
             </motion.h1>
-            
+
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-xl lg:text-2xl text-gray-600 mb-10 leading-relaxed"
+              className="text-xl lg:text-2xl text-gray-600 mb-10 leading-relaxed max-w-2xl mx-auto"
             >
-              Türkiye'nin en lezzetli pizzalarını keşfedin. 
-              Taze malzemeler, özel soslar ve mükemmel pişirme tekniği.
+              Türkiye'nin en lezzetli pizzalarını keşfedin. Taze malzemeler, özel soslar ve mükemmel pişirme tekniği.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -214,7 +211,7 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-14"
+              className="flex flex-col sm:flex-row gap-4 mb-10 justify-center"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -224,7 +221,7 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
               >
                 Menüyü Görüntüle
               </motion.button>
-              
+
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -236,28 +233,29 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
               </motion.button>
             </motion.div>
 
-            {/* Features */}
+            {/* Trust badges */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-4xl mx-auto"
+              transition={{ duration: 0.7, delay: 1.0 }}
+              className="flex flex-wrap gap-3 justify-center"
             >
-              {FEATURES.map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isVisible ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 1.2 + index * 0.1 }}
-                  className="text-center p-4 rounded-lg bg-white/60 backdrop-blur-sm shadow-sm"
-                >
-                  <feature.icon className={cn('w-8 h-8 mx-auto mb-2', feature.color)} />
-                  <h3 className="font-semibold text-gray-900 mb-1">{feature.title}</h3>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
-                </motion.div>
-              ))}
+              <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/70 backdrop-blur border border-white/60 shadow-sm">
+                <ShieldCheck className="w-4 h-4 text-green-600" />
+                <span className="text-sm text-gray-700">Güvenli Ödeme</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/70 backdrop-blur border border-white/60 shadow-sm">
+                <Award className="w-4 h-4 text-yellow-600" />
+                <span className="text-sm text-gray-700">Ödüllü Lezzet</span>
+              </div>
+              <div className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/70 backdrop-blur border border-white/60 shadow-sm">
+                <Clock className="w-4 h-4 text-red-600" />
+                <span className="text-sm text-gray-700">30dk Teslimat</span>
+              </div>
             </motion.div>
-        </motion.div>
+          </motion.div>
+          
+        </div>
       </div>
 
       {/* Scroll Indicator */}
@@ -318,7 +316,7 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
                 onCanPlay={() => setIsVideoLoading(false)}
                 onLoadStart={() => setIsVideoLoading(true)}
               >
-                <source src="/pizzaanasayfa.mp4" type="video/mp4" />
+                <source src="/pizzaanasayfa2.mp4" type="video/mp4" />
                 Tarayıcınız video oynatmayı desteklemiyor.
               </video>
               

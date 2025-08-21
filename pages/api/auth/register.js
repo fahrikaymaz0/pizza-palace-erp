@@ -1,88 +1,118 @@
-export default function handler(req, res) {
+import { prisma } from '../../../lib/prisma';
+import { hashPassword, validateEmail, validatePassword, validatePhone, generateToken } from '../../../lib/auth';
+
+export default async function handler(req, res) {
   // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS')
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   // Handle OPTIONS request
   if (req.method === 'OPTIONS') {
-    res.status(200).end()
-    return
+    res.status(200).end();
+    return;
   }
 
   // Only allow POST method
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' })
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { username, email, password, confirmPassword } = req.body
+    const { firstName, lastName, email, phone, address, password, confirmPassword } = req.body;
 
-    console.log('Register attempt:', { username, email })
+    console.log('Register attempt:', { firstName, lastName, email });
 
     // Validation
-    if (!username || !email || !password) {
+    if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: 'All fields are required'
-      })
+        message: 'Ad, soyad, e-posta ve şifre gereklidir'
+      });
     }
 
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: 'Passwords do not match'
-      })
+        message: 'Şifreler eşleşmiyor'
+      });
     }
 
-    if (password.length < 6) {
+    if (!validatePassword(password)) {
       return res.status(400).json({
         success: false,
-        message: 'Password must be at least 6 characters'
-      })
+        message: 'Şifre en az 6 karakter olmalıdır'
+      });
     }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
+    if (!validateEmail(email)) {
       return res.status(400).json({
         success: false,
-        message: 'Invalid email format'
-      })
+        message: 'Geçerli bir e-posta adresi giriniz'
+      });
     }
 
-    // Check if user already exists (simulated)
-    if (username === 'admin' || email === 'admin@test.com') {
+    if (phone && !validatePhone(phone)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Geçerli bir telefon numarası giriniz'
+      });
+    }
+
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email }
+    });
+
+    if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: 'User already exists'
-      })
+        message: 'Bu e-posta adresi zaten kullanılıyor'
+      });
     }
 
-    // Simulate user creation
-    const newUser = {
-      id: Date.now(),
-      username,
-      email,
-      createdAt: new Date().toISOString()
-    }
+    // Hash password
+    const hashedPassword = await hashPassword(password);
 
-    console.log('New user created:', newUser)
-
-    return res.status(200).json({
-      success: true,
-      message: 'Registration successful',
-      user: {
-        username: newUser.username,
-        email: newUser.email
+    // Create user
+    const newUser = await prisma.user.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        phone: phone || null,
+        address: address || null,
+        password: hashedPassword
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phone: true,
+        address: true,
+        role: true,
+        createdAt: true
       }
-    })
+    });
+
+    // Generate JWT token
+    const token = generateToken(newUser.id, newUser.email, newUser.role);
+
+    console.log('New user created:', newUser.id);
+
+    return res.status(201).json({
+      success: true,
+      message: 'Kayıt başarılı',
+      user: newUser,
+      token
+    });
 
   } catch (error) {
-    console.error('Register API Error:', error)
+    console.error('Register API Error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Server error during registration'
-    })
+      message: 'Kayıt sırasında bir hata oluştu'
+    });
   }
-} 
+}
