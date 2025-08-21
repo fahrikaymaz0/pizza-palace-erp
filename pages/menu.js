@@ -74,8 +74,8 @@ function RoyalMenu() {
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
-        return prev.map(item => 
-          item.id === product.id 
+        return prev.map(item =>
+          item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -86,8 +86,8 @@ function RoyalMenu() {
   };
 
   const toggleFavorite = (productId) => {
-    setFavorites(prev => 
-      prev.includes(productId) 
+    setFavorites(prev =>
+      prev.includes(productId)
         ? prev.filter(id => id !== productId)
         : [...prev, productId]
     );
@@ -210,15 +210,15 @@ function RoyalMenu() {
                   <option value="rating">Puana Göre</option>
                 </select>
               </div>
-            </div>
-          </div>
+                </div>
+              </div>
 
           {/* Categories */}
           <div className="bg-white/5 backdrop-blur-sm border-b border-yellow-400/20">
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-wrap gap-2">
                 {categories.map((category) => (
-                  <button
+                <button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
                     className={`px-4 py-2 rounded-full font-semibold transition-all flex items-center space-x-2 ${
@@ -230,14 +230,14 @@ function RoyalMenu() {
                     <span>{category.icon}</span>
                     <span>{category.name}</span>
                     <span className="text-xs opacity-75">({category.count})</span>
-                  </button>
+                </button>
                 ))}
               </div>
             </div>
-          </div>
+        </div>
 
-          {/* Products Grid */}
-          <div className="container mx-auto px-4 py-8">
+        {/* Products Grid */}
+          <div className="container mx-auto px-4 py-8" style={{background: '#FFF8F0'}}>
             {error && (
               <div className="text-center text-red-400 mb-4">{error}</div>
             )}
@@ -350,8 +350,8 @@ function RoyalMenu() {
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
                 <p className="text-white text-lg">Aradığınız kriterlere uygun pizza bulunamadı.</p>
-              </div>
-            )}
+            </div>
+          )}
           </div>
         </div>
 

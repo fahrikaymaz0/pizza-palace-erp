@@ -335,7 +335,7 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Royal Features */}
-      <section className="py-20" style={{background: '#120006'}}>
+      <section className="py-20" style={{background: '#FFF8F0'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -371,7 +371,7 @@ export default function RoyalPizzaKingdom() {
       </section>
 
       {/* Royal Menu */}
-      <section id="menu" className="py-20" style={{background: '#0b0003'}}>
+      <section id="menu" className="py-20" style={{background: '#FFF8F0'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

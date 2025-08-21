@@ -27,7 +27,7 @@ export default function OptimizedImage({
   className,
   priority = false,
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
-  quality = 80,
+  quality = 60,
   placeholder = 'empty',
   blurDataURL,
   onLoad,
@@ -71,7 +71,7 @@ export default function OptimizedImage({
   const getBestFormat = () => {
     if (supportsAVIF) return 'avif';
     if (supportsWebP) return 'webp';
-    return 'png';
+    return 'webp'; // png yerine webp düş, daha küçük olsun
   };
 
   const format = getBestFormat();
@@ -117,8 +117,8 @@ export default function OptimizedImage({
       />
       
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500"></div>
+        <div className="absolute inset-0 flex items-center justify-center bg-[#FFF8F0]">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#E63946]"></div>
         </div>
       )}
     </div>
