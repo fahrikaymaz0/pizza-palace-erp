@@ -160,7 +160,7 @@ export default function RoyalRegister() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-white/10 backdrop-blur-sm rounded-2xl border border-yellow-400/30 p-8 shadow-2xl"
+              className="bg-black/40 backdrop-blur-sm rounded-2xl border border-red-700/40 p-8 shadow-2xl"
             >
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name Fields */}
@@ -176,7 +176,7 @@ export default function RoyalRegister() {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                        className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                           errors.firstName ? 'border-red-400' : 'border-gray-400'
                         }`}
                         placeholder="Adınız"
@@ -198,7 +198,7 @@ export default function RoyalRegister() {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                        className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                           errors.lastName ? 'border-red-400' : 'border-gray-400'
                         }`}
                         placeholder="Soyadınız"
@@ -222,7 +222,7 @@ export default function RoyalRegister() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                         errors.email ? 'border-red-400' : 'border-gray-400'
                       }`}
                       placeholder="ornek@email.com"
@@ -245,7 +245,7 @@ export default function RoyalRegister() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                         errors.phone ? 'border-red-400' : 'border-gray-400'
                       }`}
                       placeholder="05XX XXX XX XX"
@@ -268,7 +268,7 @@ export default function RoyalRegister() {
                       value={formData.address}
                       onChange={handleInputChange}
                       rows="3"
-                      className={`w-full pl-10 pr-4 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none ${
+                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent resize-none ${
                         errors.address ? 'border-red-400' : 'border-gray-400'
                       }`}
                       placeholder="Teslimat adresiniz"
@@ -291,7 +291,7 @@ export default function RoyalRegister() {
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                      className={`w-full pl-10 pr-12 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                         errors.password ? 'border-red-400' : 'border-gray-400'
                       }`}
                       placeholder="En az 6 karakter"
@@ -321,7 +321,7 @@ export default function RoyalRegister() {
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                      className={`w-full pl-10 pr-12 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                         errors.confirmPassword ? 'border-red-400' : 'border-gray-400'
                       }`}
                       placeholder="Şifrenizi tekrar girin"
@@ -345,7 +345,7 @@ export default function RoyalRegister() {
                   disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 py-4 rounded-lg font-bold text-lg hover:from-yellow-300 hover:to-yellow-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-red-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-red-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">

@@ -128,7 +128,7 @@ export default function RoyalLogin() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-white/10 backdrop-blur-sm rounded-2xl border border-yellow-400/30 p-8 shadow-2xl"
+              className="bg-black/40 backdrop-blur-sm rounded-2xl border border-red-700/40 p-8 shadow-2xl"
             >
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Email */}
@@ -143,7 +143,7 @@ export default function RoyalLogin() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                         errors.email ? 'border-red-400' : 'border-gray-400'
                       }`}
                       placeholder="ornek@email.com"
@@ -166,7 +166,7 @@ export default function RoyalLogin() {
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white/20 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent ${
+                      className={`w-full pl-10 pr-12 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
                         errors.password ? 'border-red-400' : 'border-gray-400'
                       }`}
                       placeholder="Şifrenizi girin"
@@ -204,7 +204,7 @@ export default function RoyalLogin() {
                   disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 py-4 rounded-lg font-bold text-lg hover:from-yellow-300 hover:to-yellow-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-red-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-red-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -226,7 +226,7 @@ export default function RoyalLogin() {
 
               {/* Social Login Buttons */}
               <div className="space-y-3">
-                <button className="w-full bg-white/20 text-white py-3 rounded-lg font-semibold hover:bg-white/30 transition-all flex items-center justify-center">
+                <button className="w-full bg-white/10 text-white py-3 rounded-lg font-semibold hover:bg-white/20 transition-all flex items-center justify-center">
                   <User className="w-5 h-5 mr-2" />
                   Misafir Olarak Devam Et
                 </button>
