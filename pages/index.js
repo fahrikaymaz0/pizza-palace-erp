@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -151,29 +152,30 @@ export default function RoyalPizzaKingdom() {
         <link rel="icon" href="/kaymaz-icon.ico" />
       </Head>
 
-      {/* Royal Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-purple-900 via-red-900 to-purple-900 border-b-2 border-yellow-400">
+      {/* Royal Navigation (siyah/koyu kırmızı) */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 border-b border-red-700/60">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Crown className="w-8 h-8 text-yellow-400" />
-              <h1 className="text-2xl font-bold text-white">Pizza Krallığı</h1>
+              <Crown className="w-8 h-8 text-red-600" />
+              <h1 className="text-2xl font-bold text-red-500">Pizza Krallığı</h1>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#menu" className="text-white hover:text-yellow-400 transition-colors">Menü</a>
-              <a href="#about" className="text-white hover:text-yellow-400 transition-colors">Hakkımızda</a>
-              <a href="#contact" className="text-white hover:text-yellow-400 transition-colors">İletişim</a>
+              <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
+              <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
+              <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
             </div>
 
             <div className="flex items-center space-x-4">
+              <Link href="/login" className="hidden sm:inline-flex px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 text-white hover:text-yellow-400 transition-colors"
+                className="relative p-2 text-red-500 hover:text-red-400 transition-colors"
               >
                 <ShoppingCart className="w-6 h-6" />
                 {cartItems.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {cartItems.length}
                   </span>
                 )}
@@ -181,7 +183,7 @@ export default function RoyalPizzaKingdom() {
               
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden text-white"
+                className="md:hidden text-red-500"
               >
                 {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -197,13 +199,14 @@ export default function RoyalPizzaKingdom() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-20 left-0 right-0 z-40 bg-purple-900 border-b-2 border-yellow-400 md:hidden"
+            className="fixed top-20 left-0 right-0 z-40 bg-black/90 border-b border-red-700/60 md:hidden"
           >
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-col space-y-4">
-                <a href="#menu" className="text-white hover:text-yellow-400 transition-colors">Menü</a>
-                <a href="#about" className="text-white hover:text-yellow-400 transition-colors">Hakkımızda</a>
-                <a href="#contact" className="text-white hover:text-yellow-400 transition-colors">İletişim</a>
+                <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
+                <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
+                <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
+                <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Giriş Yap</Link>
               </div>
             </div>
           </motion.div>
