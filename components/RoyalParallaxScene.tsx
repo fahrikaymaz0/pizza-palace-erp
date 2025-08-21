@@ -33,30 +33,21 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
     };
   }, []);
 
+  // Minimalist dot stars that only blink (no scaling or glow)
   const stars = useMemo(
-    () => Array.from({ length: 120 }).map(() => ({
+    () => Array.from({ length: 140 }).map(() => ({
       left: Math.random() * 100,
       top: Math.random() * 100,
-      size: 1 + Math.random() * 2.5,
-      delay: Math.random() * 4,
-      duration: 2 + Math.random() * 4,
-      opacity: 0.3 + Math.random() * 0.7,
-      twinkle: Math.random() > 0.7,
+      size: 1 + Math.random() * 1.8,
+      delay: Math.random() * 3,
+      duration: 1.8 + Math.random() * 2.2,
+      opacity: 0.35 + Math.random() * 0.5,
     })),
     []
   );
 
-  const floatingElements = useMemo(
-    () => Array.from({ length: 15 }).map(() => ({
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      size: 20 + Math.random() * 60,
-      delay: Math.random() * 3,
-      duration: 8 + Math.random() * 4,
-      type: Math.random() > 0.5 ? 'crown' : 'gem',
-    })),
-    []
-  );
+  // Remove crowns/gems to keep the scene clean
+  const floatingElements: [] = [];
 
   return (
     <div 
@@ -82,46 +73,9 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Floating Crowns and Gems */}
-      {floatingElements.map((element, i) => (
-        <motion.div
-          key={i}
-          className="absolute"
-          style={{
-            left: `${element.left}%`,
-            top: `${element.top}%`,
-            width: element.size,
-            height: element.size,
-          }}
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, 5, -5, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: element.duration,
-            delay: element.delay,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          {element.type === 'crown' ? (
-            <div className="w-full h-full flex items-center justify-center text-yellow-400 opacity-20">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
-              </svg>
-            </div>
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-purple-400 opacity-20">
-              <svg viewBox="0 0 24 24" fill="currentColor" className="w-full h-full">
-                <path d="M12 2L13.09 8.26L20 9.27L14 14.14L15.18 21.02L12 17.77L8.82 21.02L10 14.14L4 9.27L10.91 8.26L12 2Z"/>
-              </svg>
-            </div>
-          )}
-        </motion.div>
-      ))}
+      {/* No decorative crowns/gems */}
 
-      {/* Twinkling Stars */}
+      {/* Dot stars that blink */}
       <div className="absolute inset-0">
         {stars.map((star, i) => (
           <motion.span
@@ -132,14 +86,10 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
               top: `${star.top}%`,
               width: star.size,
               height: star.size,
-              boxShadow: `0 0 ${star.size * 2}px rgba(255, 255, 255, 0.8)`,
               opacity: star.opacity,
             }}
-            animate={star.twinkle ? {
-              scale: [1, 1.5, 1],
+            animate={{
               opacity: [star.opacity, 1, star.opacity],
-            } : {
-              scale: [1, 1.2, 1],
             }}
             transition={{
               duration: star.duration,
@@ -151,43 +101,25 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
         ))}
       </div>
 
-      {/* Royal Banners */}
+      {/* Bottom twin-point red-black pennant */}
       <motion.div
-        className="absolute left-8 top-0 w-24 h-3/4"
-        style={{
-          background: 'linear-gradient(180deg, #d4af37 0%, #b8860b 50%, #8b6914 100%)',
-          borderRadius: '8px',
-          boxShadow: '0 8px 32px rgba(212, 175, 55, 0.3)',
-        }}
-        animate={{
-          y: [0, -10, 0],
-          rotateY: [0, 5, -5, 0],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
-
-      <motion.div
-        className="absolute right-8 top-0 w-24 h-3/4"
-        style={{
-          background: 'linear-gradient(180deg, #c41e3a 0%, #8b0000 50%, #4a0000 100%)',
-          borderRadius: '8px',
-          boxShadow: '0 8px 32px rgba(196, 30, 58, 0.3)',
-        }}
-        animate={{
-          y: [0, -10, 0],
-          rotateY: [0, -5, 5, 0],
-        }}
-        transition={{
-          duration: 4,
-          delay: 1,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+        className="absolute left-1/2 bottom-0"
+        style={{ transform: 'translateX(-50%)', pointerEvents: 'none' }}
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 3.2, repeat: Infinity, ease: 'easeInOut' }}
+      >
+        <svg width="520" height="140" viewBox="0 0 520 140" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="redBlack" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#c40000"/>
+              <stop offset="55%" stopColor="#6e0000"/>
+              <stop offset="100%" stopColor="#0a0a0a"/>
+            </linearGradient>
+          </defs>
+          <path d="M10 0 H510 V80 L455 120 L400 80 L345 120 L290 80 L235 120 L180 80 L125 120 L70 80 L10 120 Z" fill="url(#redBlack)" stroke="#1a0000" strokeWidth="3"/>
+          <rect x="10" y="0" width="500" height="10" fill="#000" opacity="0.6"/>
+        </svg>
+      </motion.div>
 
       {/* Central Royal Aura */}
       <motion.div
@@ -218,29 +150,7 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
         {children}
       </motion.div>
 
-      {/* Particle Effects */}
-      <div className="absolute inset-0 overflow-hidden">
-        {Array.from({ length: 50 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-yellow-400 rounded-full"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -100],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 3 + Math.random() * 2,
-              delay: Math.random() * 3,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </div>
+      {/* No extra particle effects */}
     </div>
   );
 }
