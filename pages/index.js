@@ -214,8 +214,8 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Hero Section with Royal Parallax */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
-        <RoyalParallaxScene>
+      <section className="relative min-h-[80vh] flex items-start justify-center pt-24 overflow-hidden">
+        <RoyalParallaxScene disableContentParallax>
           <div className="relative z-20 text-center text-white">
             <motion.div
               initial={{ opacity: 0, y: 50 }}
@@ -224,7 +224,7 @@ export default function RoyalPizzaKingdom() {
               className="mb-8"
             >
               <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-2" />
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-2">
+              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-6">
                 <span className="text-red-700">Pizza</span> <span className="text-black">Krallığı</span>
               </h1>
               <p className="text-base md:text-lg mb-6 text-gray-200 max-w-2xl mx-auto">
@@ -303,7 +303,7 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Royal Features */}
-      <section className="py-20 bg-gradient-to-b from-purple-900 to-red-900">
+      <section className="py-20" style={{background: 'radial-gradient(circle at 50% 40%, #1a0008 0%, #0b0003 60%, #000 100%)'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -339,7 +339,7 @@ export default function RoyalPizzaKingdom() {
       </section>
 
       {/* Royal Menu */}
-      <section id="menu" className="py-20 bg-gradient-to-b from-red-900 to-purple-900">
+      <section id="menu" className="py-20" style={{background: 'radial-gradient(circle at 50% 40%, #0b0003 0%, #000 80%)'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

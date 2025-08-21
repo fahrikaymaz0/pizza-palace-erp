@@ -1,5 +1,6 @@
 import { prisma } from '../../../lib/prisma';
 import { hashPassword, validateEmail, validatePassword, validatePhone, generateToken } from '../../../lib/auth';
+import { generateCode, sendVerificationEmail } from '../../../lib/emailService';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -74,7 +75,8 @@ export default async function handler(req, res) {
     // Hash password
     const hashedPassword = await hashPassword(password);
 
-    // Create user
+    // Create user (emailVerified false, verificationCode)
+    const verificationCode = generateCode();
     const newUser = await prisma.user.create({
       data: {
         firstName,
@@ -82,7 +84,9 @@ export default async function handler(req, res) {
         email,
         phone: phone || null,
         address: address || null,
-        password: hashedPassword
+        password: hashedPassword,
+        emailVerified: false,
+        verificationCode
       },
       select: {
         id: true,
@@ -96,16 +100,15 @@ export default async function handler(req, res) {
       }
     });
 
-    // Generate JWT token
-    const token = generateToken(newUser.id, newUser.email, newUser.role);
+    // Send email code (async, non-blocking)
+    sendVerificationEmail(newUser.email, verificationCode).catch(() => {});
 
     console.log('New user created:', newUser.id);
 
     return res.status(201).json({
       success: true,
-      message: 'Kayıt başarılı',
-      user: newUser,
-      token
+      message: 'Kayıt başarılı. Lütfen e-postanıza gelen doğrulama kodunu girin.',
+      user: newUser
     });
 
   } catch (error) {

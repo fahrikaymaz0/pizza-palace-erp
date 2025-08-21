@@ -6,9 +6,10 @@ import { motion } from 'framer-motion';
 interface RoyalParallaxSceneProps {
   className?: string;
   children?: React.ReactNode;
+  disableContentParallax?: boolean;
 }
 
-export default function RoyalParallaxScene({ className, children }: RoyalParallaxSceneProps) {
+export default function RoyalParallaxScene({ className, children, disableContentParallax }: RoyalParallaxSceneProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [scrollY, setScrollY] = useState(0);
 
@@ -135,7 +136,7 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
       {/* Parallax Content */}
       <motion.div
         className="relative z-10 w-full h-full"
-        style={{
+        style={disableContentParallax ? undefined : {
           transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`,
         }}
       >

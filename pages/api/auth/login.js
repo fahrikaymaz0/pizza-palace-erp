@@ -50,6 +50,14 @@ export default async function handler(req, res) {
       });
     }
 
+    // Block login if email not verified
+    if (!user.emailVerified) {
+      return res.status(403).json({
+        success: false,
+        message: 'E-posta doğrulanmadı. Lütfen e-postanızdaki kodu onaylayın.'
+      });
+    }
+
     // Verify password
     const isValidPassword = await verifyPassword(password, user.password);
 
