@@ -136,8 +136,9 @@ export default function RoyalParallaxScene({ className, children, disableContent
       {/* Parallax Content */}
       <motion.div
         className="relative z-10 w-full h-full"
-        style={disableContentParallax ? undefined : {
+        style={disableContentParallax ? { pointerEvents: 'auto' } : {
           transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`,
+          pointerEvents: 'auto',
         }}
       >
         {children}
