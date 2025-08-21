@@ -237,12 +237,12 @@ function RoyalMenu() {
         </div>
 
         {/* Products Grid */}
-          <div className="container mx-auto px-4 py-8" style={{background: '#FFF8F0'}}>
+          <div className="container mx-auto px-4 py-8" style={{background: '#FFFBF5'}}>
             {error && (
               <div className="text-center text-red-400 mb-4">{error}</div>
             )}
             {loading && (
-              <div className="text-center text-gray-300">Yükleniyor...</div>
+              <div className="text-center text-[#333]">Yükleniyor...</div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product, index) => (
@@ -251,7 +251,7 @@ function RoyalMenu() {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl border border-yellow-400/30 overflow-hidden hover:transform hover:scale-105 transition-all group"
+                  className="bg-white rounded-xl border border-[#FFD166]/60 shadow-sm overflow-hidden hover:transform hover:scale-105 transition-all group"
                 >
                   <div className="relative">
                     <OptimizedImage
@@ -299,26 +299,26 @@ function RoyalMenu() {
                   
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-bold text-white">{product.name}</h3>
+                      <h3 className="text-xl font-bold text-[#333]">{product.name}</h3>
                       <div className="flex items-center">
                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                        <span className="text-white ml-1">{product.rating}</span>
+                        <span className="text-[#333] ml-1">{product.rating}</span>
                       </div>
                     </div>
                     
-                    <p className="text-gray-300 mb-4 text-sm">{product.description}</p>
+                    <p className="text-[#333]/80 mb-4 text-sm">{product.description}</p>
                     
                     {/* Ingredients */}
                     <div className="mb-4">
-                      <p className="text-xs text-gray-400 mb-2">Malzemeler:</p>
+                      <p className="text-xs text-[#333]/60 mb-2">Malzemeler:</p>
                       <div className="flex flex-wrap gap-1">
                         {product.ingredients.slice(0, 3).map((ingredient, i) => (
-                          <span key={i} className="text-xs bg-white/10 text-gray-300 px-2 py-1 rounded">
+                          <span key={i} className="text-xs bg-[#FFD166]/20 text-[#333] px-2 py-1 rounded">
                             {ingredient}
                           </span>
                         ))}
                         {product.ingredients.length > 3 && (
-                          <span className="text-xs text-gray-400">+{product.ingredients.length - 3} daha</span>
+                          <span className="text-xs text-[#333]/60">+{product.ingredients.length - 3} daha</span>
                         )}
                       </div>
                     </div>
@@ -329,7 +329,7 @@ function RoyalMenu() {
                           ₺{product.price}
                         </span>
                         {product.originalPrice && (
-                          <span className="text-gray-400 line-through text-sm">
+                          <span className="text-[#333]/60 line-through text-sm">
                             ₺{product.originalPrice}
                           </span>
                         )}
@@ -349,7 +349,7 @@ function RoyalMenu() {
 
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-white text-lg">Aradığınız kriterlere uygun pizza bulunamadı.</p>
+                <p className="text-[#333] text-lg">Aradığınız kriterlere uygun pizza bulunamadı.</p>
             </div>
           )}
           </div>

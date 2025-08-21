@@ -262,7 +262,7 @@ export default function RoyalPizzaKingdom() {
             >
               <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-4" />
               <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-8">
-                <span className="text-red-700">Pizza</span> <span className="text-black">Krallığı</span>
+                <span className="text-red-700">Pizza</span> <span className="text-[#FFD166]">Krallığı</span>
               </h1>
               <p className="text-base md:text-lg mb-6 text-gray-200 max-w-2xl mx-auto">
                 Pizza Krallığı, seçkin malzemeler ve usta şeflerin reçeteleriyle premium bir lezzet deneyimi sunar.
@@ -340,7 +340,7 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Royal Features */}
-      <section className="py-20" style={{background: '#FFF8F0'}}>
+      <section className="py-20" style={{background: '#FFFBF5'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -348,7 +348,7 @@ export default function RoyalPizzaKingdom() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-6xl font-bold text-[#333] mb-6">
+            <h2 className="text-4xl md:text-6xl font-bold text-[#8D6E63] mb-6">
               👑 Kraliyet Özelliklerimiz
             </h2>
           </motion.div>
@@ -376,7 +376,7 @@ export default function RoyalPizzaKingdom() {
       </section>
 
       {/* Royal Menu */}
-      <section id="menu" className="py-20" style={{background: '#FFF8F0'}}>
+      <section id="menu" className="py-20" style={{background: '#FFFBF5'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -384,10 +384,10 @@ export default function RoyalPizzaKingdom() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-6xl font-bold text-[#8D6E63] mb-6">
               👑 Kraliyet Menümüz
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-[#8D6E63]/80 max-w-3xl mx-auto">
               Her biri özenle hazırlanan premium pizzalarımızı keşfedin
             </p>
           </motion.div>

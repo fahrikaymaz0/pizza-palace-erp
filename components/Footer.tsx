@@ -36,7 +36,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-[#0F172A] text-white">
+         <footer className="bg-[#FFFBF5] text-[#333]">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -49,10 +49,10 @@ export default function Footer() {
             >
               🍕 Pizza Palace
             </motion.div>
-            <p className="text-gray-300 leading-relaxed">
-              Türkiye'nin en lezzetli pizzalarını sunuyoruz. Taze malzemeler, 
-              özel tarifler ve mükemmel hizmet kalitesi.
-            </p>
+                         <p className="text-[#333]/80 leading-relaxed">
+               Türkiye'nin en lezzetli pizzalarını sunuyoruz. Taze malzemeler, 
+               özel tarifler ve mükemmel hizmet kalitesi.
+             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <motion.a
@@ -68,88 +68,88 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Company Links */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Şirket</h3>
-            <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-300 hover:text-red-400 transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                     {/* Company Links */}
+           <div className="space-y-4">
+             <h3 className="text-lg font-semibold">Şirket</h3>
+             <ul className="space-y-2">
+               {footerLinks.company.map((link) => (
+                 <li key={link.name}>
+                   <Link
+                     href={link.href}
+                     className="text-[#333]/80 hover:text-red-400 transition-colors"
+                   >
+                     {link.name}
+                   </Link>
+                 </li>
+               ))}
+             </ul>
+           </div>
 
-          {/* Support Links */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Destek</h3>
-            <ul className="space-y-2">
-              {footerLinks.support.map((link) => (
-                <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-300 hover:text-red-400 transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                     {/* Support Links */}
+           <div className="space-y-4">
+             <h3 className="text-lg font-semibold">Destek</h3>
+             <ul className="space-y-2">
+               {footerLinks.support.map((link) => (
+                 <li key={link.name}>
+                   <Link
+                     href={link.href}
+                     className="text-[#333]/80 hover:text-red-400 transition-colors"
+                   >
+                     {link.name}
+                   </Link>
+                 </li>
+               ))}
+             </ul>
+           </div>
 
           {/* Contact Info */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">İletişim</h3>
             <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <Phone className="w-5 h-5 text-red-400" />
-                <span className="text-gray-300">0555 123 45 67</span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="w-5 h-5 text-red-400" />
-                <a href="mailto:pizzapalaceoffical00@gmail.com" className="text-gray-300 hover:text-red-400">
-                  pizzapalaceoffical00@gmail.com
-                </a>
-              </div>
-              <div className="flex items-start space-x-3">
-                <MapPin className="w-5 h-5 text-red-400 mt-1" />
-                <span className="text-gray-300">
-                  İstanbul, Türkiye<br />
-                  Merkez Mahallesi, Pizza Caddesi No:1
-                </span>
-              </div>
-              <div className="flex items-center space-x-3">
-                <Clock className="w-5 h-5 text-red-400" />
-                <span className="text-gray-300">Her gün 10:00 - 23:00</span>
-              </div>
+                             <div className="flex items-center space-x-3">
+                 <Phone className="w-5 h-5 text-red-400" />
+                 <span className="text-[#333]/80">0555 123 45 67</span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Mail className="w-5 h-5 text-red-400" />
+                 <a href="mailto:pizzapalaceoffical00@gmail.com" className="text-[#333]/80 hover:text-red-400">
+                   pizzapalaceoffical00@gmail.com
+                 </a>
+               </div>
+               <div className="flex items-start space-x-3">
+                 <MapPin className="w-5 h-5 text-red-400 mt-1" />
+                 <span className="text-[#333]/80">
+                   İstanbul, Türkiye<br />
+                   Merkez Mahallesi, Pizza Caddesi No:1
+                 </span>
+               </div>
+               <div className="flex items-center space-x-3">
+                 <Clock className="w-5 h-5 text-red-400" />
+                 <span className="text-[#333]/80">Her gün 10:00 - 23:00</span>
+               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Section */}
-        <div className="border-t border-gray-800 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <div className="text-gray-400 text-sm">
-              © {currentYear} Pizza Palace. Tüm hakları saklıdır.
-            </div>
-            <div className="flex space-x-6">
-              {footerLinks.legal.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className="text-gray-400 hover:text-red-400 text-sm transition-colors"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
+                 {/* Bottom Section */}
+         <div className="border-t border-[#333]/20 mt-12 pt-8">
+           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+             <div className="text-[#333]/60 text-sm">
+               © {currentYear} Pizza Palace. Tüm hakları saklıdır.
+             </div>
+             <div className="flex space-x-6">
+               {footerLinks.legal.map((link) => (
+                 <Link
+                   key={link.name}
+                   href={link.href}
+                   className="text-[#333]/60 hover:text-red-400 text-sm transition-colors"
+                 >
+                   {link.name}
+                 </Link>
+               ))}
+             </div>
+           </div>
+         </div>
       </div>
     </footer>
   );
