@@ -165,6 +165,7 @@ export default function RoyalPizzaKingdom() {
               <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
               <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
               <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
+              <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -206,6 +207,7 @@ export default function RoyalPizzaKingdom() {
                 <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
                 <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
                 <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
+                <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
                 <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Giriş Yap</Link>
               </div>
             </div>
@@ -214,7 +216,7 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Hero Section with Royal Parallax */}
-      <section className="relative min-h-[80vh] flex items-start justify-center pt-24 overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-start justify-center pt-36 overflow-hidden">
         <RoyalParallaxScene disableContentParallax>
           <div className="relative z-20 text-center text-white">
             <motion.div
@@ -224,7 +226,7 @@ export default function RoyalPizzaKingdom() {
               className="mb-8"
             >
               <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-2" />
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-6">
+              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-10">
                 <span className="text-red-700">Pizza</span> <span className="text-black">Krallığı</span>
               </h1>
               <p className="text-base md:text-lg mb-6 text-gray-200 max-w-2xl mx-auto">
@@ -303,7 +305,7 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Royal Features */}
-      <section className="py-20" style={{background: 'radial-gradient(circle at 50% 40%, #1a0008 0%, #0b0003 60%, #000 100%)'}}>
+      <section className="py-20" style={{background: '#120006'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -339,7 +341,7 @@ export default function RoyalPizzaKingdom() {
       </section>
 
       {/* Royal Menu */}
-      <section id="menu" className="py-20" style={{background: 'radial-gradient(circle at 50% 40%, #0b0003 0%, #000 80%)'}}>
+      <section id="menu" className="py-20" style={{background: '#0b0003'}}>
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

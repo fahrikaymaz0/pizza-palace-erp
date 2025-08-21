@@ -36,7 +36,7 @@ export default function RoyalParallaxScene({ className, children, disableContent
 
   // Minimalist dot stars that only blink (no scaling or glow)
   const stars = useMemo(
-    () => Array.from({ length: 80 }).map(() => ({
+    () => Array.from({ length: 50 }).map(() => ({
       left: Math.random() * 100,
       top: Math.random() * 100,
       size: 1 + Math.random() * 1.3,
