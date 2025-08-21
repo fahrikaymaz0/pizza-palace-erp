@@ -256,7 +256,7 @@ export default function RoyalPizzaKingdom() {
               className="mb-8"
             >
               <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-4" />
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-14">
+              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-24">
                 <span className="text-red-700">Pizza</span> <span className="text-black">Krallığı</span>
               </h1>
               <p className="text-base md:text-lg mb-6 text-gray-200 max-w-2xl mx-auto">
