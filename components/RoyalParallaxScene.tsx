@@ -96,6 +96,7 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
         animate={{ x: [0, 4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
       >
+        {/* Sol flama: üst düz, alt tek sivri uç (gönderdiğin örneğe yakın) */}
         <svg width="120" height="100%" viewBox="0 0 120 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="blackGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -104,7 +105,7 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
               <stop offset="100%" stopColor="#000000"/>
             </linearGradient>
           </defs>
-          <path d="M0 0 H120 V760 L60 840 L120 900 V900 H0 Z" fill="url(#blackGrad)" stroke="#000" strokeWidth="3"/>
+          <path d="M0 0 H120 V780 L60 840 L0 780 Z" fill="url(#blackGrad)" stroke="#000" strokeWidth="3"/>
         </svg>
       </motion.div>
 
@@ -114,6 +115,7 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
         animate={{ x: [0, -4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
       >
+        {/* Sağ flama: koyu kırmızı, tek sivri uç */}
         <svg width="120" height="100%" viewBox="0 0 120 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="darkRedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -122,13 +124,11 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
               <stop offset="100%" stopColor="#2a0000"/>
             </linearGradient>
           </defs>
-          <path d="M120 0 H0 V760 L60 840 L0 900 V900 H120 Z" fill="url(#darkRedGrad)" stroke="#1a0000" strokeWidth="3"/>
+          <path d="M120 0 H0 V780 L60 840 L120 780 Z" fill="url(#darkRedGrad)" stroke="#1a0000" strokeWidth="3"/>
         </svg>
       </motion.div>
 
-      {/* Bottom twin lines across the screen */}
-      <div className="absolute left-0 right-0 bottom-10 h-0.5" style={{background: 'linear-gradient(90deg, rgba(255,0,0,0.8), rgba(0,0,0,0.8))'}} />
-      <div className="absolute left-0 right-0 bottom-6 h-0.5" style={{background: 'linear-gradient(90deg, rgba(0,0,0,0.9), rgba(255,0,0,0.9))'}} />
+      {/* Alt çizgiler kaldırıldı */}
 
       {/* No central aura for a cleaner dark look */}
 

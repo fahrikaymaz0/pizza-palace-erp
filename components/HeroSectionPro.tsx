@@ -124,8 +124,8 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
               'radial-gradient(circle at center, rgba(185, 28, 28, 0.12), rgba(0,0,0,0.06) 50%, transparent 70%)',
             filter: 'blur(6px)',
           }}
-          animate={{ scale: [0.95, 1.05, 0.95] }}
-          transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
+          animate={{ scale: [0.98, 1.02, 0.98] }}
+          transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
         />
 
         {/* Yumuşak vinyet ve köşe aksanları */}

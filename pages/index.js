@@ -209,7 +209,7 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Hero Section with Royal Parallax */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         <RoyalParallaxScene>
           <div className="relative z-20 text-center text-white">
             <motion.div
@@ -218,12 +218,12 @@ export default function RoyalPizzaKingdom() {
               transition={{ duration: 1 }}
               className="mb-8"
             >
-              <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-4" />
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-4">
-                <span className="bg-gradient-to-r from-red-700 via-black to-red-700 bg-clip-text text-transparent drop-shadow-xl">Pizza Krallığı</span>
+              <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-2" />
+              <h1 className="text-6xl md:text-8xl font-extrabold mb-2">
+                <span className="text-red-700">Pizza</span> <span className="text-black">Krallığı</span>
               </h1>
-              <p className="text-xl md:text-2xl mb-8 text-gray-200">
-                <span className="text-red-500">Kırmızı</span> ve <span className="text-gray-100">Siyah</span> temalı, premium deneyim
+              <p className="text-base md:text-lg mb-6 text-gray-200 max-w-2xl mx-auto">
+                Pizza Krallığı, seçkin malzemeler ve usta şeflerin reçeteleriyle premium bir lezzet deneyimi sunar.
               </p>
             </motion.div>
 
@@ -235,15 +235,15 @@ export default function RoyalPizzaKingdom() {
             >
               <button
                 onClick={() => document.getElementById('menu').scrollIntoView({ behavior: 'smooth' })}
-                className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 px-8 py-4 rounded-full font-bold text-lg hover:from-yellow-300 hover:to-yellow-500 transition-all transform hover:scale-105 shadow-lg"
+                className="px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-lg bg-red-600 text-white hover:bg-red-700"
               >
                 Menüyü Keşfet
               </button>
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="border-2 border-yellow-400 text-yellow-400 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-400 hover:text-purple-900 transition-all transform hover:scale-105"
+                className="px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 border-2 border-black text-black hover:bg-black hover:text-white"
               >
-                Sipariş Ver
+                Video İzle
               </button>
             </motion.div>
           </div>
