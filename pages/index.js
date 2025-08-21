@@ -182,7 +182,9 @@ export default function RoyalPizzaKingdom() {
               <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
               <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
               <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
-              <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
+              {isAuthed && (
+                <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
+              )}
               {isAuthed ? (
                 <button onClick={handleLogout} className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Çıkış Yap</button>
               ) : (
@@ -191,10 +193,11 @@ export default function RoyalPizzaKingdom() {
             </div>
 
             <div className="flex items-center space-x-4">
+              {/* Sağda tek buton: auth durumuna göre */}
               {!isAuthed ? (
-                <Link href="/login" className="hidden sm:inline-flex px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
+                <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
               ) : (
-                <button onClick={handleLogout} className="hidden sm:inline-flex px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Çıkış Yap</button>
+                <button onClick={handleLogout} className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Çıkış Yap</button>
               )}
               <button
                 onClick={() => setIsCartOpen(true)}
@@ -233,7 +236,9 @@ export default function RoyalPizzaKingdom() {
                 <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
                 <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
                 <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
-                <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
+                {isAuthed && (
+                  <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
+                )}
                 {!isAuthed ? (
                   <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Giriş Yap</Link>
                 ) : (
@@ -343,7 +348,7 @@ export default function RoyalPizzaKingdom() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h2 className="text-4xl md:text-6xl font-bold text-[#333] mb-6">
               👑 Kraliyet Özelliklerimiz
             </h2>
           </motion.div>
@@ -359,11 +364,11 @@ export default function RoyalPizzaKingdom() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center p-8 bg-white/10 backdrop-blur-sm rounded-xl border border-yellow-400/30"
+                className="text-center p-8 bg-white rounded-xl border border-[#FFD166]/60 shadow-sm"
               >
-                <feature.icon className="w-16 h-16 text-yellow-400 mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-white mb-4">{feature.title}</h3>
-                <p className="text-gray-300">{feature.desc}</p>
+                <feature.icon className="w-16 h-16 text-[#FFD166] mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-[#333] mb-4">{feature.title}</h3>
+                <p className="text-[#333]/80">{feature.desc}</p>
               </motion.div>
             ))}
           </div>

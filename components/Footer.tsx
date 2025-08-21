@@ -36,7 +36,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-[#0F172A] text-white">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -112,7 +112,9 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-red-400" />
-                <span className="text-gray-300">info@pizzapalace.com</span>
+                <a href="mailto:pizzapalaceoffical00@gmail.com" className="text-gray-300 hover:text-red-400">
+                  pizzapalaceoffical00@gmail.com
+                </a>
               </div>
               <div className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-red-400 mt-1" />
