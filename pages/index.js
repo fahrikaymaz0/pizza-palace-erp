@@ -219,11 +219,11 @@ export default function RoyalPizzaKingdom() {
               className="mb-8"
             >
               <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-4" />
-              <h1 className="text-6xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-yellow-400 via-red-500 to-purple-500 bg-clip-text text-transparent">
-                Pizza Krallığı
+              <h1 className="text-6xl md:text-8xl font-extrabold mb-4">
+                <span className="bg-gradient-to-r from-red-700 via-black to-red-700 bg-clip-text text-transparent drop-shadow-xl">Pizza Krallığı</span>
               </h1>
               <p className="text-xl md:text-2xl mb-8 text-gray-200">
-                Kraliyet lezzetlerin eşsiz dünyasına hoş geldiniz
+                <span className="text-red-500">Kırmızı</span> ve <span className="text-gray-100">Siyah</span> temalı, premium deneyim
               </p>
             </motion.div>
 

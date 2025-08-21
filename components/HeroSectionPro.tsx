@@ -100,14 +100,15 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
         {/* <PremiumCanvasBG className="absolute inset-0" /> */}
         <RoyalParallaxScene />
         {/* Üst merkez yumuşak ışık vurgusu */}
+        {/* üst ışık yumuşatıldı */}
         <div
           className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2"
           style={{
-            width: '60vmin',
-            height: '60vmin',
+            width: '50vmin',
+            height: '50vmin',
             background:
-              'radial-gradient(circle at center, rgba(255, 193, 7, 0.35), rgba(255, 193, 7, 0.15) 45%, transparent 70%)',
-            filter: 'blur(10px)',
+              'radial-gradient(circle at center, rgba(220, 38, 38, 0.25), rgba(0,0,0,0.1) 55%, transparent 75%)',
+            filter: 'blur(12px)',
           }}
         />
 
@@ -117,10 +118,10 @@ export default function HeroSectionPro({ className }: HeroSectionProProps) {
         <motion.div
           className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 rounded-full"
           style={{
-            width: '58vmin',
-            height: '58vmin',
+            width: '48vmin',
+            height: '48vmin',
             background:
-              'radial-gradient(circle at center, rgba(255, 193, 7, 0.14), rgba(255, 193, 7, 0.06) 50%, transparent 70%)',
+              'radial-gradient(circle at center, rgba(185, 28, 28, 0.12), rgba(0,0,0,0.06) 50%, transparent 70%)',
             filter: 'blur(6px)',
           }}
           animate={{ scale: [0.95, 1.05, 0.95] }}

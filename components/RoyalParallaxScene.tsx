@@ -91,7 +91,7 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
 
       {/* Side long pennants (left black, right dark red) */}
       <motion.div
-        className="absolute left-0 top-0 h-full"
+        className="absolute left-10 top-0 h-full"
         style={{ pointerEvents: 'none' }}
         animate={{ x: [0, 4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut' }}
@@ -109,7 +109,7 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
       </motion.div>
 
       <motion.div
-        className="absolute right-0 top-0 h-full"
+        className="absolute right-10 top-0 h-full"
         style={{ pointerEvents: 'none' }}
         animate={{ x: [0, -4, 0] }}
         transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 }}
@@ -125,6 +125,10 @@ export default function RoyalParallaxScene({ className, children }: RoyalParalla
           <path d="M120 0 H0 V760 L60 840 L0 900 V900 H120 Z" fill="url(#darkRedGrad)" stroke="#1a0000" strokeWidth="3"/>
         </svg>
       </motion.div>
+
+      {/* Bottom twin lines across the screen */}
+      <div className="absolute left-0 right-0 bottom-10 h-0.5" style={{background: 'linear-gradient(90deg, rgba(255,0,0,0.8), rgba(0,0,0,0.8))'}} />
+      <div className="absolute left-0 right-0 bottom-6 h-0.5" style={{background: 'linear-gradient(90deg, rgba(0,0,0,0.9), rgba(255,0,0,0.9))'}} />
 
       {/* No central aura for a cleaner dark look */}
 
