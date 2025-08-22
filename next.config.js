@@ -34,7 +34,6 @@ const nextConfig = {
     minimumCacheTTL: 86400, // 24 saat cache
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    quality: 85, // Optimized quality for faster loading
     remotePatterns: [
       {
         protocol: 'https',
