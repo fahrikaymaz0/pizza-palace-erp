@@ -2,9 +2,10 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Crown } from 'lucide-react';
+import { Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Crown, UserPlus, ShoppingBag, Truck as TruckIcon } from 'lucide-react';
 import { useTheme } from '../context/DarkModeContext';
 import OutlineCrown from '../components/OutlineCrown';
+import Lottie from 'lottie-react';
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -318,6 +319,127 @@ export default function RoyalPizzaKingdom() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Nasıl Çalışır Bölümü */}
+      <section className="py-20 bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Nasıl Çalışır?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Sadece 3 basit adımda lezzetli pizzanızı sipariş edin
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {/* Adım 1: Üye Ol */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="text-center"
+            >
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Lottie
+                    animationData={require('/public/animations/user-register.json')}
+                    loop={true}
+                    autoplay={true}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Üye Ol</h3>
+                <p className="text-gray-600 mb-6">
+                  Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun
+                </p>
+                <div className="bg-red-50 rounded-lg p-4">
+                  <p className="text-sm text-red-700 font-medium">
+                    Ücretsiz üyelik • Hızlı kayıt • Özel indirimler
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Adım 2: Siparişini Oluştur */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-center"
+            >
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Lottie
+                    animationData={require('/public/animations/shopping-cart.json')}
+                    loop={true}
+                    autoplay={true}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişini Oluştur</h3>
+                <p className="text-gray-600 mb-6">
+                  Menümüzden istediğiniz pizzayı seçin ve özelleştirin
+                </p>
+                <div className="bg-yellow-50 rounded-lg p-4">
+                  <p className="text-sm text-yellow-700 font-medium">
+                    Özelleştirilebilir • Hızlı seçim • Canlı takip
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Adım 3: Siparişin Gelsin */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="text-center"
+            >
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Lottie
+                    animationData={require('/public/animations/delivery-truck.json')}
+                    loop={true}
+                    autoplay={true}
+                    style={{ width: '100%', height: '100%' }}
+                  />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişin Gelsin</h3>
+                <p className="text-gray-600 mb-6">
+                  Sıcacık pizzanız kapınıza kadar teslim edilir
+                </p>
+                <div className="bg-green-50 rounded-lg p-4">
+                  <p className="text-sm text-green-700 font-medium">
+                    Hızlı teslimat • Sıcak servis • Güvenli paketleme
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* CTA Butonu */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center mt-12"
+          >
+            <Link 
+              href="/register" 
+              className="inline-flex items-center bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              <UserPlus className="w-5 h-5 mr-2" />
+              Hemen Üye Ol ve Sipariş Ver
+            </Link>
+          </motion.div>
         </div>
       </section>
 

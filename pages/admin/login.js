@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { Crown, Shield, Eye, EyeOff, Lock, User } from 'lucide-react';
@@ -15,18 +15,29 @@ export default function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const mountedRef = useRef(true);
 
-  const handleInputChange = (e) => {
+  // Component unmount cleanup
+  useRef(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  const handleInputChange = useCallback((e) => {
+    if (!mountedRef.current) return;
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
     setError(''); // Clear error when user types
-  };
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
+    if (!mountedRef.current) return;
+    
     setIsLoading(true);
     setError('');
 
@@ -35,18 +46,26 @@ export default function AdminLogin() {
       if (formData.email === 'admin@pizzakralligi.com' && formData.password === 'admin123') {
         // Admin girişi başarılı - dashboard'a yönlendir
         setTimeout(() => {
-          router.push('/admin/dashboard');
+          if (mountedRef.current) {
+            router.push('/admin/dashboard');
+          }
         }, 1000);
       } else {
-        setError('Geçersiz e-posta veya şifre');
+        if (mountedRef.current) {
+          setError('Geçersiz e-posta veya şifre');
+        }
       }
     } catch (error) {
       console.error('Admin giriş hatası:', error);
-      setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+      if (mountedRef.current) {
+        setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+      }
     } finally {
-      setIsLoading(false);
+      if (mountedRef.current) {
+        setIsLoading(false);
+      }
     }
-  };
+  }, [formData, router]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 flex items-center justify-center p-4">
