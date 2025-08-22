@@ -2,8 +2,9 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck } from 'lucide-react';
+import { Crown, Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Moon, Sun } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { useDarkMode } from '../context/DarkModeContext';
 
 // Lazy load components for better performance
 const FastHeroSection = dynamic(() => import('../components/FastHeroSection'), {
@@ -13,6 +14,9 @@ const ModernProductCard = dynamic(() => import('../components/ModernProductCard'
   loading: () => <div className="bg-gray-200 rounded-2xl h-96 animate-pulse" />
 });
 const CartSidebar = dynamic(() => import('../components/CartSidebar'), {
+  ssr: false
+});
+const StarField = dynamic(() => import('../components/StarField'), {
   ssr: false
 });
 
@@ -25,6 +29,7 @@ export default function RoyalPizzaKingdom() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   const royalProducts = [
     {
@@ -180,8 +185,11 @@ export default function RoyalPizzaKingdom() {
         <link rel="icon" href="/kaymaz-icon.ico" />
       </Head>
 
-      {/* Royal Navigation (beyaz) */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
+      {/* Star Field - Dark Mode'da yıldızlar */}
+      <StarField isDarkMode={isDarkMode} />
+
+      {/* Royal Navigation (responsive dark mode) */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -193,12 +201,25 @@ export default function RoyalPizzaKingdom() {
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#menu" className="text-gray-700 hover:text-red-600 transition-colors">Menü</a>
-              <a href="#about" className="text-gray-700 hover:text-red-600 transition-colors">Hakkımızda</a>
-              <a href="#contact" className="text-gray-700 hover:text-red-600 transition-colors">İletişim</a>
+              <a href="#menu" className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">Menü</a>
+              <a href="#about" className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">Hakkımızda</a>
+              <a href="#contact" className="text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors">İletişim</a>
             </div>
 
             <div className="flex items-center space-x-4">
+              {/* Dark Mode Toggle */}
+              <button
+                onClick={toggleDarkMode}
+                className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 transition-colors"
+                aria-label="Dark mode toggle"
+              >
+                {isDarkMode ? (
+                  <Sun className="w-5 h-5 text-yellow-500" />
+                ) : (
+                  <Moon className="w-5 h-5 text-gray-600" />
+                )}
+              </button>
+
               {/* Profilim butonu - auth olunca göster */}
               {isAuthed && (
                 <Link href="/profile" className="px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 rounded-full font-semibold hover:from-blue-200 hover:to-purple-200 transition-all duration-300 shadow-sm">
@@ -219,7 +240,7 @@ export default function RoyalPizzaKingdom() {
               
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 text-gray-700 hover:text-red-600 transition-colors"
+                className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400 transition-colors"
               >
                 <ShoppingCart className="w-6 h-6" />
                 {cartItems.length > 0 && (
@@ -268,9 +289,9 @@ export default function RoyalPizzaKingdom() {
         )}
       </AnimatePresence>
 
-      {/* Fast Hero Section - No Images */}
-      <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50" />}>
-        <FastHeroSection />
+      {/* Fast Hero Section - Dark Mode Supported */}
+      <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50 dark:from-gray-900 dark:to-gray-800" />}>
+        <FastHeroSection isDarkMode={isDarkMode} />
       </Suspense>
 
 

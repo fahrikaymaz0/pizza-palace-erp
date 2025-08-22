@@ -10,9 +10,10 @@ import FlagBanner from './FlagBanner';
 
 interface FastHeroSectionProps {
   className?: string;
+  isDarkMode?: boolean;
 }
 
-export default function FastHeroSection({ className }: FastHeroSectionProps) {
+export default function FastHeroSection({ className, isDarkMode }: FastHeroSectionProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -72,7 +73,11 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
 
   return (
     <section
-      className={`relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 ${className}`}
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden ${
+        isDarkMode 
+          ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
+          : 'bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50'
+      } ${className}`}
     >
       {/* Hızlı CSS animasyonlu arka plan - görsel yok */}
       <div className="absolute inset-0 z-0">
@@ -274,9 +279,12 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="flex flex-col items-center text-gray-600 hover:text-red-600 transition-colors"
+          className={`flex flex-col items-center transition-colors ${
+            isDarkMode 
+              ? 'text-gray-400 hover:text-red-400' 
+              : 'text-gray-600 hover:text-red-600'
+          }`}
         >
-          <span className="text-sm mb-2 font-medium">Menüyü Keşfet</span>
           <ChevronDown className="w-6 h-6" />
         </motion.button>
       </motion.div>

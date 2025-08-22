@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import dynamic from 'next/dynamic'
 import Head from 'next/head'
+import { DarkModeProvider } from '../context/DarkModeContext'
 
 // Lazy load components for better performance
 const Footer = dynamic(() => import('../components/Footer'), { 
@@ -13,7 +14,7 @@ const RoyalCrownGradient = dynamic(() => import('../components/royal/RoyalCrownG
 
 export default function App({ Component, pageProps }) {
   return (
-    <>
+    <DarkModeProvider>
       <Head>
         {/* Performance optimizations */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -42,6 +43,12 @@ export default function App({ Component, pageProps }) {
             /* Critical above-the-fold styles */
             body { margin: 0; padding: 0; }
             .hero-skeleton { min-height: 100vh; background: linear-gradient(135deg, #fef2f2, #fef3c7); }
+            
+            /* Dark mode styles */
+            body.dark {
+              background-color: #0f172a;
+              color: #f1f5f9;
+            }
           `
         }} />
         
@@ -58,6 +65,6 @@ export default function App({ Component, pageProps }) {
       <RoyalCrownGradient />
       <Component {...pageProps} />
       <Footer />
-    </>
+    </DarkModeProvider>
   )
 }
