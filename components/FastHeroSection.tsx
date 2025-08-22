@@ -6,6 +6,7 @@ import { Play, Star, Clock, Shield, Award, ChevronDown, ArrowRight, Phone } from
 import Link from 'next/link';
 import Image from 'next/image';
 import { placeholderImages } from '../lib/base64Images';
+import FlagBanner from './FlagBanner';
 
 interface FastHeroSectionProps {
   className?: string;
@@ -134,15 +135,19 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
         />
       </div>
 
+      {/* Flag Banners */}
+      <FlagBanner side="left" color="red" delay={0.5} />
+      <FlagBanner side="right" color="yellow" delay={0.7} />
+
       {/* Main Content */}
       <div className="relative z-20 container mx-auto px-4 py-24">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
-          {/* Left side - Text content */}
+        <div className="text-center min-h-[80vh] flex flex-col justify-center">
+          {/* Center Content - Logo and Text */}
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-left lg:pr-8"
+            initial={{ opacity: 0, y: 50 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, delay: 0.9 }}
+            className="text-center max-w-4xl mx-auto"
           >
             {/* Brand Badge */}
             <motion.div
@@ -155,15 +160,15 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
               <span className="text-red-600 font-semibold text-sm">Türkiye'nin #1 Pizza Markası</span>
             </motion.div>
 
-            {/* Main Heading */}
+            {/* Main Heading - Centered */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="text-4xl lg:text-6xl xl:text-7xl font-bold text-gray-900 mb-6 leading-tight"
+              transition={{ duration: 0.8, delay: 1.1 }}
+              className="text-5xl lg:text-7xl xl:text-8xl font-bold mb-8 leading-tight"
             >
               <span className="text-red-600">Pizza</span>{' '}
-              <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">Krallığı</span>
+              <span className="text-yellow-600">Krallığı</span>
             </motion.h1>
 
             {/* Dynamic subtitle based on current slide */}
@@ -181,8 +186,8 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="text-lg text-gray-600 mb-10 leading-relaxed max-w-lg"
+              transition={{ duration: 0.8, delay: 1.3 }}
+              className="text-xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto"
             >
               Premium malzemeler, özel soslar ve usta şeflerin deneyimi ile hazırlanan lezzetleri keşfedin.
             </motion.p>
@@ -191,8 +196,8 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 1.0 }}
-              className="flex flex-col sm:flex-row gap-4 mb-10"
+              transition={{ duration: 0.8, delay: 1.5 }}
+              className="flex flex-col sm:flex-row gap-4 mb-12 justify-center"
             >
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -219,8 +224,8 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 1.2 }}
-              className="grid grid-cols-2 gap-3"
+              transition={{ duration: 0.7, delay: 1.7 }}
+              className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto"
             >
               {trustBadges.map((badge, index) => (
                 <motion.div
@@ -235,101 +240,6 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
                 </motion.div>
               ))}
             </motion.div>
-          </motion.div>
-
-          {/* Right side - Pizza showcase with base64 images */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isVisible ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="relative lg:h-[600px] flex items-center justify-center"
-          >
-            {/* Pizza showcase with floating effect */}
-            <motion.div
-              animate={{
-                y: [0, -10, 0],
-                rotate: [0, 1, 0],
-              }}
-              transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="relative w-80 h-80 lg:w-96 lg:h-96"
-            >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={currentSlide}
-                  initial={{ scale: 0.8, opacity: 0, rotate: -10 }}
-                  animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                  exit={{ scale: 1.1, opacity: 0, rotate: 10 }}
-                  transition={{ duration: 0.8, ease: 'easeOut' }}
-                  className="absolute inset-0 rounded-full overflow-hidden shadow-2xl"
-                >
-                  <Image
-                    src={pizzaSlides[currentSlide].image}
-                    alt={pizzaSlides[currentSlide].title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 320px, 384px"
-                    priority={currentSlide === 0}
-                    placeholder="blur"
-                    blurDataURL={placeholderImages.pizza}
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.src = pizzaSlides[currentSlide].fallback;
-                    }}
-                  />
-                  {/* Glow effect */}
-                  <motion.div
-                    className={`absolute inset-0 rounded-full bg-gradient-to-r ${pizzaSlides[currentSlide].color} opacity-20 blur-sm`}
-                    animate={{
-                      scale: [0.95, 1.05, 0.95],
-                      opacity: [0.15, 0.25, 0.15]
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: 'easeInOut'
-                    }}
-                  />
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Pizza info card */}
-              <motion.div
-                key={currentSlide}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm rounded-xl px-6 py-4 shadow-lg border border-gray-200"
-              >
-                <h3 className="font-bold text-gray-900 text-lg text-center">
-                  {pizzaSlides[currentSlide].title}
-                </h3>
-                <div className="flex items-center justify-center gap-1 mt-1">
-                  {Array(5).fill(0).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                  <span className="text-gray-600 text-sm ml-2">4.9</span>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Slide indicators */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 flex gap-2">
-              {pizzaSlides.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentSlide
-                      ? 'bg-red-500 w-8'
-                      : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
-                />
-              ))}
-            </div>
           </motion.div>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Star, Plus, Heart, Clock, Flame } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '../lib/utils';
+import { placeholderImages } from '../lib/base64Images';
 
 interface Product {
   id: string;
@@ -109,6 +110,9 @@ export default function ModernProductCard({
             imageLoaded ? 'opacity-100' : 'opacity-0'
           )}
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+          placeholder="blur"
+          blurDataURL={placeholderImages.pizza}
+          priority={delay === 0} // İlk card'ı priority yap
           onLoad={() => setImageLoaded(true)}
           onError={(e) => {
             const target = e.target as HTMLImageElement;
