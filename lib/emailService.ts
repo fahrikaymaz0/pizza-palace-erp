@@ -6,17 +6,17 @@ export function generateCode(): string {
 }
 
 function createTransport() {
-  const user = process.env.EMAIL_USER || 'pizzapalaceofficial00@gmail.com';
-  const pass = process.env.EMAIL_PASS || 'scgwevbmztpahfoc';
+  const emailUser = process.env.EMAIL_USER || 'pizzapalaceofficial00@gmail.com';
+  const emailPass = process.env.EMAIL_PASS || 'scgwevbmztpahfoc';
 
-  if (!user || !pass) {
+  if (!emailUser || !emailPass) {
     console.warn('EMAIL_USER/EMAIL_PASS env değişkenleri set edilmemiş. Email gönderimi simüle edilecek.');
     return null;
   }
 
   return nodemailer.createTransport({
     service: 'gmail',
-    auth: { user, pass },
+    auth: { user: emailUser, pass: emailPass },
   });
 }
 
@@ -99,5 +99,3 @@ export async function sendPasswordResetEmail(email: string, resetToken: string):
     return false;
   }
 }
-
-
