@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 
 interface PremiumImageProps {
@@ -47,12 +47,12 @@ export default function PremiumImage({
     setHasError(false);
   }, [src]);
 
-  const handleLoad = () => {
+  const handleLoad = useCallback(() => {
     setIsLoading(false);
     onLoad?.();
-  };
+  }, [onLoad]);
 
-  const handleError = (e: any) => {
+  const handleError = useCallback((e: any) => {
     console.error('Image load error:', src);
     setHasError(true);
     setIsLoading(false);
@@ -63,7 +63,7 @@ export default function PremiumImage({
     }
     
     onError?.(e);
-  };
+  }, [src, imageSrc, onError]);
 
   // Shimmer effect for loading
   const shimmer = (w: number, h: number) => `
@@ -89,30 +89,16 @@ export default function PremiumImage({
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
-      {/* Loading shimmer */}
       {isLoading && (
-        <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 animate-pulse" />
+        <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg" />
       )}
       
-      {/* Error state */}
-      {hasError && imageSrc === fallbackSrc && (
-        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
-          <div className="text-gray-400 text-sm text-center">
-            <div className="w-8 h-8 mx-auto mb-2 bg-gray-300 rounded-full" />
-            Görsel yüklenemedi
-          </div>
-        </div>
-      )}
-
       <Image
         src={imageSrc}
         alt={alt}
         width={width}
         height={height}
         fill={fill}
-        className={`transition-opacity duration-300 ${
-          isLoading ? 'opacity-0' : 'opacity-100'
-        }`}
         sizes={sizes}
         priority={priority}
         quality={quality}
@@ -120,8 +106,24 @@ export default function PremiumImage({
         blurDataURL={blurDataURL || shimmerDataURL}
         onLoad={handleLoad}
         onError={handleError}
-        loading={priority ? 'eager' : 'lazy'}
+        className={`transition-opacity duration-300 ${
+          isLoading ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{
+          objectFit: 'cover'
+        }}
       />
+      
+      {hasError && (
+        <div className="absolute inset-0 bg-gray-100 flex items-center justify-center rounded-lg">
+          <div className="text-center text-gray-500">
+            <div className="w-12 h-12 mx-auto mb-2 bg-gray-200 rounded-full flex items-center justify-center">
+              <span className="text-2xl">🍕</span>
+            </div>
+            <p className="text-sm">Görsel yüklenemedi</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

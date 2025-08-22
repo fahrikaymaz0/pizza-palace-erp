@@ -20,75 +20,138 @@ export default async function handler(req, res) {
   try {
     const { category, search, sortBy } = req.query;
 
-    let where = {
-      isActive: true
-    };
+    // Mock products data
+    const mockProducts = [
+      {
+        id: '1',
+        name: 'Royal Margherita',
+        description: 'Kraliyet domates sosu, mozzarella di bufala, taze fesleğen',
+        price: 89,
+        originalPrice: 120,
+        image: '/pizzas/margherita.png',
+        category: 'royal',
+        rating: 4.9,
+        reviewCount: 256,
+        isPremium: true,
+        isVegetarian: true,
+        ingredients: ['Domates Sosu', 'Mozzarella', 'Fesleğen', 'Zeytinyağı'],
+        preparationTime: '15-20 dk',
+        calories: 850,
+        badge: '👑 Kraliyet'
+      },
+      {
+        id: '2',
+        name: 'Imperial Pepperoni',
+        description: 'Özel pepperoni, mozzarella, parmesan peyniri',
+        price: 99,
+        image: '/pizzas/pepperoni.png',
+        category: 'imperial',
+        rating: 4.8,
+        reviewCount: 189,
+        isPremium: true,
+        ingredients: ['Pepperoni', 'Mozzarella', 'Parmesan', 'Domates Sosu'],
+        preparationTime: '18-22 dk',
+        calories: 950,
+        badge: '⚔️ İmparatorluk'
+      },
+      {
+        id: '3',
+        name: 'Supreme Majesty',
+        description: 'Kraliyet malzemeleri: sosis, mantar, biber, soğan, zeytin',
+        price: 129,
+        image: '/pizzas/supreme.png',
+        category: 'supreme',
+        rating: 5.0,
+        reviewCount: 312,
+        isPremium: true,
+        ingredients: ['Sosis', 'Mantar', 'Biber', 'Soğan', 'Zeytin'],
+        preparationTime: '20-25 dk',
+        calories: 1100,
+        badge: '👑 Majeste'
+      },
+      {
+        id: '4',
+        name: 'Royal Vegetarian',
+        description: 'Taze sebzeler, mozzarella, parmesan, fesleğen',
+        price: 79,
+        image: '/pizzas/vegetarian.png',
+        category: 'royal',
+        rating: 4.7,
+        reviewCount: 145,
+        isVegetarian: true,
+        ingredients: ['Mantar', 'Biber', 'Soğan', 'Mozzarella', 'Fesleğen'],
+        preparationTime: '15-18 dk',
+        calories: 750,
+        badge: '🌿 Kraliyet'
+      },
+      {
+        id: '5',
+        name: 'BBQ Royal Chicken',
+        description: 'BBQ sosu, tavuk göğsü, soğan, mısır, mozzarella',
+        price: 109,
+        image: '/pizzas/bbq-chicken.png',
+        category: 'bbq',
+        rating: 4.6,
+        reviewCount: 98,
+        ingredients: ['Tavuk Göğsü', 'BBQ Sosu', 'Soğan', 'Mısır', 'Mozzarella'],
+        preparationTime: '18-22 dk',
+        calories: 980,
+        badge: '🍗 Kraliyet'
+      },
+      {
+        id: '6',
+        name: 'Mexican Fire',
+        description: 'Acılı sos, jalapeño, mısır, tavuk, mozzarella',
+        price: 119,
+        image: '/pizzas/mexican-hot.png',
+        category: 'spicy',
+        rating: 4.5,
+        reviewCount: 87,
+        isSpicy: true,
+        ingredients: ['Acılı Sos', 'Jalapeño', 'Mısır', 'Tavuk', 'Mozzarella'],
+        preparationTime: '16-20 dk',
+        calories: 920,
+        badge: '🔥 Ateş'
+      }
+    ];
+
+    let filteredProducts = mockProducts;
 
     // Category filter
     if (category && category !== 'all') {
-      where.category = category;
+      filteredProducts = filteredProducts.filter(product => product.category === category);
     }
 
     // Search filter
     if (search) {
-      where.OR = [
-        { name: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } }
-      ];
+      const searchLower = search.toLowerCase();
+      filteredProducts = filteredProducts.filter(product => 
+        product.name.toLowerCase().includes(searchLower) ||
+        product.description.toLowerCase().includes(searchLower)
+      );
     }
 
     // Sort options
-    let orderBy = { name: 'asc' };
-    
     switch (sortBy) {
       case 'price-low':
-        orderBy = { price: 'asc' };
+        filteredProducts.sort((a, b) => a.price - b.price);
         break;
       case 'price-high':
-        orderBy = { price: 'desc' };
+        filteredProducts.sort((a, b) => b.price - a.price);
         break;
       case 'rating':
-        orderBy = { rating: 'desc' };
+        filteredProducts.sort((a, b) => b.rating - a.rating);
         break;
       case 'name':
       default:
-        orderBy = { name: 'asc' };
+        filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
         break;
     }
 
-    const products = await prisma.product.findMany({
-      where,
-      orderBy,
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        price: true,
-        originalPrice: true,
-        image: true,
-        category: true,
-        rating: true,
-        reviewCount: true,
-        isPremium: true,
-        isVegetarian: true,
-        isSpicy: true,
-        ingredients: true,
-        preparationTime: true,
-        calories: true,
-        badge: true
-      }
-    });
-
-    // Parse ingredients JSON
-    const productsWithParsedIngredients = products.map(product => ({
-      ...product,
-      ingredients: JSON.parse(product.ingredients || '[]')
-    }));
-
     return res.status(200).json({
       success: true,
-      products: productsWithParsedIngredients,
-      count: productsWithParsedIngredients.length
+      products: filteredProducts,
+      count: filteredProducts.length
     });
 
   } catch (error) {

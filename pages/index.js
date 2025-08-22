@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Crown } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -128,7 +128,7 @@ export default function RoyalPizzaKingdom() {
     ? royalProducts 
     : royalProducts.filter(product => product.category === activeCategory);
 
-  const addToCart = (product) => {
+  const addToCart = useCallback((product) => {
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
@@ -141,13 +141,13 @@ export default function RoyalPizzaKingdom() {
         return [...prev, { ...product, quantity: 1 }];
       }
     });
-  };
+  }, []);
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = useCallback((productId) => {
     setCartItems(prev => prev.filter(item => item.id !== productId));
-  };
+  }, []);
 
-  const updateQuantity = (productId, quantity) => {
+  const updateQuantity = useCallback((productId, quantity) => {
     if (quantity <= 0) {
       removeFromCart(productId);
     } else {
@@ -157,10 +157,11 @@ export default function RoyalPizzaKingdom() {
         )
       );
     }
-  };
+  }, [removeFromCart]);
 
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+  // Slide değişimi için useEffect
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % 3);
@@ -168,6 +169,7 @@ export default function RoyalPizzaKingdom() {
     return () => clearInterval(interval);
   }, []);
 
+  // Auth kontrolü için useEffect
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('token');
@@ -175,14 +177,14 @@ export default function RoyalPizzaKingdom() {
     }
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       setIsAuthed(false);
       window.location.href = '/';
     }
-  };
+  }, []);
 
   return (
     <>
