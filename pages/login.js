@@ -108,10 +108,10 @@ export default function RoyalLogin() {
         <link rel="icon" href="/kaymaz-icon.ico" />
       </Head>
 
-      <div className="min-h-screen relative">
+      <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 relative">
         <RoyalParallaxScene />
         
-        <div className="relative z-10 min-h-[80vh] flex items-center justify-center p-4">
+        <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -126,12 +126,12 @@ export default function RoyalLogin() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="inline-block mb-4"
               >
-                <Crown className="w-16 h-16 text-yellow-500 mx-auto" />
+                <Crown className="w-16 h-16 text-red-600 mx-auto" />
               </motion.div>
-              <h1 className="text-3xl font-bold text-[#8D6E63] mb-2">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Kraliyet Girişi
               </h1>
-              <p className="text-[#333]/80">
+              <p className="text-gray-600">
                 Pizza Krallığı'na hoş geldiniz
               </p>
             </div>
@@ -141,7 +141,7 @@ export default function RoyalLogin() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-white rounded-2xl border border-[#FFD166]/50 p-8 shadow-lg"
+              className="bg-white/90 backdrop-blur-sm rounded-2xl border border-gray-200 p-8 shadow-xl"
             >
               {/* Success Message */}
               {successMessage && (

@@ -7,13 +7,13 @@ import Link from 'next/link';
 import { placeholderImages } from '../lib/base64Images';
 import FlagBanner from './FlagBanner';
 import PremiumImage from './PremiumImage';
+import OutlineCrown from './OutlineCrown';
 
 interface FastHeroSectionProps {
   className?: string;
-  isDarkMode?: boolean;
 }
 
-export default function FastHeroSection({ className, isDarkMode }: FastHeroSectionProps) {
+export default function FastHeroSection({ className }: FastHeroSectionProps) {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -73,11 +73,7 @@ export default function FastHeroSection({ className, isDarkMode }: FastHeroSecti
 
   return (
     <section
-      className={`relative min-h-screen flex items-center justify-center overflow-hidden ${
-        isDarkMode 
-          ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
-          : 'bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50'
-      } ${className}`}
+      className={`relative min-h-screen flex items-center justify-center overflow-hidden bg-white ${className}`}
     >
       {/* Hızlı CSS animasyonlu arka plan - görsel yok */}
       <div className="absolute inset-0 z-0">
@@ -154,14 +150,14 @@ export default function FastHeroSection({ className, isDarkMode }: FastHeroSecti
             transition={{ duration: 0.8, delay: 0.9 }}
             className="text-center max-w-4xl mx-auto"
           >
-            {/* Crown Badge */}
+            {/* Crown Badge - Outline */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="inline-flex items-center justify-center mb-6"
             >
-              <span className="text-6xl">👑</span>
+              <OutlineCrown className="w-14 h-14 text-yellow-500" />
             </motion.div>
 
             {/* Main Heading - Centered */}
@@ -279,11 +275,7 @@ export default function FastHeroSection({ className, isDarkMode }: FastHeroSecti
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className={`flex flex-col items-center transition-colors ${
-            isDarkMode 
-              ? 'text-gray-400 hover:text-red-400' 
-              : 'text-gray-600 hover:text-red-600'
-          }`}
+          className={`flex flex-col items-center transition-colors text-gray-600 hover:text-red-600`}
         >
           <ChevronDown className="w-6 h-6" />
         </motion.button>

@@ -1,8 +1,8 @@
 import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 
-// E-posta yapılandırması (örnek)
-const transporter = nodemailer.createTransporter({
+// E-posta yapılandırması
+const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,

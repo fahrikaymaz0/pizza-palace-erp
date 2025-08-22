@@ -55,40 +55,46 @@ module.exports = {
       },
       animation: {
         'royal-float': 'royal-float 6s ease-in-out infinite',
-        'royal-glow': 'royal-glow 2s ease-in-out infinite alternate',
-        'royal-sparkle': 'royal-sparkle 3s ease-in-out infinite',
-        'royal-banner': 'royal-banner 4s ease-in-out infinite',
+        'royal-pulse': 'royal-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'royal-bounce': 'royal-bounce 1s infinite',
+        'royal-spin': 'royal-spin 1s linear infinite',
+        'royal-ping': 'royal-ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
+        'royal-wiggle': 'royal-wiggle 1s ease-in-out infinite',
       },
       keyframes: {
         'royal-float': {
           '0%, 100%': { transform: 'translateY(0px)' },
           '50%': { transform: 'translateY(-20px)' },
         },
-        'royal-glow': {
-          '0%': { boxShadow: '0 0 20px rgba(212, 175, 55, 0.5)' },
-          '100%': { boxShadow: '0 0 40px rgba(212, 175, 55, 0.8)' },
+        'royal-pulse': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '.5' },
         },
-        'royal-sparkle': {
-          '0%, 100%': { opacity: 0.3, transform: 'scale(1)' },
-          '50%': { opacity: 1, transform: 'scale(1.2)' },
+        'royal-bounce': {
+          '0%, 100%': { transform: 'translateY(-25%)', animationTimingFunction: 'cubic-bezier(0.8, 0, 1, 1)' },
+          '50%': { transform: 'translateY(0)', animationTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)' },
         },
-        'royal-banner': {
-          '0%, 100%': { transform: 'rotateY(0deg)' },
-          '50%': { transform: 'rotateY(5deg)' },
+        'royal-spin': {
+          'from': { transform: 'rotate(0deg)' },
+          'to': { transform: 'rotate(360deg)' },
         },
+        'royal-ping': {
+          '75%, 100%': { transform: 'scale(2)', opacity: '0' },
+        },
+        'royal-wiggle': {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
+      },
+      boxShadow: {
+        'royal': '0 10px 25px -5px rgba(220, 38, 38, 0.1), 0 10px 10px -5px rgba(220, 38, 38, 0.04)',
+        'royal-lg': '0 20px 25px -5px rgba(220, 38, 38, 0.1), 0 10px 10px -5px rgba(220, 38, 38, 0.04)',
+        'royal-xl': '0 25px 50px -12px rgba(220, 38, 38, 0.25)',
       },
       backdropBlur: {
         xs: '2px',
       },
-      boxShadow: {
-        'royal': '0 0 30px rgba(212, 175, 55, 0.3)',
-        'royal-lg': '0 0 50px rgba(212, 175, 55, 0.5)',
-        'royal-xl': '0 0 70px rgba(212, 175, 55, 0.7)',
-      },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-  ],
+  plugins: [],
 }

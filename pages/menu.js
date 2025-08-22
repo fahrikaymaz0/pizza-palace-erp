@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useTheme } from '../context/DarkModeContext';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,6 +11,7 @@ import RoyalParallaxScene from '../components/RoyalParallaxScene';
 import OptimizedImage from '../components/OptimizedImage';
 
 function RoyalMenu() {
+  const { isLightMode } = useTheme();
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('name');
@@ -28,45 +30,38 @@ function RoyalMenu() {
   const categories = [
     { 
       id: 'all', 
-      name: 'Tümü', 
-      description: 'Tüm pizza çeşitlerimiz',
-      color: 'from-gray-500 to-gray-600',
-      count: 12 
+      name: 'Tümü',
+      description: 'Tüm lezzetli pizzalarımız',
+      color: 'from-red-500 to-orange-500',
+      count: 12
     },
     { 
       id: 'royal', 
-      name: 'Kraliyet Serisi', 
-      description: 'Premium malzemelerle hazırlanan özel pizzalar',
-      color: 'from-yellow-500 to-amber-600',
-      count: 4 
+      name: 'Kraliyet Serisi',
+      description: 'Premium malzemelerle hazırlanan özel tarifler',
+      color: 'from-purple-500 to-pink-500',
+      count: 4
     },
     { 
-      id: 'imperial', 
-      name: 'İmparatorluk Serisi', 
-      description: 'Geleneksel tariflerle hazırlanan klasik lezzetler',
-      color: 'from-red-600 to-red-700',
-      count: 3 
+      id: 'classic', 
+      name: 'Klasik Pizzalar',
+      description: 'Geleneksel İtalyan lezzetleri',
+      color: 'from-green-500 to-teal-500',
+      count: 3
     },
     { 
-      id: 'supreme', 
-      name: 'Majeste Serisi', 
-      description: 'En seçkin malzemelerle hazırlanan lüks pizzalar',
-      color: 'from-purple-600 to-indigo-700',
-      count: 2 
-    },
-    { 
-      id: 'bbq', 
-      name: 'BBQ Serisi', 
-      description: 'Barbekü soslu ve ızgara lezzetli pizzalar',
-      color: 'from-orange-600 to-red-600',
-      count: 2 
+      id: 'vegetarian', 
+      name: 'Vejetaryen',
+      description: 'Taze sebzelerle hazırlanan sağlıklı seçenekler',
+      color: 'from-emerald-500 to-green-500',
+      count: 2
     },
     { 
       id: 'spicy', 
-      name: 'Acılı Serisi', 
-      description: 'Baharatlı ve acı sevenler için özel pizzalar',
-      color: 'from-red-500 to-orange-500',
-      count: 1 
+      name: 'Acılı Pizzalar',
+      description: 'Baharatlı ve keskin lezzetler',
+      color: 'from-red-600 to-orange-600',
+      count: 3
     }
   ];
 
@@ -187,25 +182,25 @@ function RoyalMenu() {
         <link rel="icon" href="/kaymaz-icon.ico" />
       </Head>
 
-      <div className="min-h-screen relative">
+      <div className="min-h-screen relative bg-white">
         <RoyalParallaxScene />
         
         <div className="relative z-10 min-h-screen">
           {/* Header */}
-          <div className="bg-black/80 backdrop-blur-sm border-b border-red-700/50 sticky top-0 z-40">
+          <div className="sticky top-0 z-40 backdrop-blur-sm border-b bg-white/95 border-gray-200">
             <div className="container mx-auto px-4 py-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <Link href="/" className="text-yellow-400 hover:text-yellow-300">
+                  <Link href="/" className="text-gray-700 hover:text-red-600">
                     <ArrowLeft className="w-6 h-6" />
                   </Link>
                   <Crown className="w-8 h-8 text-red-600" />
-                  <h1 className="text-2xl font-bold text-red-500">Kraliyet Menü</h1>
+                  <h1 className="text-2xl font-bold text-red-600">Kraliyet Menü</h1>
                 </div>
                 
                 <button
                   onClick={() => setIsCartOpen(true)}
-                  className="relative p-2 text-red-500 hover:text-red-400 transition-colors"
+                  className="relative p-2 text-gray-700 hover:text-red-600 transition-colors"
                 >
                   <ShoppingCart className="w-6 h-6" />
                   {cartItems.length > 0 && (
@@ -219,7 +214,7 @@ function RoyalMenu() {
           </div>
 
           {/* Search and Filter */}
-          <div className="bg-white/10 backdrop-blur-sm border-b border-yellow-400/30">
+          <div className="backdrop-blur-sm border-b bg-white/70 border-gray-200">
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-col md:flex-row gap-4">
                 {/* Search */}
@@ -230,7 +225,7 @@ function RoyalMenu() {
                     placeholder="Pizza ara..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 bg-white/20 border border-gray-400 rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent bg-white border border-gray-300 text-gray-900 placeholder-gray-500 focus:ring-yellow-400"
                   />
                 </div>
 
@@ -238,7 +233,7 @@ function RoyalMenu() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="px-4 py-3 bg-white/20 border border-gray-400 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
+                  className="px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:border-transparent bg-white border border-gray-300 text-gray-900 focus:ring-yellow-400"
                 >
                   <option value="name">İsme Göre</option>
                   <option value="price-low">Fiyat (Düşük-Yüksek)</option>
@@ -298,12 +293,12 @@ function RoyalMenu() {
         </div>
 
         {/* Products Grid */}
-          <div className="container mx-auto px-4 py-8" style={{background: '#FFFBF5'}}>
+          <div className="container mx-auto px-4 py-8 bg-[#FFFBF5]">
             {error && (
-              <div className="text-center text-red-400 mb-4">{error}</div>
+              <div className="text-center text-red-600 mb-4">{error}</div>
             )}
             {loading && (
-              <div className="text-center text-[#333]">Yükleniyor...</div>
+              <div className="text-center text-[#333] dark:text-gray-300">Yükleniyor...</div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product, index) => (
@@ -312,7 +307,7 @@ function RoyalMenu() {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white rounded-xl border border-[#FFD166]/60 shadow-sm overflow-hidden hover:transform hover:scale-105 transition-all group"
+                  className="bg-white dark:bg-gray-800 rounded-xl border border-[#FFD166]/60 dark:border-gray-600 shadow-sm overflow-hidden hover:transform hover:scale-105 transition-all group"
                 >
                   <div className="relative">
                     <OptimizedImage
@@ -338,19 +333,19 @@ function RoyalMenu() {
                     {/* Favorite Button */}
                     <button
                       onClick={() => toggleFavorite(product.id)}
-                      className="absolute top-4 right-12 p-2 bg-white/20 rounded-full hover:bg-white/30 transition-colors"
+                      className="absolute top-4 right-12 p-2 bg-white/80 dark:bg-gray-700/80 rounded-full hover:bg-white dark:hover:bg-gray-600 transition-colors"
                     >
                       <Heart 
                         className={`w-5 h-5 ${
                           favorites.includes(product.id) 
                             ? 'text-red-500 fill-current' 
-                            : 'text-white'
+                            : 'text-red-500 dark:text-gray-300'
                         }`} 
                       />
                     </button>
 
                     {/* Overlay Info */}
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/20 dark:bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                       <div className="text-center text-white p-4">
                         <p className="text-sm mb-2">Hazırlama: {product.preparationTime}</p>
                         <p className="text-sm">Kalori: {product.calories} kcal</p>
@@ -360,37 +355,37 @@ function RoyalMenu() {
                   
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-bold text-[#333]">{product.name}</h3>
+                      <h3 className="text-xl font-bold text-[#333] dark:text-gray-100">{product.name}</h3>
                       <div className="flex items-center">
                         <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                        <span className="text-[#333] ml-1">{product.rating}</span>
+                        <span className="text-[#333] dark:text-gray-300 ml-1">{product.rating}</span>
                       </div>
                     </div>
                     
-                    <p className="text-[#333]/80 mb-4 text-sm">{product.description}</p>
+                    <p className="text-[#333]/80 dark:text-gray-300 mb-4 text-sm">{product.description}</p>
                     
                     {/* Ingredients */}
                     <div className="mb-4">
-                      <p className="text-xs text-[#333]/60 mb-2">Malzemeler:</p>
+                      <p className="text-xs text-[#333]/60 dark:text-gray-400 mb-2">Malzemeler:</p>
                       <div className="flex flex-wrap gap-1">
                         {product.ingredients.slice(0, 3).map((ingredient, i) => (
-                          <span key={i} className="text-xs bg-[#FFD166]/20 text-[#333] px-2 py-1 rounded">
+                          <span key={i} className="text-xs bg-[#FFD166]/20 text-[#333] dark:text-gray-100 px-2 py-1 rounded">
                             {ingredient}
                           </span>
                         ))}
                         {product.ingredients.length > 3 && (
-                          <span className="text-xs text-[#333]/60">+{product.ingredients.length - 3} daha</span>
+                          <span className="text-xs text-[#333]/60 dark:text-gray-400">+{product.ingredients.length - 3} daha</span>
                         )}
                       </div>
                     </div>
                     
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold text-yellow-400">
+                        <span className="text-2xl font-bold text-yellow-500 dark:text-yellow-400">
                           ₺{product.price}
                         </span>
                         {product.originalPrice && (
-                          <span className="text-[#333]/60 line-through text-sm">
+                          <span className="text-[#333]/60 dark:text-gray-400 line-through text-sm">
                             ₺{product.originalPrice}
                           </span>
                         )}
@@ -410,7 +405,7 @@ function RoyalMenu() {
 
             {filteredProducts.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-[#333] text-lg">Aradığınız kriterlere uygun pizza bulunamadı.</p>
+                <p className="text-[#333] dark:text-gray-300 text-lg">Aradığınız kriterlere uygun pizza bulunamadı.</p>
             </div>
           )}
           </div>
@@ -531,14 +526,14 @@ function RoyalMenu() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/40 dark:bg-black/70 z-50 flex items-center justify-center p-4"
             onClick={() => !submitting && setShowCheckout(false)}
           >
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
-              className="relative w-full max-w-lg bg-gradient-to-b from-purple-900 to-red-900 border border-yellow-400/40 rounded-2xl p-6 text-white"
+              className="relative w-full max-w-lg rounded-2xl p-6 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800"
               onClick={(e) => e.stopPropagation()}
             >
               <button className="absolute right-4 top-4 text-white/80 hover:text-white" onClick={() => !submitting && setShowCheckout(false)}>
@@ -548,18 +543,18 @@ function RoyalMenu() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm mb-2">Adres</label>
-                  <textarea className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg" rows="3" value={address} onChange={(e) => setAddress(e.target.value)} />
+                  <textarea className="w-full px-3 py-2 bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded-lg" rows="3" value={address} onChange={(e) => setAddress(e.target.value)} />
                 </div>
                 <div>
                   <label className="block text-sm mb-2">Telefon</label>
-                  <input className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="05XX XXX XX XX" />
+                  <input className="w-full px-3 py-2 bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded-lg" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="05XX XXX XX XX" />
                 </div>
                 <div>
                   <label className="block text-sm mb-2">Not (opsiyonel)</label>
-                  <input className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg" value={notes} onChange={(e) => setNotes(e.target.value)} />
+                  <input className="w-full px-3 py-2 bg-white border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100 rounded-lg" value={notes} onChange={(e) => setNotes(e.target.value)} />
                 </div>
                 <div className="flex items-center justify-between pt-2">
-                  <span className="text-lg">Toplam: <span className="font-bold text-yellow-400">₺{totalPrice}</span></span>
+                  <span className="text-lg">Toplam: <span className="font-bold text-yellow-600 dark:text-yellow-400">₺{totalPrice}</span></span>
                   <button disabled={submitting} onClick={submitOrder} className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 px-6 py-3 rounded-full font-bold hover:from-yellow-300 hover:to-yellow-500 disabled:opacity-50">
                     {submitting ? 'Gönderiliyor...' : 'Siparişi Onayla'}
                   </button>

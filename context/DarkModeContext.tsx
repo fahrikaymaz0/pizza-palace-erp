@@ -1,52 +1,25 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext } from 'react';
 
-interface DarkModeContextType {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
+interface ThemeContextType {
+  isLightMode: boolean;
 }
 
-const DarkModeContext = createContext<DarkModeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextType>({ isLightMode: true });
 
-export const DarkModeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-
-  useEffect(() => {
-    // LocalStorage'dan dark mode durumunu oku
-    const savedDarkMode = localStorage.getItem('darkMode');
-    if (savedDarkMode) {
-      setIsDarkMode(JSON.parse(savedDarkMode));
-    }
-  }, []);
-
-  useEffect(() => {
-    // Dark mode durumunu localStorage'a kaydet
-    localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
-    
-    // Body class'ını güncelle
-    if (isDarkMode) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <ThemeContext.Provider value={{ isLightMode: true }}>
       {children}
-    </DarkModeContext.Provider>
+    </ThemeContext.Provider>
   );
 };
 
-export const useDarkMode = () => {
-  const context = useContext(DarkModeContext);
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
   if (context === undefined) {
-    throw new Error('useDarkMode must be used within a DarkModeProvider');
+    throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
 };
