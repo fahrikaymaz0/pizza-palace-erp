@@ -23,6 +23,7 @@ function createTransport() {
 export async function sendVerificationEmail(email: string, code: string): Promise<boolean> {
   try {
     const transporter = createTransport();
+    const emailUser = process.env.EMAIL_USER || 'pizzapalaceofficial00@gmail.com';
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;padding:24px;background:#fff;color:#333;border:2px solid #dc2626;border-radius:12px">
         <div style="text-align:center;margin-bottom:20px;">
@@ -44,7 +45,7 @@ export async function sendVerificationEmail(email: string, code: string): Promis
     }
 
     const result = await transporter.sendMail({
-      from: `"Pizza Krallığı" <${user}>`,
+      from: `"Pizza Krallığı" <${emailUser}>`,
       to: email,
       subject: '🍕 Pizza Krallığı - E-posta Doğrulama Kodu',
       html,
@@ -61,6 +62,7 @@ export async function sendVerificationEmail(email: string, code: string): Promis
 export async function sendPasswordResetEmail(email: string, resetToken: string): Promise<boolean> {
   try {
     const transporter = createTransport();
+    const emailUser = process.env.EMAIL_USER || 'pizzapalaceofficial00@gmail.com';
     const link = `${process.env.NEXT_PUBLIC_APP_URL || 'https://pizza-palace-erp-phi.vercel.app'}/reset-password?token=${resetToken}`;
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:520px;margin:auto;padding:24px;background:#fff;color:#333;border:2px solid #dc2626;border-radius:12px">
@@ -84,7 +86,7 @@ export async function sendPasswordResetEmail(email: string, resetToken: string):
     }
 
     const result = await transporter.sendMail({
-      from: `"Pizza Krallığı" <${process.env.EMAIL_USER || 'pizzapalaceofficial00@gmail.com'}>`,
+      from: `"Pizza Krallığı" <${emailUser}>`,
       to: email,
       subject: '🍕 Pizza Krallığı - Şifre Sıfırlama',
       html,
