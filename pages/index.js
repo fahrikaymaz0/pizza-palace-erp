@@ -6,8 +6,8 @@ import { Crown, Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, C
 import dynamic from 'next/dynamic';
 
 // Lazy load components for better performance
-const ModernHeroSection = dynamic(() => import('../components/ModernHeroSection'), {
-  loading: () => <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50 animate-pulse" />
+const FastHeroSection = dynamic(() => import('../components/FastHeroSection'), {
+  loading: () => <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50" />
 });
 const ModernProductCard = dynamic(() => import('../components/ModernProductCard'), {
   loading: () => <div className="bg-gray-200 rounded-2xl h-96 animate-pulse" />
@@ -265,9 +265,9 @@ export default function RoyalPizzaKingdom() {
         )}
       </AnimatePresence>
 
-      {/* Modern Hero Section */}
-      <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50 animate-pulse" />}>
-        <ModernHeroSection />
+      {/* Fast Hero Section - No Images */}
+      <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50" />}>
+        <FastHeroSection />
       </Suspense>
 
 
