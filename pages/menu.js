@@ -26,12 +26,48 @@ function RoyalMenu() {
   const [submitting, setSubmitting] = useState(false);
 
   const categories = [
-    { id: 'all', name: 'Tümü', icon: '👑', count: 12 },
-    { id: 'royal', name: 'Kraliyet', icon: '👑', count: 4 },
-    { id: 'imperial', name: 'İmparatorluk', icon: '⚔️', count: 3 },
-    { id: 'supreme', name: 'Majeste', icon: '👑', count: 2 },
-    { id: 'bbq', name: 'BBQ', icon: '🍗', count: 2 },
-    { id: 'spicy', name: 'Acılı', icon: '🔥', count: 1 }
+    { 
+      id: 'all', 
+      name: 'Tümü', 
+      description: 'Tüm pizza çeşitlerimiz',
+      color: 'from-gray-500 to-gray-600',
+      count: 12 
+    },
+    { 
+      id: 'royal', 
+      name: 'Kraliyet Serisi', 
+      description: 'Premium malzemelerle hazırlanan özel pizzalar',
+      color: 'from-yellow-500 to-amber-600',
+      count: 4 
+    },
+    { 
+      id: 'imperial', 
+      name: 'İmparatorluk Serisi', 
+      description: 'Geleneksel tariflerle hazırlanan klasik lezzetler',
+      color: 'from-red-600 to-red-700',
+      count: 3 
+    },
+    { 
+      id: 'supreme', 
+      name: 'Majeste Serisi', 
+      description: 'En seçkin malzemelerle hazırlanan lüks pizzalar',
+      color: 'from-purple-600 to-indigo-700',
+      count: 2 
+    },
+    { 
+      id: 'bbq', 
+      name: 'BBQ Serisi', 
+      description: 'Barbekü soslu ve ızgara lezzetli pizzalar',
+      color: 'from-orange-600 to-red-600',
+      count: 2 
+    },
+    { 
+      id: 'spicy', 
+      name: 'Acılı Serisi', 
+      description: 'Baharatlı ve acı sevenler için özel pizzalar',
+      color: 'from-red-500 to-orange-500',
+      count: 1 
+    }
   ];
 
   // API'den ürünleri getir (kategori/arama/sıralama ile)
@@ -215,22 +251,47 @@ function RoyalMenu() {
 
           {/* Categories */}
           <div className="bg-white/5 backdrop-blur-sm border-b border-yellow-400/20">
-            <div className="container mx-auto px-4 py-4">
-              <div className="flex flex-wrap gap-2">
+            <div className="container mx-auto px-4 py-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {categories.map((category) => (
-                <button
+                  <motion.button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
-                    className={`px-4 py-2 rounded-full font-semibold transition-all flex items-center space-x-2 ${
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className={`relative overflow-hidden rounded-2xl p-6 transition-all duration-300 ${
                       activeCategory === category.id
-                        ? 'bg-yellow-400 text-purple-900'
-                        : 'bg-white/10 text-white hover:bg-white/20'
+                        ? 'ring-4 ring-yellow-400 shadow-2xl'
+                        : 'hover:shadow-xl'
                     }`}
                   >
-                    <span>{category.icon}</span>
-                    <span>{category.name}</span>
-                    <span className="text-xs opacity-75">({category.count})</span>
-                </button>
+                    {/* Background Gradient */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-90`} />
+                    
+                    {/* Content */}
+                    <div className="relative z-10 text-white text-left">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-lg font-bold">{category.name}</h3>
+                        <span className="text-sm bg-white/20 px-2 py-1 rounded-full">
+                          {category.count} pizza
+                        </span>
+                      </div>
+                      <p className="text-sm opacity-90 leading-relaxed">
+                        {category.description}
+                      </p>
+                    </div>
+                    
+                    {/* Active indicator */}
+                    {activeCategory === category.id && (
+                      <motion.div
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        className="absolute top-3 right-3 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center"
+                      >
+                        <span className="text-purple-900 text-xs font-bold">✓</span>
+                      </motion.div>
+                    )}
+                  </motion.button>
                 ))}
               </div>
             </div>

@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Plus, Heart, Clock, Flame } from 'lucide-react';
-import Image from 'next/image';
 import { cn } from '../lib/utils';
 import { placeholderImages } from '../lib/base64Images';
+import PremiumImage from './PremiumImage';
 
 interface Product {
   id: string;
@@ -100,18 +100,16 @@ export default function ModernProductCard({
           />
         </motion.button>
 
-        {/* Product Image */}
-        <Image
+        {/* Product Image - Premium Optimized */}
+        <PremiumImage
           src={product.image}
           alt={product.name}
           fill
-          className={cn(
-            'object-cover transition-all duration-700 group-hover:scale-110',
-            imageLoaded ? 'opacity-100' : 'opacity-0'
-          )}
+          className="pizza-image"
           sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
           placeholder="blur"
           blurDataURL={placeholderImages.pizza}
+          quality={85}
           priority={delay === 0} // İlk card'ı priority yap
           onLoad={() => setImageLoaded(true)}
           onError={(e) => {

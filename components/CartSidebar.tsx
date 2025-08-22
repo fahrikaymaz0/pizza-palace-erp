@@ -20,6 +20,7 @@ interface CartSidebarProps {
   updateQuantity: (id: string, quantity: number) => void;
   removeFromCart: (id: string) => void;
   totalPrice: number;
+  onOrderStart?: () => void;
 }
 
 export default function CartSidebar({
@@ -29,6 +30,7 @@ export default function CartSidebar({
   updateQuantity,
   removeFromCart,
   totalPrice,
+  onOrderStart,
 }: CartSidebarProps) {
   if (!isOpen) return null;
 
@@ -175,13 +177,15 @@ export default function CartSidebar({
 
                   {/* Action Buttons */}
                   <div className="space-y-3">
-                    <Link
-                      href="/checkout"
-                      className="block w-full bg-red-600 text-white py-4 rounded-xl font-semibold text-center hover:bg-red-700 transition-colors"
-                      onClick={onClose}
+                    <button
+                      onClick={() => {
+                        onClose();
+                        onOrderStart?.();
+                      }}
+                      className="w-full bg-red-600 text-white py-4 rounded-xl font-semibold text-center hover:bg-red-700 transition-colors"
                     >
                       Siparişi Tamamla
-                    </Link>
+                    </button>
                     <button
                       onClick={onClose}
                       className="w-full border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-semibold hover:border-gray-300 transition-colors"

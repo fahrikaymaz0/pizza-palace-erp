@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Star, Clock, Shield, Award, ChevronDown, ArrowRight, Phone } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { placeholderImages } from '../lib/base64Images';
 import FlagBanner from './FlagBanner';
+import PremiumImage from './PremiumImage';
 
 interface FastHeroSectionProps {
   className?: string;

@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -6,6 +7,7 @@ import { Crown, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
 import RoyalParallaxScene from '../components/RoyalParallaxScene';
 
 export default function RoyalLogin() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -13,6 +15,17 @@ export default function RoyalLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    // URL parametrelerini kontrol et
+    if (router.query.registered === 'true') {
+      setSuccessMessage('Kayıt başarılı! E-posta adresinize doğrulama linki gönderildi.');
+    }
+    if (router.query.verified === 'true') {
+      setSuccessMessage('E-posta adresiniz başarıyla doğrulandı! Şimdi giriş yapabilirsiniz.');
+    }
+  }, [router.query]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -130,6 +143,17 @@ export default function RoyalLogin() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="bg-white rounded-2xl border border-[#FFD166]/50 p-8 shadow-lg"
             >
+              {/* Success Message */}
+              {successMessage && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
+                >
+                  <p className="text-green-800 text-sm font-medium">{successMessage}</p>
+                </motion.div>
+              )}
+
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Email */}
                 <div>

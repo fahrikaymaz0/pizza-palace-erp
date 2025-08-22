@@ -99,8 +99,24 @@ export default function RoyalRegister() {
       const data = await response.json();
 
       if (data.success) {
-        alert('Kayıt başarılı! E-postana gönderilen doğrulama kodunu gir.');
-        window.location.href = '/verify';
+        // E-posta doğrulama e-postası gönder
+        const verificationResponse = await fetch('/api/auth/send-verification', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: formData.email }),
+        });
+
+        const verificationData = await verificationResponse.json();
+        
+        if (verificationData.success) {
+          alert('Kayıt başarılı! E-posta adresinize doğrulama linki gönderildi. E-posta kutunuzu kontrol edin.');
+        } else {
+          alert('Kayıt başarılı ancak doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.');
+        }
+        
+        window.location.href = '/login?registered=true';
       } else {
         setErrors({ general: data.message });
         alert(data.message);

@@ -19,12 +19,16 @@ const CartSidebar = dynamic(() => import('../components/CartSidebar'), {
 const StarField = dynamic(() => import('../components/StarField'), {
   ssr: false
 });
+const OrderFlow = dynamic(() => import('../components/OrderFlow'), {
+  ssr: false
+});
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isOrderFlowOpen, setIsOrderFlowOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState('all');
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
@@ -347,34 +351,27 @@ export default function RoyalPizzaKingdom() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-              Lezzet Menümüz
+              Önerilen Pizzalarımız
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Özenle seçilmiş malzemeler ve usta şeflerin deneyimi ile hazırlanan pizzalarımız
+              En sevilen ve özel tariflerle hazırlanan pizza seçkilerimiz
             </p>
           </motion.div>
 
-          {/* Category Filter */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {categories.map((category) => (
-              <button
-                key={category.id}
-                onClick={() => setActiveCategory(category.id)}
-                className={`px-6 py-3 rounded-full font-semibold transition-all ${
-                  activeCategory === category.id
-                    ? 'bg-yellow-400 text-purple-900'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
-                }`}
-              >
-                <span className="mr-2">{category.icon}</span>
-                {category.name}
-              </button>
-            ))}
+          {/* "Tüm Menüyü Gör" butonu */}
+          <div className="text-center mb-12">
+            <Link
+              href="/menu"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-red-600 to-orange-600 text-white rounded-full font-semibold text-lg hover:from-red-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            >
+              🍕 Tüm Menüyü Gör
+              <ChevronRight className="w-5 h-5" />
+            </Link>
           </div>
 
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredProducts.map((product, index) => (
+          {/* Featured Products Grid - Sadece 6 önerilen pizza */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {royalProducts.slice(0, 6).map((product, index) => (
               <Suspense key={product.id} fallback={<div className="bg-gray-200 rounded-2xl h-96 animate-pulse" />}>
                 <ModernProductCard
                   product={{
@@ -416,10 +413,21 @@ export default function RoyalPizzaKingdom() {
             updateQuantity={updateQuantity}
             removeFromCart={removeFromCart}
             totalPrice={totalPrice}
+            onOrderStart={() => setIsOrderFlowOpen(true)}
           />
         )}
       </Suspense>
 
+      <Suspense fallback={null}>
+        {isOrderFlowOpen && (
+          <OrderFlow
+            isOpen={isOrderFlowOpen}
+            onClose={() => setIsOrderFlowOpen(false)}
+            cartItems={cartItems}
+            totalPrice={totalPrice}
+          />
+        )}
+      </Suspense>
 
     </>
   );

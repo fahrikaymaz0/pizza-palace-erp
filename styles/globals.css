@@ -570,3 +570,99 @@
   background-color: #d4af37;
   color: #1a1a2e;
 }
+
+/* Image Optimization & Loading Animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Progressive image loading */
+.image-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Optimized image containers */
+.image-container {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fee2e2, #fef3c7);
+}
+
+.image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 1.5s infinite;
+  z-index: 1;
+}
+
+.image-loaded::before {
+  display: none;
+}
+
+/* Modern pizza image effects */
+.pizza-image {
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.pizza-image:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1) saturate(1.2);
+}
+
+/* Lazy loading placeholder */
+.lazy-placeholder {
+  background: linear-gradient(
+    45deg,
+    #f3f4f6 25%,
+    transparent 25%,
+    transparent 75%,
+    #f3f4f6 75%,
+    #f3f4f6
+  ),
+  linear-gradient(
+    45deg,
+    #f3f4f6 25%,
+    transparent 25%,
+    transparent 75%,
+    #f3f4f6 75%,
+    #f3f4f6
+  );
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Premium image loading states */
+.premium-image-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
