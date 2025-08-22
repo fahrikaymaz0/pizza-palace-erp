@@ -171,8 +171,8 @@ export default function FastHeroSection({ className, isDarkMode }: FastHeroSecti
               transition={{ duration: 0.8, delay: 1.1 }}
               className="text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-bold mb-8 leading-tight"
             >
-              <span className="text-red-600">Pizza</span>{' '}
-              <span className="text-yellow-500">Krallığı</span>
+              <span className="text-red-600 dark:text-red-400">Pizza</span>{' '}
+              <span className="text-yellow-500 dark:text-yellow-400">Krallığı</span>
             </motion.h1>
 
             {/* Dynamic subtitle based on current slide */}

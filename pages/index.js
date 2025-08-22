@@ -188,15 +188,15 @@ export default function RoyalPizzaKingdom() {
       {/* Star Field - Dark Mode'da yıldızlar */}
       <StarField isDarkMode={isDarkMode} />
 
-      {/* Royal Navigation (responsive dark mode) */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-sm">
+      {/* Royal Navigation (white in light, dark in dark) */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Crown className="w-8 h-8 text-yellow-600" />
+              <span className="text-3xl">👑</span>
               <h1 className="text-2xl font-bold">
-                <span className="text-red-600">Pizza</span>{' '}
-                <span className="text-yellow-600">Krallığı</span>
+                <span className="text-red-600 dark:text-red-400">Pizza</span>{' '}
+                <span className="text-yellow-600 dark:text-yellow-400">Krallığı</span>
               </h1>
             </div>
             
@@ -296,7 +296,7 @@ export default function RoyalPizzaKingdom() {
 
 
       {/* Modern Features */}
-      <section className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+      <section className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -304,33 +304,33 @@ export default function RoyalPizzaKingdom() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
               Neden <span className="text-red-600">Pizza Krallığı</span>?
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Müşterilerimize en iyi deneyimi sunmak için sürekli kendimizi geliştiriyoruz
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Clock, title: '30dk Teslimat', desc: 'Hızlı ve zamanında teslimat garantisi', color: 'text-emerald-600', bg: 'bg-gradient-to-br from-emerald-50 to-green-100' },
-              { icon: Crown, title: 'Premium Kalite', desc: 'En taze malzemeler ve özel tarifler', color: 'text-amber-600', bg: 'bg-gradient-to-br from-amber-50 to-yellow-100' },
-              { icon: Shield, title: 'Güvenli Ödeme', desc: '256-bit SSL şifreleme ile güvenli alışveriş', color: 'text-sky-600', bg: 'bg-gradient-to-br from-sky-50 to-blue-100' },
-              { icon: Award, title: 'Ödüllü Lezzet', desc: 'Sektörde 15+ yıllık deneyim ve kalite', color: 'text-violet-600', bg: 'bg-gradient-to-br from-violet-50 to-purple-100' }
+              { icon: Clock, title: '30dk Teslimat', desc: 'Hızlı ve zamanında teslimat garantisi', color: 'text-emerald-600', bg: 'bg-gradient-to-br from-emerald-50 to-green-100', darkBg: 'dark:from-emerald-900/30 dark:to-emerald-800/30' },
+              { icon: Crown, title: 'Premium Kalite', desc: 'En taze malzemeler ve özel tarifler', color: 'text-amber-600', bg: 'bg-gradient-to-br from-amber-50 to-yellow-100', darkBg: 'dark:from-amber-900/30 dark:to-yellow-800/30' },
+              { icon: Shield, title: 'Güvenli Ödeme', desc: '256-bit SSL şifreleme ile güvenli alışveriş', color: 'text-sky-600', bg: 'bg-gradient-to-br from-sky-50 to-blue-100', darkBg: 'dark:from-sky-900/30 dark:to-blue-800/30' },
+              { icon: Award, title: 'Ödüllü Lezzet', desc: 'Sektörde 15+ yıllık deneyim ve kalite', color: 'text-violet-600', bg: 'bg-gradient-to-br from-violet-50 to-purple-100', darkBg: 'dark:from-violet-900/30 dark:to-purple-800/30' }
             ].map((feature, index) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`group text-center p-8 ${feature.bg} rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+                className={`group text-center p-8 ${feature.bg} ${feature.darkBg} rounded-2xl border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
               >
-                <div className={`w-16 h-16 ${feature.bg} rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-16 h-16 ${feature.bg} ${feature.darkBg} rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
                   <feature.icon className={`w-8 h-8 ${feature.color}`} />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600">{feature.desc}</p>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">{feature.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -338,7 +338,7 @@ export default function RoyalPizzaKingdom() {
       </section>
 
       {/* Modern Menu */}
-      <section id="menu-section" className="py-20 bg-white">
+      <section id="menu-section" className="py-20 bg-white dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -346,10 +346,10 @@ export default function RoyalPizzaKingdom() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-6">
               Lezzet Menümüz
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
               Özenle seçilmiş malzemeler ve usta şeflerin deneyimi ile hazırlanan pizzalarımız
             </p>
           </motion.div>
@@ -363,7 +363,7 @@ export default function RoyalPizzaKingdom() {
                 className={`px-6 py-3 rounded-full font-semibold transition-all ${
                   activeCategory === category.id
                     ? 'bg-yellow-400 text-purple-900'
-                    : 'bg-white/10 text-white hover:bg-white/20'
+                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
               >
                 <span className="mr-2">{category.icon}</span>
@@ -420,21 +420,7 @@ export default function RoyalPizzaKingdom() {
         )}
       </Suspense>
 
-      {/* Quick Contact Floating Button */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.6, delay: 2.0 }}
-        className="fixed bottom-6 left-6 z-40"
-      >
-        <Link
-          href="tel:+905551234567"
-          className="group flex items-center gap-3 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-green-600"
-        >
-          <Phone className="w-5 h-5 group-hover:animate-pulse" />
-          <span className="font-semibold hidden sm:block">Hızlı Sipariş</span>
-        </Link>
-      </motion.div>
+
     </>
   );
 } 
