@@ -1,29 +1,17 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Crown } from 'lucide-react';
 import { useTheme } from '../context/DarkModeContext';
 import OutlineCrown from '../components/OutlineCrown';
-
-// Basit import'lar - dynamic import'ları kaldırdık
-import FastHeroSection from '../components/FastHeroSection';
-import ModernProductCard from '../components/ModernProductCard';
-import CartSidebar from '../components/CartSidebar';
-import OrderFlow from '../components/OrderFlow';
-import SupportMessageModal from '../components/SupportMessageModal';
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isOrderFlowOpen, setIsOrderFlowOpen] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
-  const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
-  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
   const { isLightMode } = useTheme();
   
   // Refs for cleanup
@@ -56,68 +44,8 @@ export default function RoyalPizzaKingdom() {
       reviewCount: 189,
       isPremium: true,
       badge: '⚔️ İmparatorluk'
-    },
-    {
-      id: '3',
-      name: 'Supreme Majesty',
-      description: 'Kraliyet malzemeleri: sosis, mantar, biber, soğan, zeytin',
-      price: 129,
-      image: '/pizzas/supreme.png',
-      category: 'supreme',
-      rating: 5.0,
-      reviewCount: 312,
-      isPremium: true,
-      badge: '👑 Majeste'
-    },
-    {
-      id: '4',
-      name: 'Royal Vegetarian',
-      description: 'Taze sebzeler, mozzarella, parmesan, fesleğen',
-      price: 79,
-      image: '/pizzas/vegetarian.png',
-      category: 'royal',
-      rating: 4.7,
-      reviewCount: 145,
-      isVegetarian: true,
-      badge: '🌿 Kraliyet'
-    },
-    {
-      id: '5',
-      name: 'BBQ Royal Chicken',
-      description: 'BBQ sosu, tavuk göğsü, soğan, mısır, mozzarella',
-      price: 109,
-      image: '/pizzas/bbq-chicken.png',
-      category: 'bbq',
-      rating: 4.6,
-      reviewCount: 98,
-      badge: '🍗 Kraliyet'
-    },
-    {
-      id: '6',
-      name: 'Mexican Fire',
-      description: 'Acılı sos, jalapeño, mısır, tavuk, mozzarella',
-      price: 119,
-      image: '/pizzas/mexican-hot.png',
-      category: 'spicy',
-      rating: 4.5,
-      reviewCount: 87,
-      isSpicy: true,
-      badge: '🔥 Ateş'
     }
   ];
-
-  const categories = [
-    { id: 'all', name: 'Tümü', icon: '👑' },
-    { id: 'royal', name: 'Kraliyet', icon: '👑' },
-    { id: 'imperial', name: 'İmparatorluk', icon: '⚔️' },
-    { id: 'supreme', name: 'Majeste', icon: '👑' },
-    { id: 'bbq', name: 'BBQ', icon: '🍗' },
-    { id: 'spicy', name: 'Acılı', icon: '🔥' }
-  ];
-
-  const filteredProducts = activeCategory === 'all' 
-    ? royalProducts 
-    : royalProducts.filter(product => product.category === activeCategory);
 
   const addToCart = useCallback((product) => {
     if (!mountedRef.current) return;
@@ -292,82 +220,42 @@ export default function RoyalPizzaKingdom() {
                 <Link href="/menu" className="text-gray-700 hover:text-red-600 transition-colors">Menü</Link>
                 <a href="#about" className="text-gray-700 hover:text-red-600 transition-colors">Hakkımızda</a>
                 <a href="#contact" className="text-gray-700 hover:text-red-600 transition-colors">İletişim</a>
-                <button 
-                  onClick={() => setIsSupportModalOpen(true)}
-                  className="text-gray-700 hover:text-red-600 transition-colors"
-                >
-                  Destek
-                </button>
-                <Link 
-                  href="/admin/login"
-                  className="text-gray-700 hover:text-red-600 transition-colors"
-                >
-                  Admin
-                </Link>
-                {isAuthed && (
-                  <Link href="/profile" className="text-gray-700 hover:text-red-600 transition-colors">Profilim</Link>
-                )}
-                {!isAuthed ? (
-                  <Link href="/login" className="px-4 py-2 bg-gradient-to-r from-green-100 to-teal-100 text-green-800 rounded-full font-semibold hover:from-green-200 hover:to-teal-200 transition-all duration-300 shadow-sm w-max">Giriş Yap</Link>
-                ) : (
-                  <button onClick={handleLogout} className="px-4 py-2 bg-gradient-to-r from-red-100 to-pink-100 text-red-800 rounded-full font-semibold hover:from-red-200 hover:to-pink-200 transition-all duration-300 shadow-sm w-max">Çıkış Yap</button>
-                )}
               </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Fast Hero Section */}
-      <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50" />}>
-        <FastHeroSection />
-      </Suspense>
-
-
-      {/* Modern Features */}
-      <section className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-        <div className="container mx-auto px-4">
+      {/* Basit Hero Section */}
+      <section className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 flex items-center justify-center relative overflow-hidden">
+        <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Neden <span className="text-red-600">Pizza Krallığı</span>?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Müşterilerimize en iyi deneyimi sunmak için sürekli kendimizi geliştiriyoruz
+            <OutlineCrown className="w-16 h-16 text-yellow-500 mx-auto mb-6" />
+            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+              <span className="text-red-600">Pizza</span>{' '}
+              <span className="text-yellow-600">Krallığı</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
+              Kraliyet lezzetlerin adresi. Premium malzemeler, özel tarifler ve eşsiz deneyim.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/menu" className="bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+                Menüyü Gör
+              </Link>
+              <Link href="tel:+905551234567" className="border-2 border-red-600 text-red-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105">
+                Hızlı Sipariş
+              </Link>
+            </div>
           </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              { icon: Clock, title: '30dk Teslimat', desc: 'Hızlı ve zamanında teslimat garantisi', color: 'text-emerald-600', bg: 'bg-gradient-to-br from-emerald-50 to-green-100' },
-              { icon: Crown, title: 'Premium Kalite', desc: 'En taze malzemeler ve özel tarifler', color: 'text-amber-600', bg: 'bg-gradient-to-br from-amber-50 to-yellow-100' },
-              { icon: Shield, title: 'Güvenli Ödeme', desc: '256-bit SSL şifreleme ile güvenli alışveriş', color: 'text-sky-600', bg: 'bg-gradient-to-br from-sky-50 to-blue-100' },
-              { icon: Award, title: 'Ödüllü Lezzet', desc: 'Sektörde 15+ yıllık deneyim ve kalite', color: 'text-violet-600', bg: 'bg-gradient-to-br from-violet-50 to-purple-100' }
-            ].map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`group text-center p-8 ${feature.bg} rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
-              >
-                <div className={`w-16 h-16 ${feature.bg} rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600">{feature.desc}</p>
-              </motion.div>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Modern Menu */}
-      <section id="menu-section" className="py-20 bg-white">
+      {/* Basit Ürünler Bölümü */}
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -383,62 +271,76 @@ export default function RoyalPizzaKingdom() {
             </p>
           </motion.div>
 
-          {/* Menü bağlantısı sadece navbar'da olacak - bu bölümde kaldırıldı */}
-
-          {/* Featured Products Grid - Sadece 2 önerilen pizza */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {royalProducts.slice(0, 2).map((product, index) => (
-              <Suspense key={product.id} fallback={<div className="bg-gray-200 rounded-2xl h-96 animate-pulse" />}>
-                <ModernProductCard
-                  product={{
-                    ...product,
-                    preparationTime: 15 + Math.floor(Math.random() * 10), // 15-25 dk
-                  }}
-                  onAddToCart={addToCart}
-                  delay={index * 0.1}
-                />
-              </Suspense>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {royalProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
+              >
+                <div className="h-48 bg-gray-200 relative">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                  />
+                  {product.badge && (
+                    <span className="absolute top-4 left-4 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                      {product.badge}
+                    </span>
+                  )}
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
+                  <p className="text-gray-600 mb-4">{product.description}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2">
+                      <Star className="w-5 h-5 text-yellow-500 fill-current" />
+                      <span className="text-gray-700 font-semibold">{product.rating}</span>
+                      <span className="text-gray-500">({product.reviewCount})</span>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-2xl font-bold text-red-600">{product.price}₺</p>
+                      {product.originalPrice && (
+                        <p className="text-sm text-gray-500 line-through">{product.originalPrice}₺</p>
+                      )}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => addToCart(product)}
+                    className="w-full mt-4 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors"
+                  >
+                    Sepete Ekle
+                  </button>
+                </div>
+              </motion.div>
             ))}
           </div>
-          {/* Tüm menü butonu bu bölümden kaldırıldı */}
         </div>
       </section>
 
-      {/* Modern Cart Sidebar */}
-      <Suspense fallback={null}>
-        {isCartOpen && (
-          <CartSidebar
-            isOpen={isCartOpen}
-            onClose={() => setIsCartOpen(false)}
-            cartItems={cartItems}
-            updateQuantity={updateQuantity}
-            removeFromCart={removeFromCart}
-            totalPrice={totalPrice}
-            onOrderStart={() => setIsOrderFlowOpen(true)}
-          />
-        )}
-      </Suspense>
-
-      <Suspense fallback={null}>
-        {isOrderFlowOpen && (
-          <OrderFlow
-            isOpen={isOrderFlowOpen}
-            onClose={() => setIsOrderFlowOpen(false)}
-            cartItems={cartItems}
-            totalPrice={totalPrice}
-          />
-        )}
-      </Suspense>
-
-      <Suspense fallback={null}>
-        {isSupportModalOpen && (
-          <SupportMessageModal
-            isOpen={isSupportModalOpen}
-            onClose={() => setIsSupportModalOpen(false)}
-          />
-        )}
-      </Suspense>
-
+      {/* Basit Footer */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="container mx-auto px-4 text-center">
+          <div className="flex items-center justify-center mb-6">
+            <OutlineCrown className="w-8 h-8 text-yellow-500 mr-3" />
+            <h3 className="text-2xl font-bold">
+              <span className="text-red-500">Pizza</span>{' '}
+              <span className="text-yellow-500">Krallığı</span>
+            </h3>
+          </div>
+          <p className="text-gray-400 mb-4">
+            Kraliyet lezzetlerin adresi. Premium malzemeler, özel tarifler.
+          </p>
+          <div className="flex justify-center space-x-6">
+            <Link href="/menu" className="text-gray-400 hover:text-white transition-colors">Menü</Link>
+            <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Giriş</Link>
+            <Link href="/register" className="text-gray-400 hover:text-white transition-colors">Kayıt</Link>
+          </div>
+        </div>
+      </footer>
     </>
   );
 } 
