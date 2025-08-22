@@ -131,9 +131,9 @@ export default function RoyalLogin() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Kraliyet Girişi
               </h1>
-              <p className="text-gray-600">
-                Pizza Krallığı'na hoş geldiniz
-              </p>
+                              <p className="text-gray-600">
+                  Pizza Krallığı&apos;na hoş geldiniz
+                </p>
             </div>
 
             {/* Login Form */}

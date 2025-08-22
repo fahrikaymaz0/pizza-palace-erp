@@ -162,9 +162,9 @@ export default function RoyalRegister() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Kraliyet Üyeliği
               </h1>
-              <p className="text-gray-600">
-                Pizza Krallığı'na katılın ve özel ayrıcalıklardan yararlanın
-              </p>
+                              <p className="text-gray-600">
+                  Pizza Krallığı&apos;na katılın ve özel ayrıcalıklardan yararlanın
+                </p>
             </div>
 
             {/* Registration Form */}
@@ -372,7 +372,7 @@ export default function RoyalRegister() {
 
               {/* After submit info */}
               <div className="mt-4 text-center text-sm text-[#333]/80">
-                Kayıt sonrası doğrulama sayfasına gitmek için <a href="/verify" className="text-[#C21D2B] underline">buraya</a> tıklayın.
+                Kayıt sonrası doğrulama sayfasına gitmek için <Link href="/verify" className="text-[#C21D2B] underline">buraya</Link> tıklayın.
               </div>
 
               {/* Login Link */}

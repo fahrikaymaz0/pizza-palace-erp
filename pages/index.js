@@ -263,7 +263,7 @@ export default function RoyalPizzaKingdom() {
                 <a href="#about" className="text-gray-700 hover:text-red-600 transition-colors">Hakkımızda</a>
                 <a href="#contact" className="text-gray-700 hover:text-red-600 transition-colors">İletişim</a>
                 {isAuthed && (
-                  <a href="/profile" className="text-gray-700 hover:text-red-600 transition-colors">Profilim</a>
+                  <Link href="/profile" className="text-gray-700 hover:text-red-600 transition-colors">Profilim</Link>
                 )}
                 {!isAuthed ? (
                   <Link href="/login" className="px-4 py-2 bg-gradient-to-r from-green-100 to-teal-100 text-green-800 rounded-full font-semibold hover:from-green-200 hover:to-teal-200 transition-all duration-300 shadow-sm w-max">Giriş Yap</Link>

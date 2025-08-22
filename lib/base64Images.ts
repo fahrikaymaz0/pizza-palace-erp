@@ -14,11 +14,50 @@ export const pizzaBase64Images = {
   supreme: "/pizzas/supreme.png"        // Fallback
 };
 
-// Küçük placeholder base64'ler - anında yüklenir
+// Base64 placeholder images for fast loading
 export const placeholderImages = {
-  pizza: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iOTAiIGZpbGw9IiNGRkQ3NjYiLz4KPGNpcmNsZSBjeD0iMTAwIiBjeT0iMTAwIiByPSI3MCIgZmlsbD0iI0ZGQUUwMCIvPgo8Y2lyY2xlIGN4PSI4MCIgY3k9IjgwIiByPSI4IiBmaWxsPSIjREM0NDQ0Ii8+CjxjaXJjbGUgY3g9IjEyMCIgY3k9IjEyMCIgcj0iOCIgZmlsbD0iI0RDNDQ0NCIvPgo8Y2lyY2xlIGN4PSIxMzAiIGN5PSI3MCIgcj0iNiIgZmlsbD0iIzIyQzU1RSIvPgo8Y2lyY2xlIGN4PSI3MCIgY3k9IjEzMCIgcj0iNiIgZmlsbD0iIzIyQzU1RSIvPgo8L3N2Zz4=",
+  pizza: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI2dyYWRpZW50KSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJncmFkaWVudCIgeDE9IjAiIHkxPSIwIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY2QjZCO3N0b3Atb3BhY2l0eTowLjEiLz4KPHN0b3Agb2Zmc2V0PSI1MCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNGRkQ3MDA7c3RvcC1vcGFjaXR5OjAuMSIvPgo8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNGRkMxMDc7c3RvcC1vcGFjaXR5OjAuMSIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+CjxjaXJjbGUgY3g9IjIwMCIgY3k9IjE1MCIgcj0iODAiIGZpbGw9IiNGRkQ3MDAiIG9wYWNpdHk9IjAuMyIvPgo8Y2lyY2xlIGN4PSIxMDAiIGN5PSIxMDAiIHI9IjMwIiBmaWxsPSIjRkY2QjZCIiBvcGFjaXR5PSIwLjMiLz4KPGNpcmNsZSBjeD0iMzAwIiBjeT0iMjAwIiByPSI0MCIgZmlsbD0iI0ZGQzEwNyIgb3BhY2l0eT0iMC4zIi8+Cjwvc3ZnPgo=',
   
-  loading: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxjaXJjbGUgY3g9IjEwMCIgY3k9IjEwMCIgcj0iMjAiIHN0cm9rZT0iI0U1RTdFQiIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIj4KICA8YW5pbWF0ZSBhdHRyaWJ1dGVOYW1lPSJyIiB2YWx1ZXM9IjIwOzMwOzIwIiBkdXI9IjJzIiByZXBlYXRDb3VudD0iaW5kZWZpbml0ZSIvPgo8L2NpcmNsZT4KPC9zdmc+"
+  // Shimmer effect for loading
+  shimmer: (w: number = 400, h: number = 300) => {
+    const shimmer = `
+      <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+          <linearGradient id="g">
+            <stop stop-color="#f6f7f8" offset="20%" />
+            <stop stop-color="#edeef1" offset="50%" />
+            <stop stop-color="#f6f7f8" offset="70%" />
+          </linearGradient>
+        </defs>
+        <rect width="${w}" height="${h}" fill="#f6f7f8" />
+        <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+        <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+      </svg>`;
+    
+    return `data:image/svg+xml;base64,${btoa(shimmer)}`;
+  },
+
+  // Pizza-themed placeholder
+  pizzaPlaceholder: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRkZGRkZGIi8+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSJ1cmwoI3BpenphLWdyYWRpZW50KSIvPgo8ZGVmcz4KPHJhZGlhbEdyYWRpZW50IGlkPSJwaXp6YS1ncmFkaWVudCIgY3g9IjIwMCIgY3k9IjE1MCIgcj0iMTUwIj4KPHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I0ZGRDcwMDtzdG9wLW9wYWNpdHk6MC4xIi8+CjxzdG9wIG9mZnNldD0iNTAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkY2QjZCO3N0b3Atb3BhY2l0eTowLjEiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojRkZDMTA3O3N0b3Atb3BhY2l0eTowLjEiLz4KPC9yYWRpYWxHcmFkaWVudD4KPC9kZWZzPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIxNTAiIHI9IjEwMCIgZmlsbD0iI0ZGRDcwMCIgb3BhY2l0eT0iMC4yIi8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEwMCIgcj0iMjAiIGZpbGw9IiNGRkMxMDciIG9wYWNpdHk9IjAuMyIvPgo8Y2lyY2xlIGN4PSIyNTAiIGN5PSIyMDAiIHI9IjE1IiBmaWxsPSIjRkY2QjZCIiBvcGFjaXR5PSIwLjMiLz4KPGNpcmNsZSBjeD0iMTAwIiBjeT0iMjAwIiByPSIyNSIgZmlsbD0iI0ZGRDcwMCIgb3BhY2l0eT0iMC4yIi8+CjxjaXJjbGUgY3g9IjMwMCIgY3k9IjEwMCIgcj0iMzAiIGZpbGw9IiNGRkMxMDciIG9wYWNpdHk9IjAuMiIvPgo8L3N2Zz4K'
+};
+
+// Generate shimmer placeholder
+export const generateShimmer = (w: number, h: number) => {
+  const shimmer = `
+    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <linearGradient id="g">
+          <stop stop-color="#f6f7f8" offset="20%" />
+          <stop stop-color="#edeef1" offset="50%" />
+          <stop stop-color="#f6f7f8" offset="70%" />
+        </linearGradient>
+      </defs>
+      <rect width="${w}" height="${h}" fill="#f6f7f8" />
+      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
+      <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
+    </svg>`;
+  
+  return `data:image/svg+xml;base64,${btoa(shimmer)}`;
 };
 
 // Base64 encoded menu images - optimized for fast loading

@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Crown, Star, ShoppingCart, ArrowLeft, Filter, Search, Heart, X } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import RoyalParallaxScene from '../components/RoyalParallaxScene';
-import OptimizedImage from '../components/OptimizedImage';
+import PremiumImage from '../components/PremiumImage';
 
 function RoyalMenu() {
   const { isLightMode } = useTheme();
@@ -310,10 +310,13 @@ function RoyalMenu() {
                   className="bg-white dark:bg-gray-800 rounded-xl border border-[#FFD166]/60 dark:border-gray-600 shadow-sm overflow-hidden hover:transform hover:scale-105 transition-all group"
                 >
                   <div className="relative">
-                    <OptimizedImage
+                    <PremiumImage
                       src={product.image}
                       alt={product.name}
+                      fill
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                      sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
+                      priority={index < 4}
                     />
                     
                     {/* Badge */}
