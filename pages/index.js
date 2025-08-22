@@ -180,19 +180,22 @@ export default function RoyalPizzaKingdom() {
         <link rel="icon" href="/kaymaz-icon.ico" />
       </Head>
 
-      {/* Royal Navigation (siyah/koyu kırmızı) */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 border-b border-red-700/60">
+      {/* Royal Navigation (beyaz) */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <Crown className="w-8 h-8 text-red-600" />
-              <h1 className="text-2xl font-bold text-red-500">Pizza Krallığı</h1>
+              <Crown className="w-8 h-8 text-yellow-600" />
+              <h1 className="text-2xl font-bold">
+                <span className="text-red-600">Pizza</span>{' '}
+                <span className="text-yellow-600">Krallığı</span>
+              </h1>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
-              <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
-              <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
+              <a href="#menu" className="text-gray-700 hover:text-red-600 transition-colors">Menü</a>
+              <a href="#about" className="text-gray-700 hover:text-red-600 transition-colors">Hakkımızda</a>
+              <a href="#contact" className="text-gray-700 hover:text-red-600 transition-colors">İletişim</a>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -216,7 +219,7 @@ export default function RoyalPizzaKingdom() {
               
               <button
                 onClick={() => setIsCartOpen(true)}
-                className="relative p-2 text-red-500 hover:text-red-400 transition-colors"
+                className="relative p-2 text-gray-700 hover:text-red-600 transition-colors"
               >
                 <ShoppingCart className="w-6 h-6" />
                 {cartItems.length > 0 && (
@@ -228,7 +231,7 @@ export default function RoyalPizzaKingdom() {
               
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="md:hidden text-red-500"
+                className="md:hidden text-gray-700 hover:text-red-600"
               >
                 {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
@@ -244,15 +247,15 @@ export default function RoyalPizzaKingdom() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-20 left-0 right-0 z-40 bg-black/90 border-b border-red-700/60 md:hidden"
+            className="fixed top-20 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-b border-gray-200 md:hidden"
           >
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-col space-y-4">
-                <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
-                <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
-                <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
+                <a href="#menu" className="text-gray-700 hover:text-red-600 transition-colors">Menü</a>
+                <a href="#about" className="text-gray-700 hover:text-red-600 transition-colors">Hakkımızda</a>
+                <a href="#contact" className="text-gray-700 hover:text-red-600 transition-colors">İletişim</a>
                 {isAuthed && (
-                  <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
+                  <a href="/profile" className="text-gray-700 hover:text-red-600 transition-colors">Profilim</a>
                 )}
                 {!isAuthed ? (
                   <Link href="/login" className="px-4 py-2 bg-gradient-to-r from-green-100 to-teal-100 text-green-800 rounded-full font-semibold hover:from-green-200 hover:to-teal-200 transition-all duration-300 shadow-sm w-max">Giriş Yap</Link>

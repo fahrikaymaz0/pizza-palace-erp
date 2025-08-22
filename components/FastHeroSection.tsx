@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Star, Clock, Shield, Award, ChevronDown, ArrowRight, Phone } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { placeholderImages } from '../lib/base64Images';
 
 interface FastHeroSectionProps {
   className?: string;
@@ -14,23 +16,26 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Pizza emojileri - anında yüklenir, görsel yok
+  // Pizza görselleri - base64 ile hızlı yüklenir
   const pizzaSlides = [
     {
-      emoji: '🍕',
-      title: 'Margherita Klasik',
+      image: '/optimized/pizzas/margherita-large.webp',
+      fallback: '/pizzas/margherita.png',
+      title: 'Royal Margherita',
       subtitle: 'En taze malzemelerle hazırlanan klasik lezzet',
       color: 'from-red-500 to-orange-500'
     },
     {
-      emoji: '🍖',
-      title: 'Supreme Delüks',
+      image: '/optimized/pizzas/pepperoni-large.webp',
+      fallback: '/pizzas/pepperoni.png',
+      title: 'Imperial Pepperoni',
       subtitle: 'Premium malzemelerle dolu kraliyet lezzeti',
       color: 'from-purple-500 to-pink-500'
     },
     {
-      emoji: '🌶️',
-      title: 'Acılı Özel',
+      image: '/optimized/pizzas/supreme-large.webp',
+      fallback: '/pizzas/supreme.png',
+      title: 'Supreme Majesty',
       subtitle: 'Özel baharatlarla eşsiz tat deneyimi',
       color: 'from-orange-500 to-red-500'
     }
@@ -232,25 +237,25 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
             </motion.div>
           </motion.div>
 
-          {/* Right side - CSS Pizza display - görsel yok */}
+          {/* Right side - Pizza showcase with base64 images */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isVisible ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
             className="relative lg:h-[600px] flex items-center justify-center"
           >
-            {/* Pizza showcase with emoji - hızlı yüklenir */}
+            {/* Pizza showcase with floating effect */}
             <motion.div
               animate={{
                 y: [0, -10, 0],
-                rotate: [0, 2, 0],
+                rotate: [0, 1, 0],
               }}
               transition={{
                 duration: 6,
                 repeat: Infinity,
                 ease: 'easeInOut',
               }}
-              className="relative"
+              className="relative w-80 h-80 lg:w-96 lg:h-96"
             >
               <AnimatePresence mode="wait">
                 <motion.div
@@ -259,18 +264,27 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
                   animate={{ scale: 1, opacity: 1, rotate: 0 }}
                   exit={{ scale: 1.1, opacity: 0, rotate: 10 }}
                   transition={{ duration: 0.8, ease: 'easeOut' }}
-                  className="relative"
+                  className="absolute inset-0 rounded-full overflow-hidden shadow-2xl"
                 >
-                  {/* Büyük emoji - anında yüklenir */}
-                  <div className="text-[300px] lg:text-[350px] leading-none">
-                    {pizzaSlides[currentSlide].emoji}
-                  </div>
-                  
+                  <Image
+                    src={pizzaSlides[currentSlide].image}
+                    alt={pizzaSlides[currentSlide].title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 320px, 384px"
+                    priority={currentSlide === 0}
+                    placeholder="blur"
+                    blurDataURL={placeholderImages.pizza}
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.src = pizzaSlides[currentSlide].fallback;
+                    }}
+                  />
                   {/* Glow effect */}
                   <motion.div
-                    className={`absolute inset-0 rounded-full bg-gradient-to-r ${pizzaSlides[currentSlide].color} opacity-20 blur-3xl scale-75`}
+                    className={`absolute inset-0 rounded-full bg-gradient-to-r ${pizzaSlides[currentSlide].color} opacity-20 blur-sm`}
                     animate={{
-                      scale: [0.7, 0.8, 0.7],
+                      scale: [0.95, 1.05, 0.95],
                       opacity: [0.15, 0.25, 0.15]
                     }}
                     transition={{
