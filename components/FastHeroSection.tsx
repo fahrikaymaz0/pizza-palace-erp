@@ -149,15 +149,14 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
             transition={{ duration: 0.8, delay: 0.9 }}
             className="text-center max-w-4xl mx-auto"
           >
-            {/* Brand Badge */}
+            {/* Crown Badge */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/10 backdrop-blur-sm border border-red-500/20 mb-6"
+              className="inline-flex items-center justify-center mb-6"
             >
-              <Star className="w-4 h-4 text-red-500 fill-current" />
-              <span className="text-red-600 font-semibold text-sm">Türkiye'nin #1 Pizza Markası</span>
+              <span className="text-6xl">👑</span>
             </motion.div>
 
             {/* Main Heading - Centered */}
@@ -165,10 +164,10 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
               initial={{ opacity: 0, y: 30 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 1.1 }}
-              className="text-5xl lg:text-7xl xl:text-8xl font-bold mb-8 leading-tight"
+              className="text-4xl sm:text-5xl lg:text-7xl xl:text-8xl font-bold mb-8 leading-tight"
             >
               <span className="text-red-600">Pizza</span>{' '}
-              <span className="text-yellow-600">Krallığı</span>
+              <span className="text-yellow-400">Krallığı</span>
             </motion.h1>
 
             {/* Dynamic subtitle based on current slide */}
@@ -244,21 +243,38 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
         </div>
       </div>
 
-      {/* Quick contact floating button */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-        transition={{ duration: 0.6, delay: 2.0 }}
-        className="fixed bottom-6 right-6 z-30"
-      >
-        <Link
-          href="tel:+905551234567"
-          className="group flex items-center gap-3 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-green-600"
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 flex flex-col gap-3">
+        {/* Destek Butonu */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay: 1.8 }}
         >
-          <Phone className="w-5 h-5 group-hover:animate-pulse" />
-          <span className="font-semibold">Hızlı Sipariş</span>
-        </Link>
-      </motion.div>
+          <Link
+            href="#"
+            className="group flex items-center gap-2 sm:gap-3 bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-600"
+          >
+            <Shield className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
+            <span className="font-semibold text-sm sm:text-base hidden sm:block">Destek Ekibi</span>
+          </Link>
+        </motion.div>
+
+        {/* Hızlı Sipariş Butonu */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={isVisible ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.6, delay: 2.0 }}
+        >
+          <Link
+            href="tel:+905551234567"
+            className="group flex items-center gap-2 sm:gap-3 bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-green-600"
+          >
+            <Phone className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
+            <span className="font-semibold text-sm sm:text-base">Hızlı Sipariş</span>
+          </Link>
+        </motion.div>
+      </div>
 
       {/* Scroll Indicator */}
       <motion.div

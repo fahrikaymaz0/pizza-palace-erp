@@ -326,7 +326,7 @@ export default function RoyalPizzaKingdom() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Lezzet <span className="text-red-600">Menümüz</span>
+              Lezzet Menümüz
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Özenle seçilmiş malzemeler ve usta şeflerin deneyimi ile hazırlanan pizzalarımız
