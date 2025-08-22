@@ -1,222 +1,235 @@
-'use client';
-
-import { useState, useCallback, useRef } from 'react';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/router';
-import { Crown, Shield, Eye, EyeOff, Lock, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { motion } from 'framer-motion';
+import { Crown, Eye, EyeOff, Mail, Lock, Shield } from 'lucide-react';
 
 export default function AdminLogin() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const router = useRouter();
-  const mountedRef = useRef(true);
+  const [errors, setErrors] = useState({});
 
-  // Component unmount cleanup
-  useRef(() => {
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
+  useEffect(() => {
+    // Check if admin is already logged in
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      router.push('/admin/dashboard');
+    }
+  }, [router]);
 
-  const handleInputChange = useCallback((e) => {
-    if (!mountedRef.current) return;
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value
     }));
-    setError(''); // Clear error when user types
-  }, []);
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
 
-  const handleSubmit = useCallback(async (e) => {
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'E-posta gereklidir';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Geçerli bir e-posta adresi giriniz';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Şifre gereklidir';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!mountedRef.current) return;
     
+    if (!validateForm()) {
+      return;
+    }
+
     setIsLoading(true);
-    setError('');
 
     try {
-      // Basit admin kontrolü
-      if (formData.email === 'admin@pizzakralligi.com' && formData.password === 'admin123') {
-        // Admin girişi başarılı - dashboard'a yönlendir
-        setTimeout(() => {
-          if (mountedRef.current) {
-            router.push('/admin/dashboard');
-          }
-        }, 1000);
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.user.role === 'admin') {
+        // Save admin token and user data
+        localStorage.setItem('adminToken', data.token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
+        
+        alert('Admin girişi başarılı!');
+        router.push('/admin/dashboard');
       } else {
-        if (mountedRef.current) {
-          setError('Geçersiz e-posta veya şifre');
-        }
+        setErrors({ general: 'Admin yetkisi bulunamadı.' });
+        alert('Admin yetkisi bulunamadı.');
       }
     } catch (error) {
-      console.error('Admin giriş hatası:', error);
-      if (mountedRef.current) {
-        setError('Bir hata oluştu. Lütfen tekrar deneyin.');
-      }
+      console.error('Admin login error:', error);
+      setErrors({ general: 'Giriş sırasında bir hata oluştu.' });
+      alert('Giriş sırasında bir hata oluştu.');
     } finally {
-      if (mountedRef.current) {
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
-  }, [formData, router]);
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo ve Başlık */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8"
-        >
-          <div className="flex items-center justify-center mb-4">
-            <Crown className="w-12 h-12 text-yellow-500" />
-          </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Admin Girişi
-          </h1>
-          <p className="text-gray-600">
-            Pizza Krallığı Yönetim Paneli
-          </p>
-        </motion.div>
+    <>
+      <Head>
+        <title>Admin Girişi - Pizza Krallığı</title>
+        <meta name="description" content="Pizza Krallığı Admin Paneli" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/kaymaz-icon.ico" />
+      </Head>
 
-        {/* Login Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8"
-        >
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Error Message */}
-            {error && (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 relative">
+        
+        <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="w-full max-w-md"
+          >
+            {/* Admin Header */}
+            <div className="text-center mb-8">
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="bg-red-50 border border-red-200 rounded-lg p-4"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="inline-block mb-4"
               >
-                <div className="flex items-center space-x-2">
-                  <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
-                  <p className="text-red-800 font-medium">{error}</p>
-                </div>
+                <Shield className="w-16 h-16 text-purple-600 mx-auto" />
               </motion.div>
-            )}
-
-            {/* Email Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <User className="w-4 h-4 inline mr-2" />
-                E-posta Adresi
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
-                placeholder="admin@pizzakralligi.com"
-              />
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Admin Girişi
+              </h1>
+              <p className="text-gray-600">
+                Yönetici paneline erişim
+              </p>
             </div>
 
-            {/* Password Field */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Lock className="w-4 h-4 inline mr-2" />
-                Şifre
-              </label>
-              <div className="relative">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors"
-                  placeholder="••••••••"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Submit Button */}
-            <motion.button
-              type="submit"
-              disabled={isLoading}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+            {/* Admin Login Form */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="bg-white/90 backdrop-blur-sm rounded-2xl border border-gray-200 p-8 shadow-xl"
             >
-              {isLoading ? (
-                <>
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  <span>Giriş Yapılıyor...</span>
-                </>
-              ) : (
-                <>
-                  <Shield className="w-5 h-5" />
-                  <span>Admin Girişi</span>
-                </>
-              )}
-            </motion.button>
-          </form>
-
-          {/* Demo Bilgileri */}
-          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-            <div className="flex items-start space-x-3">
-              <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
-              <div>
-                <h4 className="text-sm font-medium text-blue-900">Demo Giriş Bilgileri</h4>
-                <p className="text-sm text-blue-800 mt-1">
-                  E-posta: <strong>admin@pizzakralligi.com</strong><br/>
-                  Şifre: <strong>admin123</strong>
+              {/* Demo Credentials */}
+              <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <h3 className="text-sm font-semibold text-blue-800 mb-2">Demo Giriş Bilgileri:</h3>
+                <p className="text-xs text-blue-700">
+                  <strong>E-posta:</strong> admin@pizzakralligi.com<br />
+                  <strong>Şifre:</strong> admin123
                 </p>
               </div>
-            </div>
-          </div>
 
-          {/* Security Notice */}
-          <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
-            <div className="flex items-start space-x-3">
-              <Shield className="w-5 h-5 text-yellow-600 mt-0.5" />
-              <div>
-                <h4 className="text-sm font-medium text-yellow-900">Güvenlik Uyarısı</h4>
-                <p className="text-sm text-yellow-800 mt-1">
-                  Bu alan sadece yetkili personel içindir. Yetkisiz erişim yasaktır.
-                </p>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Email Field */}
+                <div>
+                  <label className="block text-[#333] text-sm font-medium mb-2">
+                    E-posta
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                        errors.email ? 'border-red-400' : 'border-purple-300'
+                      }`}
+                      placeholder="admin@pizzakralligi.com"
+                    />
+                  </div>
+                  {errors.email && (
+                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
+
+                {/* Password Field */}
+                <div>
+                  <label className="block text-[#333] text-sm font-medium mb-2">
+                    Şifre
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
+                        errors.password ? 'border-red-400' : 'border-purple-300'
+                      }`}
+                      placeholder="Şifrenizi girin"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#6D4C41]"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+                  )}
+                </div>
+
+                {/* Submit Button */}
+                <motion.button
+                  type="submit"
+                  disabled={isLoading}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-4 px-6 rounded-lg font-semibold text-lg shadow-lg hover:from-purple-700 hover:to-purple-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isLoading ? 'Giriş Yapılıyor...' : 'Admin Girişi'}
+                </motion.button>
+
+                {errors.general && (
+                  <p className="text-red-600 text-sm text-center">{errors.general}</p>
+                )}
+              </form>
+
+              {/* Back to User Login */}
+              <div className="mt-6 text-center">
+                <Link 
+                  href="/login" 
+                  className="text-purple-600 hover:text-purple-700 font-semibold text-sm"
+                >
+                  ← Kullanıcı Girişine Dön
+                </Link>
               </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Back to Home */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-6"
-        >
-          <Link href="/" className="text-red-600 font-semibold hover:text-red-700 transition-colors">
-            ← Ana Sayfaya Dön
-          </Link>
-        </motion.div>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

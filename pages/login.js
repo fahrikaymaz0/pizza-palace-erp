@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-import { Crown, Eye, EyeOff, Mail, Lock, User } from 'lucide-react';
-import RoyalParallaxScene from '../components/RoyalParallaxScene';
+import { Crown, Eye, EyeOff, Mail, Lock } from 'lucide-react';
 
 export default function RoyalLogin() {
   const router = useRouter();
@@ -15,17 +14,14 @@ export default function RoyalLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
-    // URL parametrelerini kontrol et
-    if (router.query.registered === 'true') {
-      setSuccessMessage('Kayıt başarılı! E-posta adresinize doğrulama linki gönderildi.');
+    // Check if user is already logged in
+    const token = localStorage.getItem('token');
+    if (token) {
+      router.push('/');
     }
-    if (router.query.verified === 'true') {
-      setSuccessMessage('E-posta adresiniz başarıyla doğrulandı! Şimdi giriş yapabilirsiniz.');
-    }
-  }, [router.query]);
+  }, [router]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -80,12 +76,12 @@ export default function RoyalLogin() {
       const data = await response.json();
 
       if (data.success) {
-        // Store token in localStorage
+        // Save token and user data
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
         alert('Giriş başarılı! Hoş geldiniz.');
-        window.location.href = '/';
+        router.push('/');
       } else {
         setErrors({ general: data.message });
         alert(data.message);
@@ -109,7 +105,6 @@ export default function RoyalLogin() {
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 relative">
-        <RoyalParallaxScene />
         
         <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
           <motion.div
@@ -131,9 +126,9 @@ export default function RoyalLogin() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Kraliyet Girişi
               </h1>
-                              <p className="text-gray-600">
-                  Pizza Krallığı&apos;na hoş geldiniz
-                </p>
+              <p className="text-gray-600">
+                Hesabınıza giriş yapın ve kraliyet deneyimini yaşayın
+              </p>
             </div>
 
             {/* Login Form */}
@@ -143,19 +138,8 @@ export default function RoyalLogin() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="bg-white/90 backdrop-blur-sm rounded-2xl border border-gray-200 p-8 shadow-xl"
             >
-              {/* Success Message */}
-              {successMessage && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg"
-                >
-                  <p className="text-green-800 text-sm font-medium">{successMessage}</p>
-                </motion.div>
-              )}
-
               <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Email */}
+                {/* Email Field */}
                 <div>
                   <label className="block text-[#333] text-sm font-medium mb-2">
                     E-posta
@@ -178,7 +162,7 @@ export default function RoyalLogin() {
                   )}
                 </div>
 
-                {/* Password */}
+                {/* Password Field */}
                 <div>
                   <label className="block text-[#333] text-sm font-medium mb-2">
                     Şifre
@@ -198,7 +182,7 @@ export default function RoyalLogin() {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#333]"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#6D4C41]"
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
@@ -208,82 +192,42 @@ export default function RoyalLogin() {
                   )}
                 </div>
 
-                {/* Remember Me & Forgot Password */}
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      className="w-4 h-4 text-[#FFD166] bg-white border-[#FFD166]/60 rounded focus:ring-[#FFD166] focus:ring-2"
-                    />
-                    <span className="ml-2 text-sm text-[#333]/80">Beni hatırla</span>
-                  </label>
-                  <Link href="/forgot-password" className="text-sm text-[#C21D2B] hover:opacity-80">
-                    Şifremi unuttum
-                  </Link>
-                </div>
-
                 {/* Submit Button */}
                 <motion.button
                   type="submit"
                   disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[#C21D2B] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#A31622] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-4 px-6 rounded-lg font-semibold text-lg shadow-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-2"></div>
-                      Giriş Yapılıyor...
-                    </div>
-                  ) : (
-                    'Kraliyet Girişi Yap'
-                  )}
+                  {isLoading ? 'Giriş Yapılıyor...' : 'Kraliyet Girişi'}
                 </motion.button>
+
+                {errors.general && (
+                  <p className="text-red-600 text-sm text-center">{errors.general}</p>
+                )}
               </form>
-
-              {/* Divider */}
-              <div className="my-6 flex items-center">
-                <div className="flex-1 border-t border-[#FFD166]/50"></div>
-                <span className="px-4 text-[#8D6E63] text-sm">veya</span>
-                <div className="flex-1 border-t border-[#FFD166]/50"></div>
-              </div>
-
-              {/* Social/Login */}
-              <div className="space-y-3">
-                <button className="w-full bg-[#FFD166]/20 text-[#333] py-3 rounded-lg font-semibold hover:bg-[#FFD166]/30 transition-all flex items-center justify-center">
-                  <User className="w-5 h-5 mr-2" />
-                  Misafir Olarak Devam Et
-                </button>
-              </div>
 
               {/* Admin Login Link */}
               <div className="mt-6 text-center">
                 <Link 
                   href="/admin/login" 
-                  className="inline-flex items-center justify-center w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-800 transition-all"
+                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm"
                 >
-                  <Crown className="w-5 h-5 mr-2" />
                   Admin Girişi
                 </Link>
               </div>
 
               {/* Register Link */}
               <div className="mt-4 text-center">
-                <p className="text-[#333]/80">
-                  Henüz üye değil misiniz?{' '}
-                  <Link href="/register" className="text-[#C21D2B] font-semibold hover:opacity-80">
-                    Kraliyet Üyeliği Oluşturun
+                <p className="text-[#8D6E63]">
+                  Hesabınız yok mu?{' '}
+                  <Link href="/register" className="text-red-600 hover:text-red-700 font-semibold">
+                    Üye Olun
                   </Link>
                 </p>
               </div>
             </motion.div>
-
-            {/* Back to Home */}
-            <div className="text-center mt-6">
-              <Link href="/" className="text-[#C21D2B] font-semibold hover:opacity-80">
-                ← Ana Sayfaya Dön
-              </Link>
-            </div>
           </motion.div>
         </div>
       </div>

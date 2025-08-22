@@ -3,7 +3,6 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Crown, Eye, EyeOff, Mail, Lock, User, Phone, MapPin } from 'lucide-react';
-import RoyalParallaxScene from '../components/RoyalParallaxScene';
 
 export default function RoyalRegister() {
   const [formData, setFormData] = useState({
@@ -19,6 +18,9 @@ export default function RoyalRegister() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
+  const [verificationCode, setVerificationCode] = useState('');
+  const [registeredEmail, setRegisteredEmail] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -99,24 +101,9 @@ export default function RoyalRegister() {
       const data = await response.json();
 
       if (data.success) {
-        // E-posta doğrulama e-postası gönder
-        const verificationResponse = await fetch('/api/auth/send-verification', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email: formData.email }),
-        });
-
-        const verificationData = await verificationResponse.json();
-        
-        if (verificationData.success) {
-          alert('Kayıt başarılı! E-posta adresinize doğrulama linki gönderildi. E-posta kutunuzu kontrol edin.');
-        } else {
-          alert('Kayıt başarılı ancak doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.');
-        }
-        
-        window.location.href = '/login?registered=true';
+        setRegisteredEmail(formData.email);
+        setShowVerificationModal(true);
+        alert('Kayıt başarılı! E-posta adresinize doğrulama kodu gönderildi. Lütfen kodu girin.');
       } else {
         setErrors({ general: data.message });
         alert(data.message);
@@ -125,6 +112,42 @@ export default function RoyalRegister() {
       console.error('Registration error:', error);
       setErrors({ general: 'Kayıt sırasında bir hata oluştu.' });
       alert('Kayıt sırasında bir hata oluştu.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleVerification = async () => {
+    if (!verificationCode.trim()) {
+      alert('Lütfen doğrulama kodunu girin.');
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: registeredEmail,
+          code: verificationCode
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('E-posta başarıyla doğrulandı! Giriş yapabilirsiniz.');
+        window.location.href = '/login?verified=true';
+      } else {
+        alert(data.message);
+      }
+    } catch (error) {
+      console.error('Verification error:', error);
+      alert('Doğrulama sırasında bir hata oluştu.');
     } finally {
       setIsLoading(false);
     }
@@ -140,7 +163,6 @@ export default function RoyalRegister() {
       </Head>
 
       <div className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 relative">
-        <RoyalParallaxScene />
         
         <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
           <motion.div
@@ -162,9 +184,9 @@ export default function RoyalRegister() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Kraliyet Üyeliği
               </h1>
-                              <p className="text-gray-600">
-                  Pizza Krallığı&apos;na katılın ve özel ayrıcalıklardan yararlanın
-                </p>
+              <p className="text-gray-600">
+                Pizza Krallığı&apos;na katılın ve özel ayrıcalıklardan yararlanın
+              </p>
             </div>
 
             {/* Registration Form */}
@@ -222,7 +244,7 @@ export default function RoyalRegister() {
                   </div>
                 </div>
 
-                {/* Email */}
+                {/* Email Field */}
                 <div>
                   <label className="block text-[#333] text-sm font-medium mb-2">
                     E-posta
@@ -245,7 +267,7 @@ export default function RoyalRegister() {
                   )}
                 </div>
 
-                {/* Phone */}
+                {/* Phone Field */}
                 <div>
                   <label className="block text-[#333] text-sm font-medium mb-2">
                     Telefon
@@ -260,7 +282,7 @@ export default function RoyalRegister() {
                       className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
                         errors.phone ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
-                      placeholder="05XX XXX XX XX"
+                      placeholder="0555 123 45 67"
                     />
                   </div>
                   {errors.phone && (
@@ -268,7 +290,7 @@ export default function RoyalRegister() {
                   )}
                 </div>
 
-                {/* Address */}
+                {/* Address Field */}
                 <div>
                   <label className="block text-[#333] text-sm font-medium mb-2">
                     Adres
@@ -279,8 +301,8 @@ export default function RoyalRegister() {
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
-                      rows="3"
-                      className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent resize-none ${
+                      rows={3}
+                      className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
                         errors.address ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="Teslimat adresiniz"
@@ -291,64 +313,65 @@ export default function RoyalRegister() {
                   )}
                 </div>
 
-                {/* Password */}
-                <div>
-                  <label className="block text-[#333] text-sm font-medium mb-2">
-                    Şifre
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
-                        errors.password ? 'border-red-400' : 'border-[#FFD166]/60'
-                      }`}
-                      placeholder="En az 6 karakter"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#333]"
-                    >
-                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
+                {/* Password Fields */}
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[#333] text-sm font-medium mb-2">
+                      Şifre
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
+                      <input
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                          errors.password ? 'border-red-400' : 'border-[#FFD166]/60'
+                        }`}
+                        placeholder="En az 6 karakter"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#6D4C41]"
+                      >
+                        {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                    {errors.password && (
+                      <p className="text-red-600 text-sm mt-1">{errors.password}</p>
+                    )}
                   </div>
-                  {errors.password && (
-                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
-                  )}
-                </div>
 
-                {/* Confirm Password */}
-                <div>
-                  <label className="block text-[#333] text-sm font-medium mb-2">
-                    Şifre Tekrarı
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
-                    <input
-                      type={showConfirmPassword ? 'text' : 'password'}
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
-                        errors.confirmPassword ? 'border-red-400' : 'border-[#FFD166]/60'
-                      }`}
-                      placeholder="Şifrenizi tekrar girin"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#333]"
-                    >
-                      {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                    </button>
+                  <div>
+                    <label className="block text-[#333] text-sm font-medium mb-2">
+                      Şifre Tekrarı
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
+                      <input
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                          errors.confirmPassword ? 'border-red-400' : 'border-[#FFD166]/60'
+                        }`}
+                        placeholder="Şifrenizi tekrar girin"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#6D4C41]"
+                      >
+                        {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                      </button>
+                    </div>
+                    {errors.confirmPassword && (
+                      <p className="text-red-600 text-sm mt-1">{errors.confirmPassword}</p>
+                    )}
                   </div>
-                  {errors.confirmPassword && (
-                    <p className="text-red-600 text-sm mt-1">{errors.confirmPassword}</p>
-                  )}
                 </div>
 
                 {/* Submit Button */}
@@ -357,44 +380,72 @@ export default function RoyalRegister() {
                   disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-[#C21D2B] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#A31622] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white py-4 px-6 rounded-lg font-semibold text-lg shadow-lg hover:from-red-700 hover:to-red-800 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? (
-                    <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-2"></div>
-                      Kayıt Oluşturuluyor...
-                    </div>
-                  ) : (
-                    'Kraliyet Üyeliği Oluştur'
-                  )}
+                  {isLoading ? 'Kayıt Oluşturuluyor...' : 'Kraliyet Üyeliği Oluştur'}
                 </motion.button>
-              </form>
 
-              {/* After submit info */}
-              <div className="mt-4 text-center text-sm text-[#333]/80">
-                Kayıt sonrası doğrulama sayfasına gitmek için <Link href="/verify" className="text-[#C21D2B] underline">buraya</Link> tıklayın.
-              </div>
+                {errors.general && (
+                  <p className="text-red-600 text-sm text-center">{errors.general}</p>
+                )}
+              </form>
 
               {/* Login Link */}
               <div className="mt-6 text-center">
-                <p className="text-[#333]/80">
+                <p className="text-[#8D6E63]">
                   Zaten üye misiniz?{' '}
-                  <Link href="/login" className="text-[#C21D2B] font-semibold hover:opacity-80">
+                  <Link href="/login" className="text-red-600 hover:text-red-700 font-semibold">
                     Giriş Yapın
                   </Link>
                 </p>
               </div>
             </motion.div>
-
-            {/* Back to Home */}
-            <div className="text-center mt-6">
-              <Link href="/" className="text-[#C21D2B] font-semibold hover:opacity-80">
-                ← Ana Sayfaya Dön
-              </Link>
-            </div>
           </motion.div>
         </div>
       </div>
+
+      {/* Email Verification Modal */}
+      {showVerificationModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-2xl p-8 max-w-md w-full"
+          >
+            <h2 className="text-2xl font-bold text-center mb-4">E-posta Doğrulama</h2>
+            <p className="text-gray-600 text-center mb-6">
+              {registeredEmail} adresine gönderilen 6 haneli doğrulama kodunu girin.
+            </p>
+            
+            <div className="mb-6">
+              <input
+                type="text"
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                placeholder="000000"
+                maxLength={6}
+                className="w-full text-center text-2xl font-bold tracking-widest py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={handleVerification}
+                disabled={isLoading}
+                className="flex-1 bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 disabled:opacity-50"
+              >
+                {isLoading ? 'Doğrulanıyor...' : 'Doğrula'}
+              </button>
+              <button
+                onClick={() => setShowVerificationModal(false)}
+                className="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-400"
+              >
+                İptal
+              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </>
   );
 } 
