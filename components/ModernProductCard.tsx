@@ -112,10 +112,6 @@ export default function ModernProductCard({
           quality={85}
           priority={delay === 0} // İlk card'ı priority yap
           onLoad={() => setImageLoaded(true)}
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = '/pizzas/margherita.png'; // Fallback image
-          }}
         />
 
         {/* Loading placeholder */}

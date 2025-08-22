@@ -18,6 +18,7 @@ interface PremiumImageProps {
   fill?: boolean;
   style?: React.CSSProperties;
   onLoad?: () => void;
+  onError?: (e: any) => void;
 }
 
 const PremiumImage: React.FC<PremiumImageProps> = ({
@@ -33,7 +34,8 @@ const PremiumImage: React.FC<PremiumImageProps> = ({
   sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
   fill = false,
   style,
-  onLoad
+  onLoad,
+  onError
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -95,8 +97,9 @@ const PremiumImage: React.FC<PremiumImageProps> = ({
   };
 
   // Handle image error
-  const handleError = () => {
+  const handleError = (e: any) => {
     setHasError(true);
+    onError?.(e);
   };
 
   // Fallback image for errors
