@@ -156,7 +156,7 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="inline-flex items-center justify-center mb-6"
             >
-              <span className="text-6xl">👑</span>
+              <span className="text-6xl">♛</span>
             </motion.div>
 
             {/* Main Heading - Centered */}
@@ -219,62 +219,12 @@ export default function FastHeroSection({ className }: FastHeroSectionProps) {
               </motion.button>
             </motion.div>
 
-            {/* Trust Badges */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: 1.7 }}
-              className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto"
-            >
-              {trustBadges.map((badge, index) => (
-                <motion.div
-                  key={badge.text}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isVisible ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 1.4 + index * 0.1 }}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg bg-white/80 backdrop-blur-sm border border-gray-200 shadow-sm"
-                >
-                  <badge.icon className={`w-5 h-5 ${badge.color}`} />
-                  <span className="text-gray-700 text-sm font-medium">{badge.text}</span>
-                </motion.div>
-              ))}
-            </motion.div>
+
           </motion.div>
         </div>
       </div>
 
-      {/* Floating Action Buttons */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 flex flex-col gap-3">
-        {/* Destek Butonu */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay: 1.8 }}
-        >
-          <Link
-            href="#"
-            className="group flex items-center gap-2 sm:gap-3 bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-blue-600"
-          >
-            <Shield className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
-            <span className="font-semibold text-sm sm:text-base hidden sm:block">Destek Ekibi</span>
-          </Link>
-        </motion.div>
 
-        {/* Hızlı Sipariş Butonu */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={isVisible ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.6, delay: 2.0 }}
-        >
-          <Link
-            href="tel:+905551234567"
-            className="group flex items-center gap-2 sm:gap-3 bg-green-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-green-600"
-          >
-            <Phone className="w-4 h-4 sm:w-5 sm:h-5 group-hover:animate-pulse" />
-            <span className="font-semibold text-sm sm:text-base">Hızlı Sipariş</span>
-          </Link>
-        </motion.div>
-      </div>
 
       {/* Scroll Indicator */}
       <motion.div
