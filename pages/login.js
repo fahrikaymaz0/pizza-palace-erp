@@ -256,8 +256,19 @@ export default function RoyalLogin() {
                 </button>
               </div>
 
-              {/* Register Link */}
+              {/* Admin Login Link */}
               <div className="mt-6 text-center">
+                <Link 
+                  href="/admin/login" 
+                  className="inline-flex items-center justify-center w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-purple-800 transition-all"
+                >
+                  <Crown className="w-5 h-5 mr-2" />
+                  Admin Girişi
+                </Link>
+              </div>
+
+              {/* Register Link */}
+              <div className="mt-4 text-center">
                 <p className="text-[#333]/80">
                   Henüz üye değil misiniz?{' '}
                   <Link href="/register" className="text-[#C21D2B] font-semibold hover:opacity-80">
