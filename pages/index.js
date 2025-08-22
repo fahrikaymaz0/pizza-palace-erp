@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState, useEffect, Suspense, useCallback } from 'react';
+import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Crown } from 'lucide-react';
 import dynamic from 'next/dynamic';
@@ -38,6 +38,10 @@ export default function RoyalPizzaKingdom() {
   const [isAuthed, setIsAuthed] = useState(false);
   const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
   const { isLightMode } = useTheme();
+  
+  // Refs for cleanup
+  const intervalRef = useRef(null);
+  const mountedRef = useRef(true);
 
   const royalProducts = [
     {
@@ -129,6 +133,7 @@ export default function RoyalPizzaKingdom() {
     : royalProducts.filter(product => product.category === activeCategory);
 
   const addToCart = useCallback((product) => {
+    if (!mountedRef.current) return;
     setCartItems(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
@@ -144,10 +149,12 @@ export default function RoyalPizzaKingdom() {
   }, []);
 
   const removeFromCart = useCallback((productId) => {
+    if (!mountedRef.current) return;
     setCartItems(prev => prev.filter(item => item.id !== productId));
   }, []);
 
   const updateQuantity = useCallback((productId, quantity) => {
+    if (!mountedRef.current) return;
     if (quantity <= 0) {
       removeFromCart(productId);
     } else {
@@ -161,27 +168,56 @@ export default function RoyalPizzaKingdom() {
 
   const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
-  // Slide değişimi için useEffect
+  // Slide değişimi için useEffect - güvenli cleanup
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % 3);
+    if (!mountedRef.current) return;
+    
+    intervalRef.current = setInterval(() => {
+      if (mountedRef.current) {
+        setCurrentSlide((prev) => (prev + 1) % 3);
+      }
     }, 5000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
   }, []);
 
-  // Auth kontrolü için useEffect
+  // Auth kontrolü için useEffect - güvenli
   useEffect(() => {
+    if (!mountedRef.current) return;
+    
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('token');
-      setIsAuthed(!!token);
+      if (mountedRef.current) {
+        setIsAuthed(!!token);
+      }
     }
   }, []);
 
+  // Component unmount cleanup
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+  }, []);
+
   const handleLogout = useCallback(() => {
+    if (!mountedRef.current) return;
+    
     if (typeof window !== 'undefined') {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      setIsAuthed(false);
+      if (mountedRef.current) {
+        setIsAuthed(false);
+      }
       window.location.href = '/';
     }
   }, []);

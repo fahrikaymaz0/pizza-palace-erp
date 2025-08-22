@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 
 interface PremiumImageProps {
@@ -37,22 +37,36 @@ export default function PremiumImage({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [imageSrc, setImageSrc] = useState(src);
+  const mountedRef = useRef(true);
 
   // Fallback image if main image fails
   const fallbackSrc = '/pizzas/margherita.png';
 
   useEffect(() => {
+    if (!mountedRef.current) return;
+    
     setImageSrc(src);
     setIsLoading(true);
     setHasError(false);
   }, [src]);
 
+  // Component unmount cleanup
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   const handleLoad = useCallback(() => {
+    if (!mountedRef.current) return;
+    
     setIsLoading(false);
     onLoad?.();
   }, [onLoad]);
 
   const handleError = useCallback((e: any) => {
+    if (!mountedRef.current) return;
+    
     console.error('Image load error:', src);
     setHasError(true);
     setIsLoading(false);
