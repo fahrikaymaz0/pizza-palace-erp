@@ -113,12 +113,12 @@ export default function RoyalLogin() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="inline-block mb-4"
               >
-                <Crown className="w-16 h-16 text-yellow-400 mx-auto" />
+                <Crown className="w-16 h-16 text-yellow-500 mx-auto" />
               </motion.div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="text-3xl font-bold text-[#8D6E63] mb-2">
                 Kraliyet Girişi
               </h1>
-              <p className="text-gray-300">
+              <p className="text-[#333]/80">
                 Pizza Krallığı'na hoş geldiniz
               </p>
             </div>
@@ -128,59 +128,59 @@ export default function RoyalLogin() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-black/40 backdrop-blur-sm rounded-2xl border border-red-700/40 p-8 shadow-2xl"
+              className="bg-white rounded-2xl border border-[#FFD166]/50 p-8 shadow-lg"
             >
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Email */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#333] text-sm font-medium mb-2">
                     E-posta
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                        errors.email ? 'border-red-400' : 'border-gray-400'
+                      className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                        errors.email ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="ornek@email.com"
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
                   )}
                 </div>
 
                 {/* Password */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#333] text-sm font-medium mb-2">
                     Şifre
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                        errors.password ? 'border-red-400' : 'border-gray-400'
+                      className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                        errors.password ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="Şifrenizi girin"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#333]"
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-400 text-sm mt-1">{errors.password}</p>
+                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
                   )}
                 </div>
 
@@ -189,11 +189,11 @@ export default function RoyalLogin() {
                   <label className="flex items-center">
                     <input
                       type="checkbox"
-                      className="w-4 h-4 text-yellow-400 bg-white/20 border-gray-400 rounded focus:ring-yellow-400 focus:ring-2"
+                      className="w-4 h-4 text-[#FFD166] bg-white border-[#FFD166]/60 rounded focus:ring-[#FFD166] focus:ring-2"
                     />
-                    <span className="ml-2 text-sm text-gray-300">Beni hatırla</span>
+                    <span className="ml-2 text-sm text-[#333]/80">Beni hatırla</span>
                   </label>
-                  <Link href="/forgot-password" className="text-sm text-yellow-400 hover:text-yellow-300">
+                  <Link href="/forgot-password" className="text-sm text-[#C21D2B] hover:opacity-80">
                     Şifremi unuttum
                   </Link>
                 </div>
@@ -204,11 +204,11 @@ export default function RoyalLogin() {
                   disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-red-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-red-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#C21D2B] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#A31622] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-900 mr-2"></div>
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-2"></div>
                       Giriş Yapılıyor...
                     </div>
                   ) : (
@@ -219,14 +219,14 @@ export default function RoyalLogin() {
 
               {/* Divider */}
               <div className="my-6 flex items-center">
-                <div className="flex-1 border-t border-gray-400"></div>
-                <span className="px-4 text-gray-300 text-sm">veya</span>
-                <div className="flex-1 border-t border-gray-400"></div>
+                <div className="flex-1 border-t border-[#FFD166]/50"></div>
+                <span className="px-4 text-[#8D6E63] text-sm">veya</span>
+                <div className="flex-1 border-t border-[#FFD166]/50"></div>
               </div>
 
-              {/* Social Login Buttons */}
+              {/* Social/Login */}
               <div className="space-y-3">
-                <button className="w-full bg-white/10 text-white py-3 rounded-lg font-semibold hover:bg-white/20 transition-all flex items-center justify-center">
+                <button className="w-full bg-[#FFD166]/20 text-[#333] py-3 rounded-lg font-semibold hover:bg-[#FFD166]/30 transition-all flex items-center justify-center">
                   <User className="w-5 h-5 mr-2" />
                   Misafir Olarak Devam Et
                 </button>
@@ -234,9 +234,9 @@ export default function RoyalLogin() {
 
               {/* Register Link */}
               <div className="mt-6 text-center">
-                <p className="text-gray-300">
+                <p className="text-[#333]/80">
                   Henüz üye değil misiniz?{' '}
-                  <Link href="/register" className="text-yellow-400 hover:text-yellow-300 font-semibold">
+                  <Link href="/register" className="text-[#C21D2B] font-semibold hover:opacity-80">
                     Kraliyet Üyeliği Oluşturun
                   </Link>
                 </p>
@@ -245,7 +245,7 @@ export default function RoyalLogin() {
 
             {/* Back to Home */}
             <div className="text-center mt-6">
-              <Link href="/" className="text-yellow-400 hover:text-yellow-300 font-semibold">
+              <Link href="/" className="text-[#C21D2B] font-semibold hover:opacity-80">
                 ← Ana Sayfaya Dön
               </Link>
             </div>

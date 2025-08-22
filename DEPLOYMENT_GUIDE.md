@@ -213,3 +213,4 @@ Deployment tamamlandıktan sonra:
 **Pizza Krallığı artık canlıda! 👑🍕**
 
 URL: `https://your-project.vercel.app`
+

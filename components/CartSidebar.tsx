@@ -1,303 +1,200 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingCart, Plus, Minus, Trash2, ArrowRight, Truck } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { X, ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface CartItem {
   id: string;
   name: string;
   price: number;
-  quantity: number;
   image: string;
-  category: string;
+  quantity: number;
 }
 
 interface CartSidebarProps {
   isOpen: boolean;
   onClose: () => void;
-  cart: any[];
-  setCart: (cart: any[]) => void;
+  cartItems: CartItem[];
+  updateQuantity: (id: string, quantity: number) => void;
+  removeFromCart: (id: string) => void;
+  totalPrice: number;
 }
 
 export default function CartSidebar({
   isOpen,
   onClose,
-  cart,
-  setCart
+  cartItems,
+  updateQuantity,
+  removeFromCart,
+  totalPrice,
 }: CartSidebarProps) {
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [deliveryTime, setDeliveryTime] = useState('25-30');
-
-  // Calculate totals
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-  const deliveryFee = subtotal >= 50 ? 0 : 5;
-  const tax = subtotal * 0.18; // 18% KDV
-  const total = subtotal + deliveryFee + tax;
-
-  // Update delivery time based on order size
-  useEffect(() => {
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    if (totalItems > 5) {
-      setDeliveryTime('35-40');
-    } else if (totalItems > 3) {
-      setDeliveryTime('30-35');
-    } else {
-      setDeliveryTime('25-30');
-    }
-  }, [cart]);
-
-  const handleCheckout = () => {
-    setIsCheckingOut(true);
-    // Simulate checkout process
-    setTimeout(() => {
-      setCart([]);
-      setIsCheckingOut(false);
-      onClose();
-    }, 2000);
-  };
+  if (!isOpen) return null;
 
   return (
     <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="fixed inset-0 bg-black/50 z-40"
-          />
-
-          {/* Sidebar */}
-          <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 flex flex-col"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <div className="flex items-center space-x-3">
-                <ShoppingCart className="w-6 h-6 text-red-600" />
-                <h2 className="text-xl font-bold text-gray-900">Sepetim</h2>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/50 z-50"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ x: '100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '100%' }}
+          transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+          className="absolute right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-gray-200">
+            <div className="flex items-center gap-3">
+              <ShoppingCart className="w-6 h-6 text-red-600" />
+              <h3 className="text-xl font-bold text-gray-900">Sepetim</h3>
+              {cartItems.length > 0 && (
                 <span className="bg-red-600 text-white text-xs px-2 py-1 rounded-full">
-                  {cart.length}
+                  {cartItems.length}
                 </span>
-              </div>
-              <button
-                onClick={onClose}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Delivery Info */}
-            <div className="p-4 bg-gradient-to-r from-green-50 to-blue-50 border-b border-gray-200">
-              <div className="flex items-center space-x-3">
-                <div className="p-2 bg-green-100 rounded-full">
-                  <Truck className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">
-                    Teslimat Süresi
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    {deliveryTime} dakika
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Cart Items */}
-            <div className="flex-1 overflow-y-auto p-4">
-              {cart.length === 0 ? (
-                <div className="text-center py-12">
-                  <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    Sepetiniz Boş
-                  </h3>
-                  <p className="text-gray-600 mb-6">
-                    Lezzetli pizzalarımızı keşfetmek için menüye göz atın
-                  </p>
-                  <button
-                    onClick={onClose}
-                    className="bg-red-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors"
-                  >
-                    Menüyü Görüntüle
-                  </button>
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {cart.map((item) => (
-                    <motion.div
-                      key={item.id}
-                      layout
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg"
-                    >
-                      {/* Item Image */}
-                      <div className="flex-shrink-0">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-16 h-16 object-cover rounded-lg"
-                        />
-                      </div>
-
-                      {/* Item Details */}
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-gray-900 truncate">
-                          {item.name}
-                        </h4>
-                        <p className="text-sm text-gray-600">
-                          {item.category}
-                        </p>
-                        <p className="text-lg font-bold text-red-600">
-                          ₺{(item.price * item.quantity).toFixed(2)}
-                        </p>
-                      </div>
-
-                      {/* Quantity Controls */}
-                      <div className="flex items-center space-x-2">
-                        <button
-                          onClick={() => {
-                            if (item.quantity > 1) {
-                              setCart(cart.map(cartItem => 
-                                cartItem.id === item.id 
-                                  ? { ...cartItem, quantity: cartItem.quantity - 1 }
-                                  : cartItem
-                              ));
-                            }
-                          }}
-                          disabled={item.quantity <= 1}
-                          className="p-1 rounded-full bg-white hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="w-8 text-center font-semibold">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() => {
-                            setCart(cart.map(cartItem => 
-                              cartItem.id === item.id 
-                                ? { ...cartItem, quantity: cartItem.quantity + 1 }
-                                : cartItem
-                            ));
-                          }}
-                          className="p-1 rounded-full bg-white hover:bg-gray-100"
-                        >
-                          <Plus className="w-4 h-4" />
-                        </button>
-                      </div>
-
-                      {/* Remove Button */}
-                      <button
-                        onClick={() => {
-                          setCart(cart.filter(cartItem => cartItem.id !== item.id));
-                        }}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </motion.div>
-                  ))}
-                </div>
               )}
             </div>
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-5 h-5 text-gray-500" />
+            </button>
+          </div>
 
-            {/* Footer */}
-            {cart.length > 0 && (
-              <div className="border-t border-gray-200 p-4 space-y-4">
-                {/* Price Breakdown */}
-                <div className="space-y-2">
-                  <div className="flex justify-between text-sm">
-                    <span>Ara Toplam</span>
-                    <span>₺{subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Teslimat Ücreti</span>
-                    <span className={deliveryFee === 0 ? "text-green-600" : ""}>
-                      {deliveryFee === 0 ? "Ücretsiz" : `₺${deliveryFee.toFixed(2)}`}
-                    </span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>KDV (%18)</span>
-                    <span>₺{tax.toFixed(2)}</span>
-                  </div>
-                  <div className="border-t pt-2">
-                    <div className="flex justify-between font-bold text-lg">
-                      <span>Toplam</span>
-                      <span>₺{total.toFixed(2)}</span>
-                    </div>
+          {/* Content */}
+          <div className="flex flex-col h-full">
+            {cartItems.length === 0 ? (
+              <div className="flex-1 flex flex-col items-center justify-center p-8">
+                <div className="w-32 h-32 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                  <ShoppingCart className="w-16 h-16 text-gray-400" />
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Sepetiniz boş</h4>
+                <p className="text-gray-600 text-center mb-6">
+                  Lezzetli pizzalarımızı keşfedin ve sipariş vermeye başlayın
+                </p>
+                <button
+                  onClick={onClose}
+                  className="px-6 py-3 bg-red-600 text-white rounded-full font-semibold hover:bg-red-700 transition-colors"
+                >
+                  Menüyü Keşfet
+                </button>
+              </div>
+            ) : (
+              <>
+                {/* Cart Items */}
+                <div className="flex-1 overflow-y-auto p-4">
+                  <div className="space-y-4">
+                    {cartItems.map((item) => (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl"
+                      >
+                        {/* Product Image */}
+                        <div className="relative w-16 h-16 rounded-lg overflow-hidden bg-gray-200">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="object-cover"
+                            sizes="64px"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.src = '/pizzas/margherita.png';
+                            }}
+                          />
+                        </div>
+
+                        {/* Product Info */}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-gray-900 truncate">
+                            {item.name}
+                          </h4>
+                          <p className="text-red-600 font-bold">₺{item.price}</p>
+                        </div>
+
+                        {/* Quantity Controls */}
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-colors"
+                          >
+                            <Minus className="w-4 h-4 text-gray-600" />
+                          </button>
+                          <span className="w-8 text-center font-semibold text-gray-900">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            className="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-full flex items-center justify-center transition-colors"
+                          >
+                            <Plus className="w-4 h-4 text-gray-600" />
+                          </button>
+                        </div>
+
+                        {/* Remove Button */}
+                        <button
+                          onClick={() => removeFromCart(item.id)}
+                          className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </motion.div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Free Delivery Notice */}
-                {deliveryFee > 0 && (
-                  <div className="text-center p-3 bg-yellow-50 rounded-lg">
-                    <p className="text-sm text-yellow-800">
-                      ₺{deliveryFee.toFixed(2)} daha ekleyin, ücretsiz teslimat!
+                {/* Footer */}
+                <div className="border-t border-gray-200 p-6 space-y-4">
+                  {/* Total */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-medium text-gray-700">Toplam:</span>
+                    <span className="text-2xl font-bold text-red-600">₺{totalPrice}</span>
+                  </div>
+
+                  {/* Delivery Info */}
+                  <div className="text-sm text-gray-600 bg-green-50 p-3 rounded-lg">
+                    <p className="flex items-center gap-2">
+                      <span className="text-green-600">✓</span>
+                      Ücretsiz teslimat (50₺ üzeri)
+                    </p>
+                    <p className="flex items-center gap-2 mt-1">
+                      <span className="text-green-600">✓</span>
+                      Tahmini teslimat: 25-35 dakika
                     </p>
                   </div>
-                )}
 
-                {/* Checkout Button */}
-                <motion.button
-                  onClick={handleCheckout}
-                  disabled={isCheckingOut}
-                  className={cn(
-                    "w-full flex items-center justify-center space-x-2 py-4 px-6 rounded-lg font-semibold text-lg transition-all duration-300",
-                    isCheckingOut
-                      ? "bg-green-600 text-white"
-                      : "bg-red-600 text-white hover:bg-red-700"
-                  )}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <AnimatePresence mode="wait">
-                    {isCheckingOut ? (
-                      <motion.div
-                        key="loading"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0 }}
-                        className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"
-                      />
-                    ) : (
-                      <motion.div
-                        key="checkout"
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        exit={{ scale: 0 }}
-                        className="flex items-center space-x-2"
-                      >
-                        <span>Sipariş Ver</span>
-                        <ArrowRight className="w-5 h-5" />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.button>
-
-                {/* Continue Shopping */}
-                <button
-                  onClick={onClose}
-                  className="w-full py-3 px-6 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-                >
-                  Alışverişe Devam Et
-                </button>
-              </div>
+                  {/* Action Buttons */}
+                  <div className="space-y-3">
+                    <Link
+                      href="/checkout"
+                      className="block w-full bg-red-600 text-white py-4 rounded-xl font-semibold text-center hover:bg-red-700 transition-colors"
+                      onClick={onClose}
+                    >
+                      Siparişi Tamamla
+                    </Link>
+                    <button
+                      onClick={onClose}
+                      className="w-full border-2 border-gray-200 text-gray-700 py-3 rounded-xl font-semibold hover:border-gray-300 transition-colors"
+                    >
+                      Alışverişe Devam Et
+                    </button>
+                  </div>
+                </div>
+              </>
             )}
-          </motion.div>
-        </>
-      )}
+          </div>
+        </motion.div>
+      </motion.div>
     </AnimatePresence>
   );
 }

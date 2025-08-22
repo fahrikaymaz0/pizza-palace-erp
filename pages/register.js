@@ -141,12 +141,12 @@ export default function RoyalRegister() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="inline-block mb-4"
               >
-                <Crown className="w-16 h-16 text-yellow-400 mx-auto" />
+                <Crown className="w-16 h-16 text-yellow-500 mx-auto" />
               </motion.div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="text-3xl font-bold text-[#8D6E63] mb-2">
                 Kraliyet Üyeliği
               </h1>
-              <p className="text-gray-300">
+              <p className="text-[#333]/80">
                 Pizza Krallığı'na katılın ve özel ayrıcalıklardan yararlanın
               </p>
             </div>
@@ -156,182 +156,182 @@ export default function RoyalRegister() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-black/40 backdrop-blur-sm rounded-2xl border border-red-700/40 p-8 shadow-2xl"
+              className="bg-white rounded-2xl border border-[#FFD166]/50 p-8 shadow-lg"
             >
               <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name Fields */}
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-white text-sm font-medium mb-2">
+                    <label className="block text-[#333] text-sm font-medium mb-2">
                       Ad
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                       <input
                         type="text"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                          errors.firstName ? 'border-red-400' : 'border-gray-400'
+                        className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                          errors.firstName ? 'border-red-400' : 'border-[#FFD166]/60'
                         }`}
                         placeholder="Adınız"
                       />
                     </div>
                     {errors.firstName && (
-                      <p className="text-red-400 text-sm mt-1">{errors.firstName}</p>
+                      <p className="text-red-600 text-sm mt-1">{errors.firstName}</p>
                     )}
                   </div>
 
                   <div>
-                    <label className="block text-white text-sm font-medium mb-2">
+                    <label className="block text-[#333] text-sm font-medium mb-2">
                       Soyad
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                       <input
                         type="text"
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleInputChange}
-                        className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                          errors.lastName ? 'border-red-400' : 'border-gray-400'
+                        className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                          errors.lastName ? 'border-red-400' : 'border-[#FFD166]/60'
                         }`}
                         placeholder="Soyadınız"
                       />
                     </div>
                     {errors.lastName && (
-                      <p className="text-red-400 text-sm mt-1">{errors.lastName}</p>
+                      <p className="text-red-600 text-sm mt-1">{errors.lastName}</p>
                     )}
                   </div>
                 </div>
 
                 {/* Email */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#333] text-sm font-medium mb-2">
                     E-posta
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                        errors.email ? 'border-red-400' : 'border-gray-400'
+                      className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                        errors.email ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="ornek@email.com"
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-red-400 text-sm mt-1">{errors.email}</p>
+                    <p className="text-red-600 text-sm mt-1">{errors.email}</p>
                   )}
                 </div>
 
                 {/* Phone */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#333] text-sm font-medium mb-2">
                     Telefon
                   </label>
                   <div className="relative">
-                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                     <input
                       type="tel"
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                        errors.phone ? 'border-red-400' : 'border-gray-400'
+                      className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                        errors.phone ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="05XX XXX XX XX"
                     />
                   </div>
                   {errors.phone && (
-                    <p className="text-red-400 text-sm mt-1">{errors.phone}</p>
+                    <p className="text-red-600 text-sm mt-1">{errors.phone}</p>
                   )}
                 </div>
 
                 {/* Address */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#333] text-sm font-medium mb-2">
                     Adres
                   </label>
                   <div className="relative">
-                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                     <textarea
                       name="address"
                       value={formData.address}
                       onChange={handleInputChange}
                       rows="3"
-                      className={`w-full pl-10 pr-4 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent resize-none ${
-                        errors.address ? 'border-red-400' : 'border-gray-400'
+                      className={`w-full pl-10 pr-4 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent resize-none ${
+                        errors.address ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="Teslimat adresiniz"
                     />
                   </div>
                   {errors.address && (
-                    <p className="text-red-400 text-sm mt-1">{errors.address}</p>
+                    <p className="text-red-600 text-sm mt-1">{errors.address}</p>
                   )}
                 </div>
 
                 {/* Password */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#333] text-sm font-medium mb-2">
                     Şifre
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                        errors.password ? 'border-red-400' : 'border-gray-400'
+                      className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                        errors.password ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="En az 6 karakter"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#333]"
                     >
                       {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                   {errors.password && (
-                    <p className="text-red-400 text-sm mt-1">{errors.password}</p>
+                    <p className="text-red-600 text-sm mt-1">{errors.password}</p>
                   )}
                 </div>
 
                 {/* Confirm Password */}
                 <div>
-                  <label className="block text-white text-sm font-medium mb-2">
+                  <label className="block text-[#333] text-sm font-medium mb-2">
                     Şifre Tekrarı
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8D6E63]" />
                     <input
                       type={showConfirmPassword ? 'text' : 'password'}
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className={`w-full pl-10 pr-12 py-3 bg-white/10 border rounded-lg text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent ${
-                        errors.confirmPassword ? 'border-red-400' : 'border-gray-400'
+                      className={`w-full pl-10 pr-12 py-3 bg-white border rounded-lg text-[#333] placeholder-[#8D6E63]/60 focus:outline-none focus:ring-2 focus:ring-[#FFD166] focus:border-transparent ${
+                        errors.confirmPassword ? 'border-red-400' : 'border-[#FFD166]/60'
                       }`}
                       placeholder="Şifrenizi tekrar girin"
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#8D6E63] hover:text-[#333]"
                     >
                       {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                     </button>
                   </div>
                   {errors.confirmPassword && (
-                    <p className="text-red-400 text-sm mt-1">{errors.confirmPassword}</p>
+                    <p className="text-red-600 text-sm mt-1">{errors.confirmPassword}</p>
                   )}
                 </div>
 
@@ -341,11 +341,11 @@ export default function RoyalRegister() {
                   disabled={isLoading}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full bg-red-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-red-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#C21D2B] text-white py-4 rounded-lg font-bold text-lg hover:bg-[#A31622] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
-                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-900 mr-2"></div>
+                      <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-2"></div>
                       Kayıt Oluşturuluyor...
                     </div>
                   ) : (
@@ -355,15 +355,15 @@ export default function RoyalRegister() {
               </form>
 
               {/* After submit info */}
-              <div className="mt-4 text-center text-sm text-gray-300">
-                Kayıt sonrası doğrulama sayfasına gitmek için <a href="/verify" className="text-red-400 underline">buraya</a> tıklayın.
+              <div className="mt-4 text-center text-sm text-[#333]/80">
+                Kayıt sonrası doğrulama sayfasına gitmek için <a href="/verify" className="text-[#C21D2B] underline">buraya</a> tıklayın.
               </div>
 
               {/* Login Link */}
               <div className="mt-6 text-center">
-                <p className="text-gray-300">
+                <p className="text-[#333]/80">
                   Zaten üye misiniz?{' '}
-                  <Link href="/login" className="text-yellow-400 hover:text-yellow-300 font-semibold">
+                  <Link href="/login" className="text-[#C21D2B] font-semibold hover:opacity-80">
                     Giriş Yapın
                   </Link>
                 </p>
@@ -372,7 +372,7 @@ export default function RoyalRegister() {
 
             {/* Back to Home */}
             <div className="text-center mt-6">
-              <Link href="/" className="text-yellow-400 hover:text-yellow-300 font-semibold">
+              <Link href="/" className="text-[#C21D2B] font-semibold hover:opacity-80">
                 ← Ana Sayfaya Dön
               </Link>
             </div>

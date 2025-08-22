@@ -1,9 +1,20 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Crown, Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft } from 'lucide-react';
-import RoyalParallaxScene from '../components/RoyalParallaxScene';
+import { Crown, Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+// Lazy load components for better performance
+const ModernHeroSection = dynamic(() => import('../components/ModernHeroSection'), {
+  loading: () => <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50 animate-pulse" />
+});
+const ModernProductCard = dynamic(() => import('../components/ModernProductCard'), {
+  loading: () => <div className="bg-gray-200 rounded-2xl h-96 animate-pulse" />
+});
+const CartSidebar = dynamic(() => import('../components/CartSidebar'), {
+  ssr: false
+});
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -182,23 +193,27 @@ export default function RoyalPizzaKingdom() {
               <a href="#menu" className="text-red-400 hover:text-red-300 transition-colors">Menü</a>
               <a href="#about" className="text-red-400 hover:text-red-300 transition-colors">Hakkımızda</a>
               <a href="#contact" className="text-red-400 hover:text-red-300 transition-colors">İletişim</a>
-              {isAuthed && (
-                <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
-              )}
-              {isAuthed ? (
-                <button onClick={handleLogout} className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Çıkış Yap</button>
-              ) : (
-                <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
-              )}
             </div>
 
             <div className="flex items-center space-x-4">
-              {/* Sağda tek buton: auth durumuna göre */}
-              {!isAuthed ? (
-                <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Giriş Yap</Link>
-              ) : (
-                <button onClick={handleLogout} className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors">Çıkış Yap</button>
+              {/* Profilim butonu - auth olunca göster */}
+              {isAuthed && (
+                <Link href="/profile" className="px-4 py-2 bg-gradient-to-r from-blue-100 to-purple-100 text-blue-800 rounded-full font-semibold hover:from-blue-200 hover:to-purple-200 transition-all duration-300 shadow-sm">
+                  Profilim
+                </Link>
               )}
+              
+              {/* Tek auth butonu - sağda */}
+              {!isAuthed ? (
+                <Link href="/login" className="px-4 py-2 bg-gradient-to-r from-green-100 to-teal-100 text-green-800 rounded-full font-semibold hover:from-green-200 hover:to-teal-200 transition-all duration-300 shadow-sm">
+                  Giriş Yap
+                </Link>
+              ) : (
+                <button onClick={handleLogout} className="px-4 py-2 bg-gradient-to-r from-red-100 to-pink-100 text-red-800 rounded-full font-semibold hover:from-red-200 hover:to-pink-200 transition-all duration-300 shadow-sm">
+                  Çıkış Yap
+                </button>
+              )}
+              
               <button
                 onClick={() => setIsCartOpen(true)}
                 className="relative p-2 text-red-500 hover:text-red-400 transition-colors"
@@ -240,9 +255,9 @@ export default function RoyalPizzaKingdom() {
                   <a href="/profile" className="text-red-400 hover:text-red-300 transition-colors">Profilim</a>
                 )}
                 {!isAuthed ? (
-                  <Link href="/login" className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Giriş Yap</Link>
+                  <Link href="/login" className="px-4 py-2 bg-gradient-to-r from-green-100 to-teal-100 text-green-800 rounded-full font-semibold hover:from-green-200 hover:to-teal-200 transition-all duration-300 shadow-sm w-max">Giriş Yap</Link>
                 ) : (
-                  <button onClick={handleLogout} className="px-4 py-2 border-2 border-red-600 text-red-500 rounded-full font-semibold hover:bg-red-600 hover:text-white transition-colors w-max">Çıkış Yap</button>
+                  <button onClick={handleLogout} className="px-4 py-2 bg-gradient-to-r from-red-100 to-pink-100 text-red-800 rounded-full font-semibold hover:from-red-200 hover:to-pink-200 transition-all duration-300 shadow-sm w-max">Çıkış Yap</button>
                 )}
               </div>
             </div>
@@ -250,97 +265,14 @@ export default function RoyalPizzaKingdom() {
         )}
       </AnimatePresence>
 
-      {/* Hero Section with Royal Parallax */}
-      <section className="relative min-h-[80vh] flex items-start justify-center pt-44 overflow-hidden">
-        <RoyalParallaxScene disableContentParallax>
-          <div className="relative z-20 text-center text-white">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1 }}
-              className="mb-8 mt-24"
-            >
-              <Crown className="w-20 h-20 text-yellow-400 mx-auto mb-4" />
-              <h1 className="text-6xl md:text-8xl font-extrabold mb-2 mt-8">
-                <span className="text-red-700">Pizza</span> <span className="text-[#FFD166]">Krallığı</span>
-              </h1>
-              <p className="text-base md:text-lg mb-6 text-gray-200 max-w-2xl mx-auto">
-                Pizza Krallığı, seçkin malzemeler ve usta şeflerin reçeteleriyle premium bir lezzet deneyimi sunar.
-              </p>
-            </motion.div>
+      {/* Modern Hero Section */}
+      <Suspense fallback={<div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50 animate-pulse" />}>
+        <ModernHeroSection />
+      </Suspense>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center"
-            >
-              <button
-                onClick={() => document.getElementById('menu').scrollIntoView({ behavior: 'smooth' })}
-                className="px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-lg bg-red-600 text-white hover:bg-red-700"
-              >
-                Menüyü Keşfet
-              </button>
-              <button type="button"
-                onClick={() => setIsVideoPlaying(true)}
-                className="px-8 py-4 rounded-full font-bold text-lg transition-all transform hover:scale-105 border-2 border-black text-black hover:bg-black hover:text-white"
-              >
-                Video İzle
-              </button>
-            </motion.div>
-          </div>
-        </RoyalParallaxScene>
-      </section>
-      {/* Video Modal */}
-      <AnimatePresence>
-        {isVideoPlaying && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-            onClick={() => setIsVideoPlaying(false)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative w-full max-w-4xl aspect-video"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {isVideoLoading && (
-                <div className="absolute inset-0 grid place-items-center bg-black/30 rounded-lg">
-                  <div className="h-10 w-10 border-2 border-white/80 border-t-transparent rounded-full animate-spin" />
-                </div>
-              )}
-              <video
-                className="w-full h-full object-cover rounded-lg"
-                controls
-                autoPlay
-                playsInline
-                preload="none"
-                poster="/pizzas/margherita.png"
-                muted
-                controlsList="nodownload noplaybackrate"
-                onCanPlay={() => setIsVideoLoading(false)}
-                onLoadStart={() => setIsVideoLoading(true)}
-              >
-                <source src="/pizzaanasayfa2.mp4" type="video/mp4" />
-                Tarayıcınız video oynatmayı desteklemiyor.
-              </video>
-              <button
-                onClick={() => setIsVideoPlaying(false)}
-                className="absolute -top-4 -right-4 w-8 h-8 bg-red-600 text-white rounded-full flex items-center justify-center hover:bg-red-700 transition-colors"
-              >
-                ×
-              </button>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
-      {/* Royal Features */}
-      <section className="py-20" style={{background: '#FFFBF5'}}>
+      {/* Modern Features */}
+      <section className="py-20 bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -348,35 +280,41 @@ export default function RoyalPizzaKingdom() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-6xl font-bold text-[#8D6E63] mb-6">
-              👑 Kraliyet Özelliklerimiz
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Neden <span className="text-red-600">Pizza Krallığı</span>?
             </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Müşterilerimize en iyi deneyimi sunmak için sürekli kendimizi geliştiriyoruz
+            </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { icon: Crown, title: 'Premium Kalite', desc: 'En kaliteli malzemeler ve özel tarifler' },
-              { icon: Shield, title: 'Güvenli Teslimat', desc: '30 dakika içinde kapınızda' },
-              { icon: Zap, title: 'Hızlı Servis', desc: 'Modern teknoloji ile hızlı hazırlık' }
+              { icon: Clock, title: '30dk Teslimat', desc: 'Hızlı ve zamanında teslimat garantisi', color: 'text-emerald-600', bg: 'bg-gradient-to-br from-emerald-50 to-green-100' },
+              { icon: Crown, title: 'Premium Kalite', desc: 'En taze malzemeler ve özel tarifler', color: 'text-amber-600', bg: 'bg-gradient-to-br from-amber-50 to-yellow-100' },
+              { icon: Shield, title: 'Güvenli Ödeme', desc: '256-bit SSL şifreleme ile güvenli alışveriş', color: 'text-sky-600', bg: 'bg-gradient-to-br from-sky-50 to-blue-100' },
+              { icon: Award, title: 'Ödüllü Lezzet', desc: 'Sektörde 15+ yıllık deneyim ve kalite', color: 'text-violet-600', bg: 'bg-gradient-to-br from-violet-50 to-purple-100' }
             ].map((feature, index) => (
               <motion.div
                 key={feature.title}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="text-center p-8 bg-white rounded-xl border border-[#FFD166]/60 shadow-sm"
+                className={`group text-center p-8 ${feature.bg} rounded-2xl border border-gray-100 hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
               >
-                <feature.icon className="w-16 h-16 text-[#FFD166] mx-auto mb-4" />
-                <h3 className="text-2xl font-bold text-[#333] mb-4">{feature.title}</h3>
-                <p className="text-[#333]/80">{feature.desc}</p>
+                <div className={`w-16 h-16 ${feature.bg} rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <feature.icon className={`w-8 h-8 ${feature.color}`} />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
+                <p className="text-gray-600">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Royal Menu */}
-      <section id="menu" className="py-20" style={{background: '#FFFBF5'}}>
+      {/* Modern Menu */}
+      <section id="menu-section" className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -384,11 +322,11 @@ export default function RoyalPizzaKingdom() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-6xl font-bold text-[#8D6E63] mb-6">
-              👑 Kraliyet Menümüz
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              Lezzet <span className="text-red-600">Menümüz</span>
             </h2>
-            <p className="text-xl text-[#8D6E63]/80 max-w-3xl mx-auto">
-              Her biri özenle hazırlanan premium pizzalarımızı keşfedin
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Özenle seçilmiş malzemeler ve usta şeflerin deneyimi ile hazırlanan pizzalarımız
             </p>
           </motion.div>
 
@@ -411,156 +349,68 @@ export default function RoyalPizzaKingdom() {
           </div>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white/10 backdrop-blur-sm rounded-xl border border-yellow-400/30 overflow-hidden hover:transform hover:scale-105 transition-all"
-              >
-                <div className="relative">
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-48 object-cover"
-                  />
-                  {product.badge && (
-                    <div className="absolute top-4 left-4 bg-yellow-400 text-purple-900 px-3 py-1 rounded-full text-sm font-bold">
-                      {product.badge}
-                    </div>
-                  )}
-                  {product.isPremium && (
-                    <div className="absolute top-4 right-4">
-                      <Crown className="w-6 h-6 text-yellow-400" />
-                    </div>
-                  )}
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-bold text-white">{product.name}</h3>
-                    <div className="flex items-center">
-                      <Star className="w-5 h-5 text-yellow-400 fill-current" />
-                      <span className="text-white ml-1">{product.rating}</span>
-                    </div>
-                  </div>
-                  
-                  <p className="text-gray-300 mb-4">{product.description}</p>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-2xl font-bold text-yellow-400">
-                        ₺{product.price}
-                      </span>
-                      {product.originalPrice && (
-                        <span className="text-gray-400 line-through">
-                          ₺{product.originalPrice}
-                        </span>
-                      )}
-                    </div>
-                    
-                    <button
-                      onClick={() => addToCart(product)}
-                      className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 px-4 py-2 rounded-full font-semibold hover:from-yellow-300 hover:to-yellow-500 transition-all"
-                    >
-                      Sepete Ekle
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
+              <Suspense key={product.id} fallback={<div className="bg-gray-200 rounded-2xl h-96 animate-pulse" />}>
+                <ModernProductCard
+                  product={{
+                    ...product,
+                    preparationTime: 15 + Math.floor(Math.random() * 10), // 15-25 dk
+                  }}
+                  onAddToCart={addToCart}
+                  delay={index * 0.1}
+                />
+              </Suspense>
             ))}
           </div>
+
+          {/* View All Menu Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="text-center mt-12"
+          >
+            <Link
+              href="/menu"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-red-600 text-white rounded-full font-semibold text-lg hover:bg-red-700 transition-colors shadow-lg hover:shadow-xl"
+            >
+              Tüm Menüyü Görüntüle
+              <ChevronRight className="w-5 h-5" />
+            </Link>
+          </motion.div>
         </div>
       </section>
 
-      {/* Royal Cart Sidebar */}
-      <AnimatePresence>
+      {/* Modern Cart Sidebar */}
+      <Suspense fallback={null}>
         {isCartOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/50 z-50"
-            onClick={() => setIsCartOpen(false)}
-          >
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="absolute right-0 top-0 h-full w-full max-w-md bg-gradient-to-b from-purple-900 to-red-900 border-l-2 border-yellow-400"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-2xl font-bold text-white">Kraliyet Sepeti</h3>
-                  <button
-                    onClick={() => setIsCartOpen(false)}
-                    className="text-white hover:text-yellow-400"
-                  >
-                    <X className="w-6 h-6" />
-                  </button>
-                </div>
-
-                {cartItems.length === 0 ? (
-                  <div className="text-center py-12">
-                    <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-400">Sepetiniz boş</p>
-                  </div>
-                ) : (
-                  <>
-                    <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
-                      {cartItems.map((item) => (
-                        <div key={item.id} className="flex items-center space-x-4 bg-white/10 rounded-lg p-4">
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-16 h-16 object-cover rounded-lg"
-                          />
-                          <div className="flex-1">
-                            <h4 className="text-white font-semibold">{item.name}</h4>
-                            <p className="text-yellow-400 font-bold">₺{item.price}</p>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <button
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              className="w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center"
-                            >
-                              -
-                            </button>
-                            <span className="text-white font-semibold w-8 text-center">
-                              {item.quantity}
-                            </span>
-                            <button
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              className="w-8 h-8 bg-green-500 text-white rounded-full flex items-center justify-center"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="border-t border-yellow-400/30 pt-4">
-                      <div className="flex justify-between items-center mb-4">
-                        <span className="text-white text-lg">Toplam:</span>
-                        <span className="text-yellow-400 text-2xl font-bold">₺{totalPrice}</span>
-                      </div>
-                      
-                      <button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 py-3 rounded-full font-bold text-lg hover:from-yellow-300 hover:to-yellow-500 transition-all">
-                        Siparişi Tamamla
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            </motion.div>
-          </motion.div>
+          <CartSidebar
+            isOpen={isCartOpen}
+            onClose={() => setIsCartOpen(false)}
+            cartItems={cartItems}
+            updateQuantity={updateQuantity}
+            removeFromCart={removeFromCart}
+            totalPrice={totalPrice}
+          />
         )}
-      </AnimatePresence>
+      </Suspense>
+
+      {/* Quick Contact Floating Button */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 2.0 }}
+        className="fixed bottom-6 left-6 z-40"
+      >
+        <Link
+          href="tel:+905551234567"
+          className="group flex items-center gap-3 bg-green-500 text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:bg-green-600"
+        >
+          <Phone className="w-5 h-5 group-hover:animate-pulse" />
+          <span className="font-semibold hidden sm:block">Hızlı Sipariş</span>
+        </Link>
+      </motion.div>
     </>
   );
 } 
