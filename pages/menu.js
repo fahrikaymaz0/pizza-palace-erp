@@ -18,14 +18,193 @@ function RoyalMenu() {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [favorites, setFavorites] = useState([]);
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
   const [showCheckout, setShowCheckout] = useState(false);
   const [address, setAddress] = useState('');
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  // Statik pizza verileri
+  const allProducts = [
+    {
+      id: '1',
+      name: 'Royal Margherita',
+      description: 'Kraliyet domates sosu, mozzarella di bufala, taze fesleğen',
+      price: 89,
+      originalPrice: 120,
+      image: '/pizzas/margherita.png',
+      category: 'royal',
+      rating: 4.9,
+      reviewCount: 256,
+      isPremium: true,
+      isVegetarian: true,
+      badge: '👑 Kraliyet',
+      ingredients: ['Domates Sosu', 'Mozzarella', 'Fesleğen', 'Zeytinyağı'],
+      preparationTime: '15-20 dk',
+      calories: 850
+    },
+    {
+      id: '2',
+      name: 'Imperial Pepperoni',
+      description: 'Özel pepperoni, mozzarella, parmesan peyniri',
+      price: 99,
+      image: '/pizzas/pepperoni.png',
+      category: 'classic',
+      rating: 4.8,
+      reviewCount: 189,
+      isPremium: true,
+      badge: '⚔️ İmparatorluk',
+      ingredients: ['Pepperoni', 'Mozzarella', 'Parmesan', 'Domates Sosu'],
+      preparationTime: '18-22 dk',
+      calories: 950
+    },
+    {
+      id: '3',
+      name: 'Supreme Majesty',
+      description: 'Kraliyet malzemeleri: sosis, mantar, biber, soğan, zeytin',
+      price: 129,
+      image: '/pizzas/supreme.png',
+      category: 'royal',
+      rating: 5.0,
+      reviewCount: 312,
+      isPremium: true,
+      badge: '👑 Majeste',
+      ingredients: ['Sosis', 'Mantar', 'Biber', 'Soğan', 'Zeytin'],
+      preparationTime: '20-25 dk',
+      calories: 1100
+    },
+    {
+      id: '4',
+      name: 'Royal Vegetarian',
+      description: 'Taze sebzeler, mozzarella, parmesan, fesleğen',
+      price: 79,
+      image: '/pizzas/vegetarian.png',
+      category: 'vegetarian',
+      rating: 4.7,
+      reviewCount: 145,
+      isVegetarian: true,
+      badge: '🌿 Kraliyet',
+      ingredients: ['Mantar', 'Biber', 'Soğan', 'Mozzarella', 'Fesleğen'],
+      preparationTime: '15-18 dk',
+      calories: 750
+    },
+    {
+      id: '5',
+      name: 'BBQ Royal Chicken',
+      description: 'BBQ sosu, tavuk göğsü, soğan, mısır, mozzarella',
+      price: 109,
+      image: '/pizzas/bbq-chicken.png',
+      category: 'royal',
+      rating: 4.6,
+      reviewCount: 98,
+      badge: '🍗 Kraliyet',
+      ingredients: ['Tavuk Göğsü', 'BBQ Sosu', 'Soğan', 'Mısır', 'Mozzarella'],
+      preparationTime: '18-22 dk',
+      calories: 980
+    },
+    {
+      id: '6',
+      name: 'Spicy Inferno',
+      description: 'Acılı pepperoni, jalapeño, acılı sos, mozzarella',
+      price: 119,
+      image: '/pizzas/spicy-inferno.png',
+      category: 'spicy',
+      rating: 4.5,
+      reviewCount: 167,
+      badge: '🔥 Acılı',
+      ingredients: ['Acılı Pepperoni', 'Jalapeño', 'Acılı Sos', 'Mozzarella'],
+      preparationTime: '16-20 dk',
+      calories: 920
+    },
+    {
+      id: '7',
+      name: 'Quattro Stagioni',
+      description: 'Dört mevsim: mantar, zeytin, enginar, jambon',
+      price: 139,
+      image: '/pizzas/quattro-stagioni.png',
+      category: 'classic',
+      rating: 4.9,
+      reviewCount: 203,
+      isPremium: true,
+      badge: '🍂 Klasik',
+      ingredients: ['Mantar', 'Zeytin', 'Enginar', 'Jambon', 'Mozzarella'],
+      preparationTime: '20-25 dk',
+      calories: 1050
+    },
+    {
+      id: '8',
+      name: 'Hawaiian Paradise',
+      description: 'Jambon, ananas, mozzarella, özel sos',
+      price: 89,
+      image: '/pizzas/hawaiian.png',
+      category: 'classic',
+      rating: 4.3,
+      reviewCount: 134,
+      badge: '🏝️ Tropik',
+      ingredients: ['Jambon', 'Ananas', 'Mozzarella', 'Özel Sos'],
+      preparationTime: '15-18 dk',
+      calories: 880
+    },
+    {
+      id: '9',
+      name: 'Mediterranean Dream',
+      description: 'Zeytin, domates, feta peyniri, kekik',
+      price: 94,
+      image: '/pizzas/mediterranean.png',
+      category: 'vegetarian',
+      rating: 4.6,
+      reviewCount: 178,
+      isVegetarian: true,
+      badge: '🌊 Akdeniz',
+      ingredients: ['Zeytin', 'Domates', 'Feta Peyniri', 'Kekik', 'Mozzarella'],
+      preparationTime: '16-20 dk',
+      calories: 820
+    },
+    {
+      id: '10',
+      name: 'Buffalo Chicken',
+      description: 'Buffalo sosu, tavuk, soğan, ranch sosu',
+      price: 104,
+      image: '/pizzas/buffalo-chicken.png',
+      category: 'spicy',
+      rating: 4.4,
+      reviewCount: 156,
+      badge: '🌶️ Buffalo',
+      ingredients: ['Tavuk', 'Buffalo Sosu', 'Soğan', 'Ranch Sosu', 'Mozzarella'],
+      preparationTime: '18-22 dk',
+      calories: 960
+    },
+    {
+      id: '11',
+      name: 'Truffle Delight',
+      description: 'Trüf mantarı, parmesan, mozzarella, trüf yağı',
+      price: 149,
+      image: '/pizzas/truffle.png',
+      category: 'royal',
+      rating: 5.0,
+      reviewCount: 89,
+      isPremium: true,
+      badge: '🍄 Premium',
+      ingredients: ['Trüf Mantarı', 'Parmesan', 'Mozzarella', 'Trüf Yağı'],
+      preparationTime: '22-25 dk',
+      calories: 1150
+    },
+    {
+      id: '12',
+      name: 'Spicy Veggie',
+      description: 'Acılı sebzeler, mozzarella, acılı sos',
+      price: 84,
+      image: '/pizzas/spicy-veggie.png',
+      category: 'spicy',
+      rating: 4.2,
+      reviewCount: 112,
+      isVegetarian: true,
+      badge: '🌶️ Acılı',
+      ingredients: ['Acılı Biber', 'Mantar', 'Soğan', 'Acılı Sos', 'Mozzarella'],
+      preparationTime: '16-19 dk',
+      calories: 780
+    }
+  ];
 
   const categories = [
     { 
@@ -33,73 +212,58 @@ function RoyalMenu() {
       name: 'Tümü',
       description: 'Tüm lezzetli pizzalarımız',
       color: 'from-red-500 to-orange-500',
-      count: 12
+      count: allProducts.length
     },
     { 
       id: 'royal', 
       name: 'Kraliyet Serisi',
       description: 'Premium malzemelerle hazırlanan özel tarifler',
       color: 'from-purple-500 to-pink-500',
-      count: 4
+      count: allProducts.filter(p => p.category === 'royal').length
     },
     { 
       id: 'classic', 
       name: 'Klasik Pizzalar',
       description: 'Geleneksel İtalyan lezzetleri',
       color: 'from-green-500 to-teal-500',
-      count: 3
+      count: allProducts.filter(p => p.category === 'classic').length
     },
     { 
       id: 'vegetarian', 
       name: 'Vejetaryen',
       description: 'Taze sebzelerle hazırlanan sağlıklı seçenekler',
       color: 'from-emerald-500 to-green-500',
-      count: 2
+      count: allProducts.filter(p => p.category === 'vegetarian').length
     },
     { 
       id: 'spicy', 
       name: 'Acılı Pizzalar',
       description: 'Baharatlı ve keskin lezzetler',
       color: 'from-red-600 to-orange-600',
-      count: 3
+      count: allProducts.filter(p => p.category === 'spicy').length
     }
   ];
 
-  // API'den ürünleri getir (kategori/arama/sıralama ile)
-  useEffect(() => {
-    const controller = new AbortController();
-    const timeout = setTimeout(async () => {
-      try {
-        setLoading(true);
-        setError('');
-        const params = new URLSearchParams({
-          category: activeCategory,
-          search: searchTerm,
-          sortBy
-        });
-        const res = await fetch(`/api/products?${params.toString()}`, { signal: controller.signal });
-        const data = await res.json();
-        if (data.success) {
-          setProducts(data.products || []);
-        } else {
-          setError(data.message || 'Ürünler yüklenemedi');
-        }
-      } catch (err) {
-        if (err.name !== 'AbortError') {
-          setError('Ürünler yüklenirken hata oluştu');
-        }
-      } finally {
-        setLoading(false);
+  // Filtreleme ve sıralama
+  const filteredProducts = allProducts
+    .filter(product => {
+      const matchesCategory = activeCategory === 'all' || product.category === activeCategory;
+      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesCategory && matchesSearch;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'price-low':
+          return a.price - b.price;
+        case 'price-high':
+          return b.price - a.price;
+        case 'rating':
+          return b.rating - a.rating;
+        default:
+          return a.name.localeCompare(b.name);
       }
-    }, 300); // küçük debounce
-
-    return () => {
-      controller.abort();
-      clearTimeout(timeout);
-    };
-  }, [activeCategory, searchTerm, sortBy]);
-
-  const filteredProducts = products;
+    });
 
   const addToCart = (product) => {
     setCartItems(prev => {
@@ -294,12 +458,6 @@ function RoyalMenu() {
 
         {/* Products Grid */}
           <div className="container mx-auto px-4 py-8 bg-[#FFFBF5]">
-            {error && (
-              <div className="text-center text-red-600 mb-4">{error}</div>
-            )}
-            {loading && (
-              <div className="text-center text-[#333] dark:text-gray-300">Yükleniyor...</div>
-            )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product, index) => (
                 <motion.div

@@ -273,6 +273,12 @@ export default function RoyalPizzaKingdom() {
                 >
                   Destek
                 </button>
+                <Link 
+                  href="/admin/login"
+                  className="text-gray-700 hover:text-red-600 transition-colors"
+                >
+                  Admin
+                </Link>
                 {isAuthed && (
                   <Link href="/profile" className="text-gray-700 hover:text-red-600 transition-colors">Profilim</Link>
                 )}
