@@ -19,102 +19,35 @@ export default function FlagBanner({ side, color, delay = 0 }: FlagBannerProps) 
 
   return (
     <motion.div
-      initial={{ 
-        x: isLeft ? -100 : 100, 
-        opacity: 0,
-        rotate: isLeft ? -5 : 5
-      }}
-      animate={{ 
-        x: 0, 
-        opacity: 1,
-        rotate: 0
-      }}
-      transition={{ 
-        duration: 1.2, 
-        delay,
-        type: 'spring',
-        damping: 20
-      }}
-      className={`absolute top-0 ${isLeft ? 'left-0' : 'right-0'} z-30`}
+      className={`absolute ${isLeft ? 'left-10' : 'right-10'} top-0 h-full z-30`}
+      style={{ pointerEvents: 'none' }}
+      animate={{ x: isLeft ? [0, 4, 0] : [0, -4, 0] }}
+      transition={{ duration: 3.6, repeat: Infinity, ease: 'easeInOut', delay: isLeft ? 0 : 0.4 }}
     >
-      {/* Flama Ana Gövdesi */}
-      <div className="relative">
-        {/* Flama Kumaşı */}
-        <div className={`
-          relative h-48 w-32 bg-gradient-to-br ${flagColors[color]}
-          shadow-2xl transform ${isLeft ? 'origin-top-left' : 'origin-top-right'}
-        `}>
-          {/* Flama Sivri Ucu */}
-          <div 
-            className={`
-              absolute bottom-0 ${isLeft ? 'right-0' : 'left-0'}
-              w-0 h-0 border-solid
-              ${isLeft 
-                ? `border-l-[32px] border-l-transparent 
-                   border-t-[20px] ${isRed ? 'border-t-red-700' : 'border-t-yellow-600'}`
-                : `border-r-[32px] border-r-transparent 
-                   border-t-[20px] ${isRed ? 'border-t-red-700' : 'border-t-yellow-600'}`
-              }
-            `}
-          />
-          
-          {/* Flama Üst Kısmı - Direk Bağlantısı */}
-          <div className={`
-            absolute top-0 ${isLeft ? 'left-0' : 'right-0'}
-            w-full h-4 bg-gradient-to-r ${isRed ? 'from-red-800 to-red-900' : 'from-yellow-600 to-yellow-700'}
-            border-b-2 ${isRed ? 'border-red-900' : 'border-yellow-700'}
-          `} />
-          
-          {/* Flama Gölgesi */}
-          <div className={`
-            absolute inset-0 bg-gradient-to-br from-transparent via-transparent 
-            ${isRed ? 'to-red-900/30' : 'to-yellow-700/30'}
-          `} />
-          
-          {/* Flama Işık Efekti */}
-          <div className={`
-            absolute top-2 ${isLeft ? 'left-2' : 'right-2'} 
-            w-6 h-16 bg-gradient-to-b from-white/40 to-transparent 
-            blur-sm rounded-full
-          `} />
-        </div>
-
-        {/* Flama Direği */}
-        <div className={`
-          absolute ${isLeft ? 'left-0' : 'right-0'} top-0
-          w-2 h-64 bg-gradient-to-b from-amber-800 via-amber-900 to-amber-950
-          shadow-lg ${isLeft ? '-translate-x-1' : 'translate-x-1'}
-          rounded-sm
-        `}>
-          {/* Direk Metalik Efekt */}
-          <div className="absolute inset-y-0 left-0 w-0.5 bg-gradient-to-b from-amber-600 to-amber-800 rounded-sm" />
-        </div>
-
-        {/* Flama Dalgalanma Animasyonu */}
-        <motion.div
-          animate={{
-            rotate: [0, 2, -1, 1, 0],
-            scaleX: [1, 1.02, 0.98, 1.01, 1]
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: 'easeInOut'
-          }}
-          className="absolute inset-0 pointer-events-none"
-        >
-          {/* Rüzgar Efekti */}
-          <div className={`
-            absolute top-8 ${isLeft ? 'right-1' : 'left-1'}
-            w-full h-32 bg-gradient-to-r 
-            ${isRed 
-              ? 'from-red-400/20 to-transparent' 
-              : 'from-yellow-300/20 to-transparent'
-            }
-            blur-sm
-          `} />
-        </motion.div>
-      </div>
+      {/* Aşağıya doğru uzanan flama - giriş sayfası gibi */}
+      <svg width="120" height="100%" viewBox="0 0 120 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id={isLeft ? "leftFlagGrad" : "rightFlagGrad"} x1="0%" y1="0%" x2="0%" y2="100%">
+            {isRed ? (
+              <>
+                <stop offset="0%" stopColor="#E63946"/>
+                <stop offset="100%" stopColor="#C21D2B"/>
+              </>
+            ) : (
+              <>
+                <stop offset="0%" stopColor="#FFD166"/>
+                <stop offset="100%" stopColor="#E3B84F"/>
+              </>
+            )}
+          </linearGradient>
+        </defs>
+        <path 
+          d={isLeft ? "M0 0 H120 V780 L60 840 L0 780 Z" : "M120 0 H0 V780 L60 840 L120 780 Z"} 
+          fill={`url(#${isLeft ? "leftFlagGrad" : "rightFlagGrad"})`} 
+          stroke={isRed ? "#A51521" : "#D4A63A"} 
+          strokeWidth="3"
+        />
+      </svg>
     </motion.div>
   );
 }
