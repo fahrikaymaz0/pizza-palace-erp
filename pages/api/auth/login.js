@@ -1,5 +1,5 @@
 import { prisma } from '../../../lib/prisma';
-import { verifyPassword, validateEmail, generateToken } from '../../../lib/auth';
+import { comparePassword, validateEmail, generateToken } from '../../../lib/auth';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -59,7 +59,7 @@ export default async function handler(req, res) {
     }
 
     // Verify password
-    const isValidPassword = await verifyPassword(password, user.password);
+    const isValidPassword = await comparePassword(password, user.password);
 
     if (!isValidPassword) {
       return res.status(401).json({
@@ -68,8 +68,14 @@ export default async function handler(req, res) {
       });
     }
 
+    // Update last login
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { lastLogin: new Date() }
+    });
+
     // Generate JWT token
-    const token = generateToken(user.id, user.email, user.role);
+    const token = generateToken(user);
 
     // User data without password
     const userData = {

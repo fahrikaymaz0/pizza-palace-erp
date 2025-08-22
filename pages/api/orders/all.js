@@ -1,20 +1,70 @@
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '../../../lib/prisma';
+import { verifyToken } from '../../../lib/auth';
 
 export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // Only allow GET method
   if (req.method !== 'GET') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    // Admin kontrolü (gerçek uygulamada JWT token kontrolü yapılmalı)
+    // Get token from header
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'Yetkilendirme gerekli'
+      });
+    }
+
+    // Verify token
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return res.status(401).json({
+        success: false,
+        message: 'Geçersiz token'
+      });
+    }
+
+    // Check if user is admin
+    if (decoded.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Admin yetkisi gerekli'
+      });
+    }
+
+    // Get query parameters
+    const { page = 1, limit = 10, status, paymentStatus } = req.query;
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Build where clause
+    const where = {};
+    if (status) where.status = status;
+    if (paymentStatus) where.paymentStatus = paymentStatus;
+
+    // Get orders with pagination
     const orders = await prisma.order.findMany({
+      where,
       include: {
         items: true,
         user: {
           select: {
-            name: true,
+            firstName: true,
+            lastName: true,
             email: true,
             phone: true
           }
@@ -22,40 +72,51 @@ export default async function handler(req, res) {
       },
       orderBy: {
         createdAt: 'desc'
+      },
+      skip,
+      take: parseInt(limit)
+    });
+
+    // Get total count
+    const total = await prisma.order.count({ where });
+
+    // Get statistics
+    const stats = await prisma.order.groupBy({
+      by: ['status', 'paymentStatus'],
+      _count: {
+        status: true
       }
     });
 
-    // Siparişleri formatla
-    const formattedOrders = orders.map(order => ({
-      id: order.id,
-      customerName: order.customerName || order.user?.name || 'Anonim',
-      customerEmail: order.customerEmail || order.user?.email || '',
-      customerPhone: order.customerPhone || order.user?.phone || '',
-      deliveryAddress: order.deliveryAddress,
-      totalPrice: order.totalPrice,
-      status: order.status,
-      customerMessage: order.customerMessage,
-      items: order.items.map(item => ({
-        name: item.name,
-        quantity: item.quantity,
-        price: item.price
-      })),
-      createdAt: order.createdAt,
-      updatedAt: order.updatedAt
-    }));
+    const statistics = {
+      total: total,
+      pending: stats.find(s => s.status === 'pending')?._count.status || 0,
+      preparing: stats.find(s => s.status === 'preparing')?._count.status || 0,
+      completed: stats.find(s => s.status === 'completed')?._count.status || 0,
+      cancelled: stats.find(s => s.status === 'cancelled')?._count.status || 0,
+      paid: stats.find(s => s.paymentStatus === 'completed')?._count.status || 0,
+      unpaid: stats.find(s => s.paymentStatus === 'pending')?._count.status || 0
+    };
 
-    res.status(200).json({ 
-      success: true, 
-      orders: formattedOrders 
+    console.log('Admin fetched orders:', { count: orders.length, page, limit });
+
+    return res.status(200).json({
+      success: true,
+      orders,
+      statistics,
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total,
+        pages: Math.ceil(total / parseInt(limit))
+      }
     });
 
   } catch (error) {
-    console.error('Sipariş getirme hatası:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Siparişler getirilirken hata oluştu' 
+    console.error('Orders API Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Siparişler getirilirken bir hata oluştu'
     });
-  } finally {
-    await prisma.$disconnect();
   }
 }

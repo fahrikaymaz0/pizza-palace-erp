@@ -11,17 +11,20 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String
-  email         String    @unique
-  password      String
-  phone         String?
-  emailVerified Boolean   @default(false)
-  verificationToken String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  lastLogin     DateTime?
-  orders        Order[]
+  id              String    @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String    @unique
+  password        String
+  phone           String?
+  address         String?
+  emailVerified   Boolean   @default(false)
+  verificationCode String?
+  role            String    @default("user") // user, admin
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  lastLogin       DateTime?
+  orders          Order[]
   supportMessages SupportMessage[]
 }
 

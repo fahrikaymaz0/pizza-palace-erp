@@ -1,74 +1,127 @@
+import { prisma } from '../../../lib/prisma';
+import { verifyToken } from '../../../lib/auth';
+
 export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle OPTIONS request
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // Only allow POST method
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Sadece POST istekleri destekleniyor' });
+    return res.status(405).json({ error: 'Method not allowed' });
   }
 
   try {
-    const { items, customer, delivery, payment, total } = req.body;
+    // Get token from header
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: 'Yetkilendirme gerekli'
+      });
+    }
+
+    // Verify token
+    const decoded = verifyToken(token);
+    if (!decoded) {
+      return res.status(401).json({
+        success: false,
+        message: 'Geçersiz token'
+      });
+    }
+
+    const { 
+      customerName, 
+      customerEmail, 
+      customerPhone, 
+      deliveryAddress, 
+      items, 
+      totalPrice, 
+      customerMessage,
+      paymentMethod = 'cash'
+    } = req.body;
+
+    console.log('Order creation attempt:', { customerEmail, totalPrice });
 
     // Validation
-    if (!items || items.length === 0) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Sipariş öğeleri gereklidir' 
+    if (!customerName || !customerEmail || !customerPhone || !deliveryAddress || !items || !totalPrice) {
+      return res.status(400).json({
+        success: false,
+        message: 'Tüm gerekli alanları doldurun'
       });
     }
 
-    if (!customer.name || !customer.phone) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Müşteri adı ve telefonu gereklidir' 
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'En az bir ürün seçmelisiniz'
       });
     }
 
-    if (delivery.type === 'delivery' && !delivery.address) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Teslimat adresi gereklidir' 
-      });
-    }
+    // Create order
+    const order = await prisma.order.create({
+      data: {
+        userId: decoded.id,
+        customerName,
+        customerEmail,
+        customerPhone,
+        deliveryAddress,
+        totalPrice: parseFloat(totalPrice),
+        customerMessage: customerMessage || null,
+        paymentMethod,
+        status: 'pending',
+        paymentStatus: 'pending',
+        items: {
+          create: items.map(item => ({
+            name: item.name,
+            quantity: parseInt(item.quantity),
+            price: parseFloat(item.price)
+          }))
+        }
+      },
+      include: {
+        items: true,
+        user: {
+          select: {
+            firstName: true,
+            lastName: true,
+            email: true
+          }
+        }
+      }
+    });
 
-    // Sipariş numarası oluştur
-    const orderNumber = 'SP' + Date.now().toString().slice(-6);
+    console.log('Order created:', order.id);
 
-    // Siparişi veritabanına kaydet (burada örnek veri kullanıyoruz)
-    const orderData = {
-      orderNumber,
-      items,
-      customer,
-      delivery,
-      payment,
-      total,
-      status: 'received', // received, preparing, cooking, delivery, completed
-      createdAt: new Date().toISOString(),
-      estimatedDeliveryTime: delivery.type === 'delivery' ? 45 : 20 // dakika
-    };
-
-    // Burada normalde veritabanına kaydedersiniz
-    // await Order.create(orderData);
-
-    // E-posta/SMS bildirimi gönder (isteğe bağlı)
-    // await sendOrderConfirmation(customer.email, orderData);
-
-    // WhatsApp bildirimi gönder (isteğe bağlı)
-    // await sendWhatsAppNotification(customer.phone, orderData);
-
-    res.status(200).json({ 
-      success: true, 
-      message: 'Siparişiniz başarıyla alındı!',
+    return res.status(201).json({
+      success: true,
+      message: 'Sipariş başarıyla oluşturuldu',
       order: {
-        orderNumber,
-        status: orderData.status,
-        estimatedDeliveryTime: orderData.estimatedDeliveryTime,
-        total
+        id: order.id,
+        customerName: order.customerName,
+        customerEmail: order.customerEmail,
+        totalPrice: order.totalPrice,
+        status: order.status,
+        paymentStatus: order.paymentStatus,
+        createdAt: order.createdAt,
+        items: order.items
       }
     });
 
   } catch (error) {
-    console.error('Sipariş oluşturma hatası:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Sipariş işlemi sırasında bir hata oluştu.' 
+    console.error('Order creation API Error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Sipariş oluşturulurken bir hata oluştu'
     });
   }
 }
