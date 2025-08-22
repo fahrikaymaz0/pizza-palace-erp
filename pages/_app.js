@@ -46,14 +46,20 @@ export default function App({ Component, pageProps }) {
           `
         }} />
         
-        {/* Progressive Web App meta */}
+        {/* Progressive Web App meta - Updated for modern standards */}
         <meta name="theme-color" content="#DC2626" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="Pizza Krallığı" />
         
-        {/* Performance hints */}
-        <link rel="preload" href="/optimized/pizzas/margherita-large.webp" as="image" />
+        {/* Favicon */}
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        
+        {/* Performance hints - Removed problematic preloads */}
         <link rel="prefetch" href="/api/products" />
       </Head>
       <RoyalCrownGradient />
