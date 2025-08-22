@@ -3,28 +3,15 @@ import Link from 'next/link';
 import { useState, useEffect, Suspense, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Crown } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import { useTheme } from '../context/DarkModeContext';
 import OutlineCrown from '../components/OutlineCrown';
 
-// Lazy load components for better performance
-const FastHeroSection = dynamic(() => import('../components/FastHeroSection'), {
-  loading: () => <div className="min-h-screen bg-gradient-to-br from-red-50 to-yellow-50" />
-});
-const ModernProductCard = dynamic(() => import('../components/ModernProductCard'), {
-  loading: () => <div className="bg-gray-200 rounded-2xl h-96 animate-pulse" />
-});
-const CartSidebar = dynamic(() => import('../components/CartSidebar'), {
-  ssr: false
-});
-
-const OrderFlow = dynamic(() => import('../components/OrderFlow'), {
-  ssr: false
-});
-
-const SupportMessageModal = dynamic(() => import('../components/SupportMessageModal'), {
-  ssr: false
-});
+// Basit import'lar - dynamic import'ları kaldırdık
+import FastHeroSection from '../components/FastHeroSection';
+import ModernProductCard from '../components/ModernProductCard';
+import CartSidebar from '../components/CartSidebar';
+import OrderFlow from '../components/OrderFlow';
+import SupportMessageModal from '../components/SupportMessageModal';
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);

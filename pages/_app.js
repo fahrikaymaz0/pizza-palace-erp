@@ -1,16 +1,10 @@
 import '../styles/globals.css'
 import Head from 'next/head'
 import { ThemeProvider } from '../context/DarkModeContext'
-import dynamic from 'next/dynamic'
 
-// Lazy load components for better performance
-const Footer = dynamic(() => import('../components/Footer'), { 
-  loading: () => <div className="h-64 bg-gray-100 animate-pulse" />
-})
-const RoyalCrownGradient = dynamic(() => import('../components/royal/RoyalCrownGradient'), { 
-  ssr: false,
-  loading: () => null
-})
+// Basit import'lar - dynamic import'ları kaldırdık
+import Footer from '../components/Footer'
+import RoyalCrownGradient from '../components/royal/RoyalCrownGradient'
 
 export default function App({ Component, pageProps }) {
   return (

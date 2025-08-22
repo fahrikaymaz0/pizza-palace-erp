@@ -42,6 +42,14 @@ export default function PremiumImage({
   // Fallback image if main image fails
   const fallbackSrc = '/pizzas/margherita.png';
 
+  // Component unmount cleanup
+  useEffect(() => {
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  // Update image source when src prop changes
   useEffect(() => {
     if (!mountedRef.current) return;
     
@@ -50,16 +58,8 @@ export default function PremiumImage({
     setHasError(false);
   }, [src]);
 
-  // Component unmount cleanup
-  useEffect(() => {
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
-
   const handleLoad = useCallback(() => {
     if (!mountedRef.current) return;
-    
     setIsLoading(false);
     onLoad?.();
   }, [onLoad]);
@@ -71,7 +71,7 @@ export default function PremiumImage({
     setHasError(true);
     setIsLoading(false);
     
-    // Try fallback image
+    // Try fallback image only if not already using it
     if (imageSrc !== fallbackSrc) {
       setImageSrc(fallbackSrc);
     }
@@ -79,27 +79,22 @@ export default function PremiumImage({
     onError?.(e);
   }, [src, imageSrc, onError]);
 
-  // Shimmer effect for loading
-  const shimmer = (w: number, h: number) => `
-    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  // Simple shimmer effect
+  const shimmerDataURL = `data:image/svg+xml;base64,${btoa(`
+    <svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+      <rect width="400" height="300" fill="#f6f7f8"/>
+      <rect width="400" height="300" fill="url(#g)">
+        <animate attributeName="opacity" values="0.3;0.7;0.3" dur="1s" repeatCount="indefinite"/>
+      </rect>
       <defs>
         <linearGradient id="g">
-          <stop stop-color="#f6f7f8" offset="20%" />
-          <stop stop-color="#edeef1" offset="50%" />
-          <stop stop-color="#f6f7f8" offset="70%" />
+          <stop stop-color="#f6f7f8" offset="20%"/>
+          <stop stop-color="#edeef1" offset="50%"/>
+          <stop stop-color="#f6f7f8" offset="80%"/>
         </linearGradient>
       </defs>
-      <rect width="${w}" height="${h}" fill="#f6f7f8" />
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)" />
-      <animate xlink:href="#r" attributeName="x" from="-${w}" to="${w}" dur="1s" repeatCount="indefinite"  />
-    </svg>`;
-
-  const toBase64 = (str: string) =>
-    typeof window === 'undefined'
-      ? Buffer.from(str).toString('base64')
-      : window.btoa(str);
-
-  const shimmerDataURL = `data:image/svg+xml;base64,${toBase64(shimmer(400, 300))}`;
+    </svg>
+  `)}`;
 
   return (
     <div className={`relative overflow-hidden ${className}`}>
