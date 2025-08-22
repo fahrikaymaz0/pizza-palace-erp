@@ -22,6 +22,10 @@ const OrderFlow = dynamic(() => import('../components/OrderFlow'), {
   ssr: false
 });
 
+const SupportMessageModal = dynamic(() => import('../components/SupportMessageModal'), {
+  ssr: false
+});
+
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -32,6 +36,7 @@ export default function RoyalPizzaKingdom() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [isVideoLoading, setIsVideoLoading] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
+  const [isSupportModalOpen, setIsSupportModalOpen] = useState(false);
   const { isLightMode } = useTheme();
 
   const royalProducts = [
@@ -262,6 +267,12 @@ export default function RoyalPizzaKingdom() {
                 <Link href="/menu" className="text-gray-700 hover:text-red-600 transition-colors">Menü</Link>
                 <a href="#about" className="text-gray-700 hover:text-red-600 transition-colors">Hakkımızda</a>
                 <a href="#contact" className="text-gray-700 hover:text-red-600 transition-colors">İletişim</a>
+                <button 
+                  onClick={() => setIsSupportModalOpen(true)}
+                  className="text-gray-700 hover:text-red-600 transition-colors"
+                >
+                  Destek
+                </button>
                 {isAuthed && (
                   <Link href="/profile" className="text-gray-700 hover:text-red-600 transition-colors">Profilim</Link>
                 )}
@@ -384,6 +395,15 @@ export default function RoyalPizzaKingdom() {
             onClose={() => setIsOrderFlowOpen(false)}
             cartItems={cartItems}
             totalPrice={totalPrice}
+          />
+        )}
+      </Suspense>
+
+      <Suspense fallback={null}>
+        {isSupportModalOpen && (
+          <SupportMessageModal
+            isOpen={isSupportModalOpen}
+            onClose={() => setIsSupportModalOpen(false)}
           />
         )}
       </Suspense>

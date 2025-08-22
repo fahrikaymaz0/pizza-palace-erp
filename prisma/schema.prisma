@@ -11,123 +11,56 @@ datasource db {
 }
 
 model User {
-  id          String   @id @default(cuid())
-  firstName   String
-  lastName    String
-  email       String   @unique
-  phone       String?
-  address     String?
-  password    String
-  role        Role     @default(USER)
-  emailVerified Boolean  @default(false)
-  verificationCode String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  // Relations
-  orders      Order[]
-  favorites   Favorite[]
-  
-  @@map("users")
-}
-
-model Product {
-  id               String    @id @default(cuid())
-  name             String
-  description      String
-  price            Float
-  originalPrice    Float?
-  image            String
-  category         String
-  rating           Float     @default(0)
-  reviewCount      Int       @default(0)
-  isPremium        Boolean   @default(false)
-  isVegetarian     Boolean   @default(false)
-  isSpicy          Boolean   @default(false)
-  ingredients      String    // JSON string
-  preparationTime  String
-  calories         Int
-  badge            String?
-  isActive         Boolean   @default(true)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-  
-  // Relations
-  orderItems       OrderItem[]
-  favorites        Favorite[]
-  
-  @@map("products")
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  password      String
+  phone         String?
+  emailVerified Boolean   @default(false)
+  verificationToken String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLogin     DateTime?
+  orders        Order[]
+  supportMessages SupportMessage[]
 }
 
 model Order {
-  id              String      @id @default(cuid())
-  userId          String
-  status          OrderStatus @default(PENDING)
-  totalAmount     Float
-  shippingAddress String
-  phone           String
-  notes           String?
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  
-  // Relations
-  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              String    @id @default(cuid())
+  userId          String?
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  deliveryAddress String
+  totalPrice      Float
+  status          String    @default("pending") // pending, completed, cancelled
+  customerMessage String?
+  paymentStatus   String    @default("pending") // pending, completed, failed
+  paymentMethod   String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  user            User?     @relation(fields: [userId], references: [id])
   items           OrderItem[]
-  
-  @@map("orders")
 }
 
 model OrderItem {
-  id        String  @id @default(cuid())
-  orderId   String
-  productId String
-  quantity  Int
-  price     Float
-  
-  // Relations
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product @relation(fields: [productId], references: [id])
-  
-  @@map("order_items")
+  id       String @id @default(cuid())
+  orderId  String
+  name     String
+  quantity Int
+  price    Float
+  order    Order  @relation(fields: [orderId], references: [id])
 }
 
-model Favorite {
+model SupportMessage {
   id        String   @id @default(cuid())
-  userId    String
-  productId String
+  name      String
+  email     String
+  phone     String?
+  message   String
+  status    String   @default("unread") // unread, read, replied
+  userId    String?
   createdAt DateTime @default(now())
-  
-  // Relations
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  
-  @@unique([userId, productId])
-  @@map("favorites")
-}
-
-model Verification {
-  id         String   @id @default(cuid())
-  email      String
-  code       String
-  used       Boolean  @default(false)
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-
-  @@index([email, code])
-  @@map("verifications")
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-
-enum OrderStatus {
-  PENDING
-  CONFIRMED
-  PREPARING
-  READY
-  DELIVERING
-  DELIVERED
-  CANCELLED
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [userId], references: [id])
 }
