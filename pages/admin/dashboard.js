@@ -25,60 +25,128 @@ import { useTheme } from '../../context/DarkModeContext';
 
 export default function AdminDashboard() {
   const { isLightMode } = useTheme();
-  const [orders, setOrders] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState('orders');
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState({
-    totalOrders: 0,
-    totalRevenue: 0,
-    totalUsers: 0,
-    totalMessages: 0,
-    pendingOrders: 0,
-    completedOrders: 0
-  });
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchDashboardData();
-  }, []);
-
-  const fetchDashboardData = async () => {
-    try {
-      // Siparişleri getir
-      const ordersResponse = await fetch('/api/orders/all');
-      const ordersData = await ordersResponse.json();
-      setOrders(ordersData.orders || []);
-
-      // Mesajları getir
-      const messagesResponse = await fetch('/api/messages/all');
-      const messagesData = await messagesResponse.json();
-      setMessages(messagesData.messages || []);
-
-      // Kullanıcıları getir
-      const usersResponse = await fetch('/api/users/all');
-      const usersData = await usersResponse.json();
-      setUsers(usersData.users || []);
-
-      // İstatistikleri hesapla
-      const totalRevenue = ordersData.orders?.reduce((sum, order) => sum + order.totalPrice, 0) || 0;
-      const pendingOrders = ordersData.orders?.filter(order => order.status === 'pending').length || 0;
-      const completedOrders = ordersData.orders?.filter(order => order.status === 'completed').length || 0;
-
-      setStats({
-        totalOrders: ordersData.orders?.length || 0,
-        totalRevenue,
-        totalUsers: usersData.users?.length || 0,
-        totalMessages: messagesData.messages?.length || 0,
-        pendingOrders,
-        completedOrders
-      });
-
-      setLoading(false);
-    } catch (error) {
-      console.error('Dashboard veri yükleme hatası:', error);
-      setLoading(false);
+  // Mock data
+  const mockOrders = [
+    {
+      id: '1',
+      customerName: 'Ahmet Yılmaz',
+      customerEmail: 'ahmet@email.com',
+      customerPhone: '0555 123 45 67',
+      deliveryAddress: 'Kadıköy, İstanbul',
+      totalPrice: 189,
+      status: 'completed',
+      customerMessage: 'Lütfen acil teslimat yapın',
+      items: [
+        { name: 'Royal Margherita', quantity: 1, price: 89 },
+        { name: 'Imperial Pepperoni', quantity: 1, price: 99 }
+      ],
+      createdAt: '2024-01-15T14:30:00Z',
+      updatedAt: '2024-01-15T15:45:00Z'
+    },
+    {
+      id: '2',
+      customerName: 'Fatma Demir',
+      customerEmail: 'fatma@email.com',
+      customerPhone: '0555 987 65 43',
+      deliveryAddress: 'Beşiktaş, İstanbul',
+      totalPrice: 129,
+      status: 'pending',
+      customerMessage: 'Vejetaryen pizza istiyorum',
+      items: [
+        { name: 'Royal Vegetarian', quantity: 1, price: 79 },
+        { name: 'Mediterranean Dream', quantity: 1, price: 94 }
+      ],
+      createdAt: '2024-01-15T16:00:00Z',
+      updatedAt: '2024-01-15T16:00:00Z'
+    },
+    {
+      id: '3',
+      customerName: 'Mehmet Kaya',
+      customerEmail: 'mehmet@email.com',
+      customerPhone: '0555 456 78 90',
+      deliveryAddress: 'Şişli, İstanbul',
+      totalPrice: 149,
+      status: 'pending',
+      customerMessage: '',
+      items: [
+        { name: 'Truffle Delight', quantity: 1, price: 149 }
+      ],
+      createdAt: '2024-01-15T17:15:00Z',
+      updatedAt: '2024-01-15T17:15:00Z'
     }
+  ];
+
+  const mockMessages = [
+    {
+      id: '1',
+      name: 'Ali Veli',
+      email: 'ali@email.com',
+      phone: '0555 111 22 33',
+      message: 'Pizzalarınız çok lezzetli! Teşekkürler.',
+      status: 'unread',
+      createdAt: '2024-01-15T10:30:00Z'
+    },
+    {
+      id: '2',
+      name: 'Ayşe Özkan',
+      email: 'ayse@email.com',
+      phone: '0555 444 55 66',
+      message: 'Teslimat süresi hakkında bilgi almak istiyorum.',
+      status: 'read',
+      createdAt: '2024-01-15T09:15:00Z'
+    },
+    {
+      id: '3',
+      name: 'Can Yıldız',
+      email: 'can@email.com',
+      phone: '0555 777 88 99',
+      message: 'Gluten-free pizza seçenekleriniz var mı?',
+      status: 'unread',
+      createdAt: '2024-01-15T08:45:00Z'
+    }
+  ];
+
+  const mockUsers = [
+    {
+      id: '1',
+      name: 'Ahmet Yılmaz',
+      email: 'ahmet@email.com',
+      phone: '0555 123 45 67',
+      emailVerified: true,
+      createdAt: '2024-01-10T10:00:00Z',
+      lastLogin: '2024-01-15T14:30:00Z'
+    },
+    {
+      id: '2',
+      name: 'Fatma Demir',
+      email: 'fatma@email.com',
+      phone: '0555 987 65 43',
+      emailVerified: true,
+      createdAt: '2024-01-12T15:30:00Z',
+      lastLogin: '2024-01-15T16:00:00Z'
+    },
+    {
+      id: '3',
+      name: 'Mehmet Kaya',
+      email: 'mehmet@email.com',
+      phone: '0555 456 78 90',
+      emailVerified: false,
+      createdAt: '2024-01-14T09:15:00Z',
+      lastLogin: null
+    }
+  ];
+
+  // İstatistikleri hesapla
+  const stats = {
+    totalOrders: mockOrders.length,
+    totalRevenue: mockOrders.reduce((sum, order) => sum + order.totalPrice, 0),
+    totalUsers: mockUsers.length,
+    totalMessages: mockMessages.length,
+    pendingOrders: mockOrders.filter(order => order.status === 'pending').length,
+    completedOrders: mockOrders.filter(order => order.status === 'completed').length
   };
 
   const formatDate = (dateString) => {
@@ -239,14 +307,14 @@ export default function AdminDashboard() {
             {activeTab === 'orders' && (
               <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Tüm Siparişler</h3>
-                {orders.length === 0 ? (
+                {mockOrders.length === 0 ? (
                   <div className="text-center py-8">
                     <ShoppingCart className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500">Henüz sipariş bulunmuyor</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {orders.map((order) => (
+                    {mockOrders.map((order) => (
                       <motion.div
                         key={order.id}
                         initial={{ opacity: 0, y: 20 }}
@@ -320,14 +388,14 @@ export default function AdminDashboard() {
             {activeTab === 'messages' && (
               <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Destek Mesajları</h3>
-                {messages.length === 0 ? (
+                {mockMessages.length === 0 ? (
                   <div className="text-center py-8">
                     <MessageSquare className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500">Henüz mesaj bulunmuyor</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {messages.map((message) => (
+                    {mockMessages.map((message) => (
                       <motion.div
                         key={message.id}
                         initial={{ opacity: 0, y: 20 }}
@@ -379,14 +447,14 @@ export default function AdminDashboard() {
             {activeTab === 'users' && (
               <div className="space-y-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Kayıtlı Kullanıcılar</h3>
-                {users.length === 0 ? (
+                {mockUsers.length === 0 ? (
                   <div className="text-center py-8">
                     <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500">Henüz kullanıcı bulunmuyor</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {users.map((user) => (
+                    {mockUsers.map((user) => (
                       <motion.div
                         key={user.id}
                         initial={{ opacity: 0, y: 20 }}

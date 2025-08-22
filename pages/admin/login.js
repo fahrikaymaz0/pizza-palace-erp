@@ -31,21 +31,14 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      const response = await fetch('/api/auth/admin-login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
+      // Basit admin kontrolü
+      if (formData.email === 'admin@pizzakralligi.com' && formData.password === 'admin123') {
         // Admin girişi başarılı - dashboard'a yönlendir
-        router.push('/admin/dashboard');
+        setTimeout(() => {
+          router.push('/admin/dashboard');
+        }, 1000);
       } else {
-        setError(data.message || 'Giriş başarısız');
+        setError('Geçersiz e-posta veya şifre');
       }
     } catch (error) {
       console.error('Admin giriş hatası:', error);
@@ -165,13 +158,27 @@ export default function AdminLogin() {
             </motion.button>
           </form>
 
-          {/* Security Notice */}
+          {/* Demo Bilgileri */}
           <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <div className="flex items-start space-x-3">
               <Shield className="w-5 h-5 text-blue-600 mt-0.5" />
               <div>
-                <h4 className="text-sm font-medium text-blue-900">Güvenlik Uyarısı</h4>
+                <h4 className="text-sm font-medium text-blue-900">Demo Giriş Bilgileri</h4>
                 <p className="text-sm text-blue-800 mt-1">
+                  E-posta: <strong>admin@pizzakralligi.com</strong><br/>
+                  Şifre: <strong>admin123</strong>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Security Notice */}
+          <div className="mt-4 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+            <div className="flex items-start space-x-3">
+              <Shield className="w-5 h-5 text-yellow-600 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-medium text-yellow-900">Güvenlik Uyarısı</h4>
+                <p className="text-sm text-yellow-800 mt-1">
                   Bu alan sadece yetkili personel içindir. Yetkisiz erişim yasaktır.
                 </p>
               </div>
