@@ -65,7 +65,7 @@ export default function AdminLogin() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/admin-login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,10 +75,10 @@ export default function AdminLogin() {
 
       const data = await response.json();
 
-      if (data.success && data.user.role === 'admin') {
+      if (data.success && data.data?.token) {
         // Save admin token and user data
-        localStorage.setItem('adminToken', data.token);
-        localStorage.setItem('adminUser', JSON.stringify(data.user));
+        localStorage.setItem('adminToken', data.data.token);
+        localStorage.setItem('adminUser', JSON.stringify({ id: data.data.id, email: data.data.email }));
         
         alert('Admin girişi başarılı!');
         router.push('/admin/dashboard');

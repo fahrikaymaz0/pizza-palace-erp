@@ -21,11 +21,13 @@ async function createAdmin() {
     // Admin kullanıcısını oluştur
     const admin = await prisma.user.create({
       data: {
-        name: 'Admin',
+        firstName: 'Admin',
+        lastName: 'Root',
         email: 'admin@pizzakralligi.com',
         password: hashedPassword,
         emailVerified: true,
-        phone: '0555 123 45 67'
+        phone: '05551234567',
+        role: 'admin'
       }
     });
 

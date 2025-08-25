@@ -242,7 +242,7 @@ export default function RoyalPizzaKingdom() {
             priority
             sizes="100vw"
             unoptimized
-            style={{ objectFit: 'cover', filter: 'blur(1.2px) opacity(0.45)' }}
+            style={{ objectFit: 'cover', filter: 'blur(1px) opacity(0.46)' }}
             onError={() => setBgSrc('/arkaplanpizza/arkaplanpizza.png')}
           />
           {/* Saf fallback <img> - Next Image 400 durumunda */}
@@ -253,25 +253,25 @@ export default function RoyalPizzaKingdom() {
         </div>
         {/* Sarkık flamalar */}
         <div className="absolute inset-y-0 left-4 z-10 pointer-events-none hidden sm:block">
-          <svg width="90" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="120" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="leftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#E63946"/>
                 <stop offset="100%" stopColor="#C21D2B"/>
               </linearGradient>
             </defs>
-            <path d="M0 0 H90 V760 L60 820 L45 760 L30 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
+            <path d="M0 0 H90 V760 L62 818 L45 760 L28 818 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
           </svg>
         </div>
         <div className="absolute inset-y-0 right-4 z-10 pointer-events-none hidden sm:block">
-          <svg width="90" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="120" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="rightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#FFD166"/>
                 <stop offset="100%" stopColor="#E3B84F"/>
               </linearGradient>
             </defs>
-            <path d="M90 0 H0 V760 L30 820 L45 760 L60 820 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
+            <path d="M90 0 H0 V760 L28 818 L45 760 L62 818 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
           </svg>
         </div>
         <div className="container mx-auto px-4 text-center">
@@ -388,7 +388,7 @@ export default function RoyalPizzaKingdom() {
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-center">
               <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                 <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-red-50">
-                  <svg viewBox="0 0 500 500" className="w-16 h-16" xmlns="http://www.w3.org/2000/svg"><path fill="#cf0a09" d="M145.722-159.6H-145.722A13.878 13.878 0 0 0-159.6-145.722V145.722A13.878 13.878 0 0 0-145.722 159.6H145.722A13.878 13.878 0 0 0 159.6 145.722V-145.722A13.878 13.878 0 0 0 145.722-159.6z"/><path fill="#fdb8b8" d="M82.489 7.588v160.476a7.58 7.58 0 0 1-7.581 7.581H7.588A7.588 7.588 0 0 1 0 168.064V7.588A7.588 7.588 0 0 1 7.588 0h67.32A7.588 7.588 0 0 1 82.489 7.588z"/><path fill="#7f3d3d" d="M-60.139-55.365s-5.029 31.643 25.806 33.853S33.668-6.135 33.668-6.135S20.106 24.337 15.668 51.865c0 0 16.316 3.5 16.316 3.5S45.284 31.483 57.168-2.751c0 0 8-18.761-8.58-25.886C22.839-39.697-1.333-54.248-1.333-54.248s-58.806-1.117-58.806-1.117z"/></svg>
+                  <Lottie animationData={require('../public/animations/user-register.json')} loop autoplay className="w-16 h-16" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Üye Ol</h3>
                 <p className="text-gray-600 mb-6">Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun</p>
@@ -398,7 +398,7 @@ export default function RoyalPizzaKingdom() {
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="text-center">
               <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                 <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-yellow-50">
-                  <svg viewBox="0 0 500 500" className="w-16 h-16" xmlns="http://www.w3.org/2000/svg"><path fill="#d74545" d="M-1.667 6.785l-7.823-2.682 1.43-8.244-.333-2.644L9.49-.56 2.704 6.237z"/><path fill="#7e2a2a" d="M-22.794-18.095c-2.093 4.82-1.695 13.479-3.948 18.225 3.892.96 7.713 2.25 11.184 4.175 2.109 1.17 4.056 2.556 5.817 4.115l31.217 9.676 5.265-15.905z"/></svg>
+                  <Lottie animationData={require('../public/animations/shopping-cart.json')} loop autoplay className="w-16 h-16" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişini Oluştur</h3>
                 <p className="text-gray-600 mb-6">Menümüzden istediğiniz pizzayı seçin ve özelleştirin</p>
@@ -408,7 +408,7 @@ export default function RoyalPizzaKingdom() {
             <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="text-center">
               <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
                 <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-green-50">
-                  <svg viewBox="0 0 500 500" className="w-16 h-16" xmlns="http://www.w3.org/2000/svg"><path fill="#e00f0f" d="M0-25.884c-28.59 0-51.768 23.177-51.768 51.768H51.768C51.768-2.707 28.591-25.884 0-25.884z"/></svg>
+                  <Lottie animationData={require('../public/animations/delivery-truck.json')} loop autoplay className="w-16 h-16" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişin Gelsin</h3>
                 <p className="text-gray-600 mb-6">Sıcacık pizzanız kapınıza kadar teslim edilir</p>

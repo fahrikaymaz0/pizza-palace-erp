@@ -17,7 +17,8 @@ async function main() {
       lastName: 'Pizza Krallığı',
       email: 'admin@pizzakralligi.com',
       password: adminPassword,
-      role: 'ADMIN'
+      role: 'admin',
+      emailVerified: true
     }
   });
 

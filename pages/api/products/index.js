@@ -1,4 +1,4 @@
-import { prisma } from '../../../lib/prisma';
+import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -18,9 +18,11 @@ export default async function handler(req, res) {
   }
 
   try {
+    await ensurePrismaSqliteSchema();
     const { category, search, sortBy } = req.query;
 
-    // Mock products data
+    // DB ürünler (varsa) yoksa fallback mock
+    const dbProducts = await prisma.product.findMany({ orderBy: { name: 'asc' } });
     const mockProducts = [
       {
         id: '1',
@@ -115,7 +117,7 @@ export default async function handler(req, res) {
       }
     ];
 
-    let filteredProducts = mockProducts;
+    let filteredProducts = dbProducts.length ? dbProducts : mockProducts;
 
     // Category filter
     if (category && category !== 'all') {
