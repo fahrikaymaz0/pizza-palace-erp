@@ -143,7 +143,7 @@ export default function AdminLogin() {
                 <h3 className="text-sm font-semibold text-blue-800 mb-2">Demo Giriş Bilgileri:</h3>
                 <p className="text-xs text-blue-700">
                   <strong>E-posta:</strong> admin@pizzakralligi.com<br />
-                  <strong>Şifre:</strong> admin123
+                  <strong>Şifre:</strong> Admin123!
                 </p>
               </div>
 

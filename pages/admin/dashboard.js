@@ -42,19 +42,28 @@ export default function AdminDashboard() {
       return;
     }
 
-    fetchOrders();
+    // Add a small delay to ensure router is ready
+    const timer = setTimeout(() => {
+      fetchOrders();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [router, currentPage]);
 
   const fetchOrders = async () => {
     try {
       const adminToken = localStorage.getItem('adminToken');
+      console.log('Fetching orders with token:', adminToken ? 'Token exists' : 'No token');
+      
       const response = await fetch(`/api/orders/all?page=${currentPage}&limit=10`, {
         headers: {
           'Authorization': `Bearer ${adminToken}`
         }
       });
 
+      console.log('Orders API response status:', response.status);
       const data = await response.json();
+      console.log('Orders API response:', data);
 
       if (data.success) {
         setOrders(data.orders);
@@ -62,6 +71,11 @@ export default function AdminDashboard() {
         setTotalPages(data.pagination.pages);
       } else {
         console.error('Failed to fetch orders:', data.message);
+        // If token is invalid, redirect to login
+        if (response.status === 401 || response.status === 403) {
+          localStorage.removeItem('adminToken');
+          router.push('/admin/login');
+        }
       }
     } catch (error) {
       console.error('Error fetching orders:', error);
