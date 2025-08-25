@@ -52,11 +52,12 @@ export default async function handler(req, res) {
       });
     }
 
-    // Admin kontrolü: role alanı admin olmalı
-    if (admin.role !== 'admin') {
+    // Admin kontrolü: role alanını küçük harfe çevirerek kontrol et
+    if (String(admin.role || '').toLowerCase() !== 'admin') {
       return res.status(403).json({
         success: false,
-        message: 'Bu alana erişim yetkiniz yok'
+        message: 'Bu alana erişim yetkiniz yok',
+        detail: `role=${admin.role}`
       });
     }
 
