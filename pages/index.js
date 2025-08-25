@@ -241,6 +241,7 @@ export default function RoyalPizzaKingdom() {
             fill
             priority
             sizes="100vw"
+            unoptimized
             style={{ objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }}
             onError={() => setBgSrc('/arkaplanpizza.png')}
           />
