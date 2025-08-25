@@ -242,7 +242,7 @@ export default function RoyalPizzaKingdom() {
             priority
             sizes="100vw"
             unoptimized
-            style={{ objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }}
+            style={{ objectFit: 'cover', filter: 'blur(3px) opacity(0.35)' }}
             onError={() => setBgSrc('/arkaplanpizza/arkaplanpizza.png')}
           />
           {/* Saf fallback <img> - Next Image 400 durumunda */}
@@ -252,8 +252,8 @@ export default function RoyalPizzaKingdom() {
           <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-white/70" />
         </div>
         {/* Sarkık flamalar */}
-        <div className="absolute inset-y-0 left-4 z-10 pointer-events-none hidden sm:block">
-          <svg width="90" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="absolute top-24 left-4 z-10 pointer-events-none hidden sm:block h-64 md:h-80 lg:h-96">
+          <svg width="160" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="leftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#E63946"/>
@@ -263,8 +263,8 @@ export default function RoyalPizzaKingdom() {
             <path d="M0 0 H90 V760 L45 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
           </svg>
         </div>
-        <div className="absolute inset-y-0 right-4 z-10 pointer-events-none hidden sm:block">
-          <svg width="90" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="absolute top-24 right-4 z-10 pointer-events-none hidden sm:block h-64 md:h-80 lg:h-96">
+          <svg width="160" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="rightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#FFD166"/>
