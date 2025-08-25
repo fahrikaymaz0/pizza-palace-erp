@@ -1,11 +1,1 @@
-export default function handler(req, res) {
-  const url = process.env.DATABASE_URL || '';
-  let type = 'unknown';
-  if (/^file:/i.test(url)) type = 'sqlite:file';
-  else if (/^postgres:/i.test(url)) type = 'postgres';
-  else if (/^mysql:/i.test(url)) type = 'mysql';
-  else if (/^sqlserver:/i.test(url)) type = 'sqlserver';
-  else if (/^mongodb:/i.test(url)) type = 'mongodb';
-
-  res.status(200).json({ ok: true, databaseUrl: url ? (url.startsWith('file:') ? url : '***hidden***') : '', type, vercel: !!process.env.VERCEL });
-}
+export default function handler(req, res) {  const url = process.env.DATABASE_URL || '';  let type = 'unknown';  if (/^file:/i.test(url)) type = 'sqlite:file';  else if (/^postgres:/i.test(url)) type = 'postgres';  else if (/^mysql:/i.test(url)) type = 'mysql';  else if (/^sqlserver:/i.test(url)) type = 'sqlserver';  else if (/^mongodb:/i.test(url)) type = 'mongodb';  res.status(200).json({ ok: true, databaseUrl: url ? (url.startsWith('file:') ? url : '***hidden***') : '', type, vercel: !!process.env.VERCEL });}
