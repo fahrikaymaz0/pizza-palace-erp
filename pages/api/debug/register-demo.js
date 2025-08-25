@@ -1,0 +1,24 @@
+import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
+import { hashPassword } from '../../../lib/auth';
+
+export default async function handler(req, res) {
+  try {
+    await ensurePrismaSqliteSchema();
+    const email = `demo+${Date.now()}@example.com`;
+    const hashed = await hashPassword('Demo1234');
+    const user = await prisma.user.create({
+      data: {
+        firstName: 'Demo',
+        lastName: 'User',
+        email,
+        password: hashed,
+        emailVerified: true
+      }
+    });
+    res.status(201).json({ ok: true, user: { id: user.id, email: user.email } });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e?.message || String(e) });
+  }
+}
+
+
