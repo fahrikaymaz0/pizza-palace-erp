@@ -1,4 +1,4 @@
-import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
+import { prisma, ensurePrismaSqliteSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
@@ -9,10 +9,12 @@ export default async function handler(req, res) {
 
   try {
     await ensurePrismaSqliteSchema();
+    await ensureUserLastLoginColumn();
     const { email, password } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
 
     // Validasyon
-    if (!email || !password) {
+    if (!normalizedEmail || !password) {
       return res.status(400).json({
         success: false,
         message: 'E-posta ve şifre gereklidir'
@@ -20,9 +22,7 @@ export default async function handler(req, res) {
     }
 
     // Admin kullanıcısını bul
-    const admin = await prisma.user.findUnique({
-      where: { email }
-    });
+    const admin = await prisma.user.findFirst({ where: { email: normalizedEmail } });
 
     if (!admin) {
       return res.status(401).json({
