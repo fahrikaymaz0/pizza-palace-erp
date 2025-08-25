@@ -29,26 +29,9 @@ export default async function handler(req, res) {
     }
 
     const orders = await prisma.order.findMany({
-      where: {
-        userId: user.userId
-      },
-      include: {
-        items: {
-          include: {
-            product: {
-              select: {
-                id: true,
-                name: true,
-                image: true,
-                price: true
-              }
-            }
-          }
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
+      where: { userId: user.id },
+      include: { items: true },
+      orderBy: { createdAt: 'desc' }
     });
 
     return res.status(200).json({
