@@ -21,6 +21,7 @@ import {
 export default function AdminDashboard() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
+  const [hasFetched, setHasFetched] = useState(false);
   const [orders, setOrders] = useState([]);
   const [statistics, setStatistics] = useState({
     total: 0,
@@ -101,6 +102,7 @@ export default function AdminDashboard() {
       console.error('Error fetching orders:', error);
     } finally {
       setIsLoading(false);
+      setHasFetched(true);
     }
   };
 
@@ -129,7 +131,7 @@ export default function AdminDashboard() {
     }
   };
 
-  if (isLoading) {
+  if (isLoading && !hasFetched) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
