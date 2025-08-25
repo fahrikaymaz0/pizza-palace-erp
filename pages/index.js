@@ -271,8 +271,8 @@ export default function RoyalPizzaKingdom() {
               <Link href="/menu" className="bg-red-600 text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-red-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
                 Menüyü Gör
               </Link>
-              <Link href="tel:+905551234567" className="border-2 border-red-600 text-red-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105">
-                Hızlı Sipariş
+              <Link href="/register" className="border-2 border-red-600 text-red-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105">
+                Hemen Üye Ol ve Sipariş Ver
               </Link>
             </div>
           </motion.div>

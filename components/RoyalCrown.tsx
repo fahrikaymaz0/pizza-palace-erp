@@ -6,25 +6,21 @@ interface RoyalCrownProps {
   className?: string;
 }
 
-// Kırmızı dolu taç ve altında çizgi (gönderilen görsele benzer)
-export default function RoyalCrown({ className = 'w-10 h-10' }: RoyalCrownProps) {
+// Kullanıcının sağladığı path ile kırmızı çizgisel taç simgesi
+export default function RoyalCrown({ className = 'w-6 h-6 text-red-600' }: RoyalCrownProps) {
   return (
     <svg
-      viewBox="0 0 128 96"
+      viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       aria-hidden="true"
     >
-      <g fill="none" fillRule="evenodd">
-        <path
-          d="M10 18l18 20 18-18 18 18 18-18 18 20V72a6 6 0 0 1-6 6H16a6 6 0 0 1-6-6V18z"
-          fill="#d71920"
-        />
-        <circle cx="28" cy="18" r="6" fill="#d71920"/>
-        <circle cx="64" cy="14" r="6" fill="#d71920"/>
-        <circle cx="100" cy="18" r="6" fill="#d71920"/>
-        <rect x="24" y="78" width="80" height="10" rx="5" fill="#d71920"/>
-      </g>
+      <path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"></path>
     </svg>
   );
 }

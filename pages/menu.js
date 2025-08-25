@@ -496,7 +496,7 @@ function RoyalMenu() {
 
         {/* Products Grid */}
           <div className="container mx-auto px-4 py-8 bg-[#FFFBF5]">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch">
               {filteredProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
@@ -505,7 +505,7 @@ function RoyalMenu() {
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="bg-white dark:bg-gray-800 rounded-xl border border-[#FFD166]/60 dark:border-gray-600 shadow-sm overflow-hidden hover:transform hover:scale-105 transition-all group"
                 >
-                  <div className="relative">
+                  <div className="relative h-48">
                     <PremiumImage
                       src={product.image}
                       alt={product.name}
@@ -552,7 +552,7 @@ function RoyalMenu() {
                     </div>
                   </div>
                   
-                  <div className="p-6">
+                  <div className="p-6 flex flex-col h-[calc(100%-12rem)]">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-xl font-bold text-[#333] dark:text-gray-100">{product.name}</h3>
                       <div className="flex items-center">
@@ -578,7 +578,7 @@ function RoyalMenu() {
                       </div>
                     </div>
                     
-                    <div className="flex items-center justify-between">
+                    <div className="mt-auto flex items-center justify-between">
                       <div className="flex items-center space-x-2">
                         <span className="text-2xl font-bold text-yellow-500 dark:text-yellow-400">
                           ₺{product.price}
