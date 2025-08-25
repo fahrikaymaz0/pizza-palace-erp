@@ -26,6 +26,8 @@ model User {
   lastLogin       DateTime?
   orders          Order[]
   supportMessages SupportMessage[]
+  chatRooms       ChatRoom[]     @relation("UserChatRooms")
+  adminRooms      ChatRoom[]     @relation("AdminUser")
 }
 
 model Order {
@@ -74,7 +76,7 @@ model ChatRoom {
   adminId   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User?    @relation(fields: [userId], references: [id])
+  user      User?    @relation("UserChatRooms", fields: [userId], references: [id])
   admin     User?    @relation("AdminUser", fields: [adminId], references: [id])
   messages  ChatMessage[]
 }
