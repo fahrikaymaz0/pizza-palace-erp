@@ -77,9 +77,15 @@ export default async function handler(req, res) {
 
     // Hash password
     const hashedPassword = await hashPassword(password);
-
-    // Create user (emailVerified false, verificationCode). Kayıt sonrası login token üretmiyoruz.
     const verificationCode = generateCode();
+
+    // 1) Kullanıcıyı henüz kalıcı kaydetmeden e‑posta gönder
+    const emailSent = await sendVerificationEmail(normalizedEmail, verificationCode);
+    if (!emailSent) {
+      return res.status(502).json({ success: false, message: 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' });
+    }
+
+    // 2) Doğrulama bekleyen kayıt tablosu yoksa User içinde bekleme olarak tutalım (emailVerified=false, verificationCode set)
     const newUser = await prisma.user.create({
       data: {
         firstName,
@@ -91,26 +97,14 @@ export default async function handler(req, res) {
         emailVerified: false,
         verificationCode
       },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        phone: true,
-        address: true,
-        role: true,
-        createdAt: true
-      }
+      select: { id: true, firstName: true, lastName: true, email: true, role: true, createdAt: true }
     });
 
-    // Send email code (async, non-blocking)
-    sendVerificationEmail(newUser.email, verificationCode).catch(() => {});
-
-    console.log('New user created:', newUser.id);
+    console.log('New user created (pending verification):', newUser.id);
 
     return res.status(201).json({
       success: true,
-      message: 'Kayıt başarılı. Lütfen e-postanıza gelen doğrulama kodunu girin.',
+      message: 'Doğrulama kodu gönderildi. Kod onaylanınca hesabınız aktifleşecektir.',
       user: newUser
     });
 
