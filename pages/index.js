@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -259,7 +260,7 @@ export default function RoyalPizzaKingdom() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <RoyalCrown className="w-16 h-16 mx-auto mb-6" />
+            <RoyalCrown className="w-16 h-16 mx-auto mb-6 text-yellow-600" />
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               <span className="text-red-600">Pizza</span>{' '}
               <span className="text-yellow-600">Krallığı</span>
@@ -365,14 +366,22 @@ export default function RoyalPizzaKingdom() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
-              { title: 'Üye Ol', desc: 'Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun', color: 'bg-red-100', bullet: 'Ücretsiz üyelik • Hızlı kayıt • Özel indirimler' },
-              { title: 'Siparişini Oluştur', desc: 'Menümüzden istediğiniz pizzayı seçin ve özelleştirin', color: 'bg-yellow-100', bullet: 'Özelleştirilebilir • Hızlı seçim • Canlı takip' },
-              { title: 'Siparişin Gelsin', desc: 'Sıcacık pizzanız kapınıza kadar teslim edilir', color: 'bg-green-100', bullet: 'Hızlı teslimat • Sıcak servis • Güvenli paketleme' },
+              { title: 'Üye Ol', desc: 'Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun', bullet: 'Ücretsiz üyelik • Hızlı kayıt • Özel indirimler' },
+              { title: 'Siparişini Oluştur', desc: 'Menümüzden istediğiniz pizzayı seçin ve özelleştirin', bullet: 'Özelleştirilebilir • Hızlı seçim • Canlı takip' },
+              { title: 'Siparişin Gelsin', desc: 'Sıcacık pizzanız kapınıza kadar teslim edilir', bullet: 'Hızlı teslimat • Sıcak servis • Güvenli paketleme' },
             ].map((step, i) => (
               <motion.div key={step.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 * (i + 1) }} className="text-center">
                 <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
-                  <div className={`w-24 h-24 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}> 
-                    <RoyalCrown className="w-10 h-10 text-red-600" />
+                  <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-white">
+                    <Image
+                      src="/pizza-slices.gif"
+                      alt={step.title}
+                      width={64}
+                      height={64}
+                      loading="lazy"
+                      decoding="async"
+                      className="rounded-full"
+                    />
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
                   <p className="text-gray-600 mb-6">{step.desc}</p>
