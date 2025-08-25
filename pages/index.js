@@ -243,11 +243,11 @@ export default function RoyalPizzaKingdom() {
             sizes="100vw"
             unoptimized
             style={{ objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }}
-            onError={() => setBgSrc('/arkaplanpizza.png')}
+            onError={() => setBgSrc('/arkaplanpizza/arkaplanpizza.png')}
           />
           {/* Saf fallback <img> - Next Image 400 durumunda */}
           <noscript>
-            <img src="/arkaplanpizza.png" alt="Arka Plan" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }} />
+            <img src="/arkaplanpizza/arkaplanpizza.png" alt="Arka Plan" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }} />
           </noscript>
           <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-white/70" />
         </div>
