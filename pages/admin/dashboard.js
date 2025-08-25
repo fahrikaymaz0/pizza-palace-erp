@@ -162,14 +162,14 @@ export default function AdminDashboard() {
         <link rel="icon" href="/kaymaz-icon.ico" />
       </Head>
 
-      <div className="min-h-screen bg-slate-900 text-slate-100">
+      <div className="min-h-screen bg-white text-gray-900">
         {/* Header */}
-        <header className="bg-slate-800 shadow-sm border-b border-slate-700">
+        <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-4">
               <div className="flex items-center space-x-3">
-                <Crown className="w-8 h-8 text-yellow-400" />
-                <h1 className="text-2xl font-bold text-slate-100">Pizza Krallığı Admin</h1>
+                <Crown className="w-8 h-8 text-yellow-500" />
+                <h1 className="text-2xl font-bold text-gray-900">Pizza Krallığı Admin</h1>
               </div>
               <button
                 onClick={handleLogout}
@@ -189,15 +189,15 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="bg-slate-800 rounded-lg shadow p-6 border border-slate-700"
+              className="bg-white rounded-lg shadow p-6 border border-red-100"
             >
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-red-500/10">
-                  <ShoppingCart className="w-6 h-6 text-red-400" />
+                <div className="p-3 rounded-full bg-red-100">
+                  <ShoppingCart className="w-6 h-6 text-red-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-slate-300">Toplam Sipariş</p>
-                  <p className="text-2xl font-semibold text-slate-100">{statistics.total}</p>
+                  <p className="text-sm font-medium text-gray-600">Toplam Sipariş</p>
+                  <p className="text-2xl font-semibold text-gray-900">{statistics.total}</p>
                 </div>
               </div>
             </motion.div>
@@ -206,15 +206,15 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-slate-800 rounded-lg shadow p-6 border border-slate-700"
+              className="bg-white rounded-lg shadow p-6 border border-yellow-100"
             >
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-yellow-500/10">
-                  <Clock className="w-6 h-6 text-yellow-400" />
+                <div className="p-3 rounded-full bg-yellow-100">
+                  <Clock className="w-6 h-6 text-yellow-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-slate-300">Bekleyen</p>
-                  <p className="text-2xl font-semibold text-slate-100">{statistics.pending}</p>
+                  <p className="text-sm font-medium text-gray-600">Bekleyen</p>
+                  <p className="text-2xl font-semibold text-gray-900">{statistics.pending}</p>
                 </div>
               </div>
             </motion.div>
@@ -223,15 +223,15 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-slate-800 rounded-lg shadow p-6 border border-slate-700"
+              className="bg-white rounded-lg shadow p-6 border border-green-100"
             >
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-green-500/10">
-                  <DollarSign className="w-6 h-6 text-green-400" />
+                <div className="p-3 rounded-full bg-green-100">
+                  <DollarSign className="w-6 h-6 text-green-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-slate-300">Ödenen</p>
-                  <p className="text-2xl font-semibold text-slate-100">{statistics.paid}</p>
+                  <p className="text-sm font-medium text-gray-600">Ödenen</p>
+                  <p className="text-2xl font-semibold text-gray-900">{statistics.paid}</p>
                 </div>
               </div>
             </motion.div>
@@ -240,15 +240,15 @@ export default function AdminDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-slate-800 rounded-lg shadow p-6 border border-slate-700"
+              className="bg-white rounded-lg shadow p-6 border border-blue-100"
             >
               <div className="flex items-center">
-                <div className="p-3 rounded-full bg-blue-500/10">
-                  <Package className="w-6 h-6 text-blue-400" />
+                <div className="p-3 rounded-full bg-blue-100">
+                  <Package className="w-6 h-6 text-blue-600" />
                 </div>
                 <div className="ml-4">
-                  <p className="text-sm font-medium text-slate-300">Hazırlanan</p>
-                  <p className="text-2xl font-semibold text-slate-100">{statistics.preparing}</p>
+                  <p className="text-sm font-medium text-gray-600">Hazırlanan</p>
+                  <p className="text-2xl font-semibold text-gray-900">{statistics.preparing}</p>
                 </div>
               </div>
             </motion.div>
@@ -259,64 +259,64 @@ export default function AdminDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
-            className="bg-slate-800 rounded-lg shadow border border-slate-700"
+            className="bg-white rounded-lg shadow border border-gray-200"
           >
-            <div className="px-6 py-4 border-b border-slate-700">
-              <h2 className="text-lg font-semibold text-slate-100">Son Siparişler</h2>
+            <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-red-50 to-yellow-50">
+              <h2 className="text-lg font-semibold text-gray-900">Son Siparişler</h2>
             </div>
             
             <div className="overflow-x-auto">
               {orders.length > 0 ? (
-                <table className="min-w-full divide-y divide-slate-700">
-                  <thead className="bg-slate-700 text-slate-100">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-red-600 text-white">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Müşteri
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Ürünler
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Toplam
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Durum
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Ödeme
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-slate-200 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">
                         Tarih
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-slate-800 divide-y divide-slate-700 text-slate-100">
+                  <tbody className="bg-white divide-y divide-gray-200">
                     {orders.map((order) => (
-                      <tr key={order.id} className="hover:bg-slate-700/50">
+                      <tr key={order.id} className="hover:bg-yellow-50/60">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div>
-                            <div className="text-sm font-medium text-slate-100">
+                            <div className="text-sm font-medium text-gray-900">
                               {order.customerName}
                             </div>
-                            <div className="text-sm text-slate-300">
+                            <div className="text-sm text-gray-500">
                               {order.customerEmail}
                             </div>
-                            <div className="text-sm text-slate-300">
+                            <div className="text-sm text-gray-500">
                               {order.customerPhone}
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4">
-                          <div className="text-sm text-slate-100">
+                          <div className="text-sm text-gray-900">
                             {order.items.map((item, index) => (
                               <div key={index} className="flex justify-between">
                                 <span>{item.name}</span>
-                                <span className="text-slate-300">x{item.quantity}</span>
+                                <span className="text-gray-500">x{item.quantity}</span>
                               </div>
                             ))}
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-100">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {order.totalPrice}₺
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -334,7 +334,7 @@ export default function AdminDashboard() {
                             {order.paymentStatus === 'failed' && 'Başarısız'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                           {new Date(order.createdAt).toLocaleDateString('tr-TR')}
                         </td>
                       </tr>
@@ -343,34 +343,34 @@ export default function AdminDashboard() {
                 </table>
               ) : (
                 <div className="text-center py-12">
-                  <div className="text-slate-400 mb-4">
+                  <div className="text-gray-400 mb-4">
                     <ShoppingCart className="w-16 h-16 mx-auto" />
                   </div>
-                  <h3 className="text-lg font-medium text-slate-100 mb-2">Henüz Sipariş Yok</h3>
-                  <p className="text-slate-300">Müşteriler sipariş vermeye başladığında burada görünecek.</p>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">Henüz Sipariş Yok</h3>
+                  <p className="text-gray-500">Müşteriler sipariş vermeye başladığında burada görünecek.</p>
                 </div>
               )}
             </div>
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="px-6 py-4 border-t border-slate-700">
+              <div className="px-6 py-4 border-t border-gray-200">
                 <div className="flex items-center justify-between">
-                  <div className="text-sm text-slate-300">
+                  <div className="text-sm text-gray-700">
                     Sayfa {currentPage} / {totalPages}
                   </div>
                   <div className="flex space-x-2">
                     <button
                       onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                       disabled={currentPage === 1}
-                      className="px-3 py-1 text-sm bg-slate-700 text-slate-200 rounded disabled:opacity-50"
+                      className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded disabled:opacity-50"
                     >
                       Önceki
                     </button>
                     <button
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}
-                      className="px-3 py-1 text-sm bg-slate-700 text-slate-200 rounded disabled:opacity-50"
+                      className="px-3 py-1 text-sm bg-gray-200 text-gray-700 rounded disabled:opacity-50"
                     >
                       Sonraki
                     </button>
