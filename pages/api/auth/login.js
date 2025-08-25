@@ -22,18 +22,19 @@ export default async function handler(req, res) {
     await ensurePrismaSqliteSchema();
     await ensureUserLastLoginColumn();
     const { email, password } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
 
     console.log('Login attempt:', { email });
 
     // Validation
-    if (!email || !password) {
+    if (!normalizedEmail || !password) {
       return res.status(400).json({
         success: false,
         message: 'E-posta ve şifre gereklidir'
       });
     }
 
-    if (!validateEmail(email)) {
+    if (!validateEmail(normalizedEmail)) {
       return res.status(400).json({
         success: false,
         message: 'Geçerli bir e-posta adresi giriniz'
@@ -41,9 +42,7 @@ export default async function handler(req, res) {
     }
 
     // Find user
-    const user = await prisma.user.findFirst({
-      where: { email: { equals: email, mode: 'insensitive' } }
-    });
+    const user = await prisma.user.findFirst({ where: { email: normalizedEmail } });
 
     if (!user) {
       return res.status(401).json({

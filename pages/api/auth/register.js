@@ -23,11 +23,12 @@ export default async function handler(req, res) {
     await ensurePrismaSqliteSchema();
     await ensureUserLastLoginColumn();
     const { firstName, lastName, email, phone, address, password, confirmPassword } = req.body;
+    const normalizedEmail = String(email || '').trim().toLowerCase();
 
     console.log('Register attempt:', { firstName, lastName, email });
 
     // Validation
-    if (!firstName || !lastName || !email || !password) {
+    if (!firstName || !lastName || !normalizedEmail || !password) {
       return res.status(400).json({
         success: false,
         message: 'Ad, soyad, e-posta ve şifre gereklidir'
@@ -48,7 +49,7 @@ export default async function handler(req, res) {
       });
     }
 
-    if (!validateEmail(email)) {
+    if (!validateEmail(normalizedEmail)) {
       return res.status(400).json({
         success: false,
         message: 'Geçerli bir e-posta adresi giriniz'
@@ -64,7 +65,7 @@ export default async function handler(req, res) {
 
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
-      where: { email: { equals: email, mode: 'insensitive' } }
+      where: { email: normalizedEmail }
     });
 
     if (existingUser) {
@@ -83,7 +84,7 @@ export default async function handler(req, res) {
       data: {
         firstName,
         lastName,
-        email,
+        email: normalizedEmail,
         phone: phone || null,
         address: address || null,
         password: hashedPassword,
