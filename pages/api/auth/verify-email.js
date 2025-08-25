@@ -22,6 +22,7 @@ export default async function handler(req, res) {
   try {
     await ensurePrismaSqliteSchema();
     const { email, code, token: verificationToken } = req.body || {};
+    const normalizedEmail = email ? String(email).trim().toLowerCase() : null;
 
     // 1) Token ile doğrulama (e-posta linkinden)
     if (verificationToken) {
@@ -33,7 +34,7 @@ export default async function handler(req, res) {
           return res.status(400).json({ success: false, message: 'Geçersiz doğrulama tokenı' });
         }
 
-        const userByToken = await prisma.user.findUnique({ where: { email: tokenEmail } });
+        const userByToken = await prisma.user.findUnique({ where: { email: String(tokenEmail).toLowerCase() } });
         if (!userByToken) {
           return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı' });
         }
@@ -64,11 +65,11 @@ export default async function handler(req, res) {
     }
 
     // 2) E-posta + kod ile doğrulama (kayıt modali)
-    if (!email || !code) {
+    if (!normalizedEmail || !code) {
       return res.status(400).json({ success: false, message: 'E-posta ve doğrulama kodu gereklidir' });
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
     if (!user) {
       return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı' });
     }

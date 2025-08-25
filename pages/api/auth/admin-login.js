@@ -3,6 +3,17 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -10,7 +21,7 @@ export default async function handler(req, res) {
   try {
     await ensurePrismaSqliteSchema();
     await ensureUserLastLoginColumn();
-    const { email, password } = req.body;
+    const { email, password } = req.body || {};
     const normalizedEmail = String(email || '').trim().toLowerCase();
 
     // Validasyon
@@ -74,17 +85,19 @@ export default async function handler(req, res) {
       message: 'Admin girişi başarılı',
       data: {
         id: admin.id,
-        name: admin.name,
+        firstName: admin.firstName,
+        lastName: admin.lastName,
         email: admin.email,
         token
       }
     });
 
   } catch (error) {
-    console.error('Admin giriş hatası:', error);
+    console.error('Admin giriş hatası:', error?.message || error);
     res.status(500).json({
       success: false,
-      message: 'Giriş yapılırken bir hata oluştu'
+      message: 'Giriş yapılırken bir hata oluştu',
+      detail: error?.message || String(error)
     });
   } finally {
   }
