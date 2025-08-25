@@ -12,6 +12,7 @@ import SupportChatWidget from '../components/SupportChatWidget';
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [bgSrc, setBgSrc] = useState('/arkaplanpizza.jpeg');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -235,12 +236,13 @@ export default function RoyalPizzaKingdom() {
         {/* Arka plan: arkaplanpizza.jpeg soluk blur */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/arkaplanpizza.jpeg"
+            src={bgSrc}
             alt="Arka Plan"
             fill
             priority
             sizes="100vw"
             style={{ objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }}
+            onError={() => setBgSrc('/arkaplanpizza.png')}
           />
           <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-white/70" />
         </div>
@@ -429,8 +431,8 @@ export default function RoyalPizzaKingdom() {
       </section>
 
       {/* Floating Action Buttons - Sağ Alt */}
-      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 flex flex-col gap-3">
-        <Link href="tel:+905551234567" className="group flex items-center gap-3 bg-red-600 text-white px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:bg-red-700">
+      <div className="fixed bottom-24 right-4 sm:bottom-24 sm:right-6 z-30 flex flex-col gap-3">
+        <Link href="https://wa.me/905551234567" className="group flex items-center gap-3 bg-red-600 text-white px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:bg-red-700">
           <Phone className="w-5 h-5" />
           <span className="font-semibold hidden sm:block">Hızlı Sipariş</span>
         </Link>

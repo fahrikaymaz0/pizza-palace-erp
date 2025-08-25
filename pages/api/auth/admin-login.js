@@ -1,8 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
-const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -10,6 +8,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    await ensurePrismaSqliteSchema();
     const { email, password } = req.body;
 
     // Validasyon
@@ -42,8 +41,8 @@ export default async function handler(req, res) {
       });
     }
 
-    // Admin kontrolü (basit kontrol - gerçek uygulamada role field'ı olmalı)
-    if (email !== 'admin@pizzakralligi.com') {
+    // Admin kontrolü: role alanı admin olmalı
+    if (admin.role !== 'admin') {
       return res.status(403).json({
         success: false,
         message: 'Bu alana erişim yetkiniz yok'
@@ -88,6 +87,5 @@ export default async function handler(req, res) {
       message: 'Giriş yapılırken bir hata oluştu'
     });
   } finally {
-    await prisma.$disconnect();
   }
 } 

@@ -23,9 +23,16 @@ export default function SupportChatWidget() {
 
     async function ensureRoom() {
       if (roomId) return;
-      const res = await fetch('/api/chat/create-room', { method: 'POST' });
-      const data = await res.json();
-      if (!cancelled) setRoomId(data.room.id);
+      try {
+        const res = await fetch('/api/chat/create-room', { method: 'POST' });
+        if (!res.ok) throw new Error('create-room failed');
+        const data = await res.json();
+        if (!data?.room?.id) throw new Error('no room id');
+        if (!cancelled) setRoomId(data.room.id);
+      } catch (e) {
+        // geçici hata: yeniden dene
+        setTimeout(ensureRoom, 2000);
+      }
     }
 
     ensureRoom();
