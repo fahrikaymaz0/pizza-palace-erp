@@ -35,43 +35,16 @@ export default function AdminDashboard() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    // Check if admin is logged in with valid token
-    const checkAuthAndFetch = async () => {
-      const adminToken = localStorage.getItem('adminToken');
-      if (!adminToken) {
-        router.push('/admin/login');
-        return;
-      }
+    // Simple auth check and data fetch
+    const adminToken = localStorage.getItem('adminToken');
+    if (!adminToken) {
+      router.push('/admin/login');
+      return;
+    }
 
-      try {
-        // Validate token first
-        const response = await fetch('/api/orders/all?page=1&limit=1', {
-          headers: {
-            'Authorization': `Bearer ${adminToken}`
-          }
-        });
-
-        if (response.status === 200) {
-          // Token is valid, fetch orders
-          fetchOrders();
-        } else if (response.status === 401 || response.status === 403) {
-          // Token is invalid, redirect to login
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('adminUser');
-          router.push('/admin/login');
-        } else {
-          // Other error, still try to fetch orders
-          fetchOrders();
-        }
-      } catch (error) {
-        console.error('Auth check error:', error);
-        // On error, try to fetch orders anyway
-        fetchOrders();
-      }
-    };
-
-    checkAuthAndFetch();
-  }, [router, currentPage]);
+    // Fetch orders directly
+    fetchOrders();
+  }, [currentPage]); // Remove router dependency to prevent loops
 
   const fetchOrders = async () => {
     try {
@@ -81,7 +54,7 @@ export default function AdminDashboard() {
         return;
       }
       
-      console.log('Fetching orders with token:', adminToken ? 'Token exists' : 'No token');
+      console.log('Fetching orders...');
       
       const response = await fetch(`/api/orders/all?page=${currentPage}&limit=10`, {
         headers: {
@@ -89,22 +62,33 @@ export default function AdminDashboard() {
         }
       });
 
-      console.log('Orders API response status:', response.status);
+      console.log('Orders API status:', response.status);
+      
+      if (response.status === 401 || response.status === 403) {
+        // Token is invalid
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        router.push('/admin/login');
+        return;
+      }
+
       const data = await response.json();
-      console.log('Orders API response:', data);
+      console.log('Orders data:', data);
 
       if (data.success) {
-        setOrders(data.orders);
-        setStatistics(data.statistics);
-        setTotalPages(data.pagination.pages);
+        setOrders(data.orders || []);
+        setStatistics(data.statistics || {
+          total: 0,
+          pending: 0,
+          preparing: 0,
+          completed: 0,
+          cancelled: 0,
+          paid: 0,
+          unpaid: 0
+        });
+        setTotalPages(data.pagination?.pages || 1);
       } else {
         console.error('Failed to fetch orders:', data.message);
-        // If token is invalid, redirect to login
-        if (response.status === 401 || response.status === 403) {
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('adminUser');
-          router.push('/admin/login');
-        }
       }
     } catch (error) {
       console.error('Error fetching orders:', error);

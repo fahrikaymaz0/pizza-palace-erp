@@ -16,33 +16,11 @@ export default function AdminLogin() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    // Check if admin is already logged in with valid token
-    const checkAuth = async () => {
-      const token = localStorage.getItem('adminToken');
-      if (token) {
-        try {
-          const response = await fetch('/api/orders/all?page=1&limit=1', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          });
-          
-          if (response.status === 200) {
-            router.push('/admin/dashboard');
-          } else {
-            // Token is invalid, remove it
-            localStorage.removeItem('adminToken');
-            localStorage.removeItem('adminUser');
-          }
-        } catch (error) {
-          console.error('Token validation error:', error);
-          localStorage.removeItem('adminToken');
-          localStorage.removeItem('adminUser');
-        }
-      }
-    };
-    
-    checkAuth();
+    // Only redirect if we have a token (let dashboard handle validation)
+    const token = localStorage.getItem('adminToken');
+    if (token) {
+      router.push('/admin/dashboard');
+    }
   }, [router]);
 
   const handleInputChange = (e) => {
