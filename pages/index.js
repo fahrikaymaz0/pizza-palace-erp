@@ -242,17 +242,17 @@ export default function RoyalPizzaKingdom() {
             priority
             sizes="100vw"
             unoptimized
-            style={{ objectFit: 'cover', filter: 'blur(3px) opacity(0.35)' }}
+            style={{ objectFit: 'cover', filter: 'blur(2px) opacity(0.4)' }}
             onError={() => setBgSrc('/arkaplanpizza/arkaplanpizza.png')}
           />
           {/* Saf fallback <img> - Next Image 400 durumunda */}
           <noscript>
-            <img src="/arkaplanpizza/arkaplanpizza.png" alt="Arka Plan" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }} />
+            <img src="/arkaplanpizza/arkaplanpizza.png" alt="Arka Plan" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(2px) opacity(0.4)' }} />
           </noscript>
           <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-white/70" />
         </div>
         {/* Sarkık flamalar */}
-        <div className="absolute top-24 left-4 z-10 pointer-events-none hidden sm:block h-64 md:h-80 lg:h-96">
+        <div className="absolute inset-y-0 left-4 z-10 pointer-events-none hidden sm:block">
           <svg width="160" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="leftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -263,7 +263,7 @@ export default function RoyalPizzaKingdom() {
             <path d="M0 0 H90 V760 L45 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
           </svg>
         </div>
-        <div className="absolute top-24 right-4 z-10 pointer-events-none hidden sm:block h-64 md:h-80 lg:h-96">
+        <div className="absolute inset-y-0 right-4 z-10 pointer-events-none hidden sm:block">
           <svg width="160" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="rightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -280,12 +280,12 @@ export default function RoyalPizzaKingdom() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <RoyalCrown className="w-16 h-16 mx-auto mb-6 text-yellow-600" />
-            <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            <RoyalCrown className="w-16 h-16 mx-auto mb-6 text-yellow-600 relative z-10" />
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 relative z-10">
               <span className="text-red-600">Pizza</span>{' '}
               <span className="text-yellow-600">Krallığı</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto relative z-10">
               Kraliyet lezzetlerin adresi. Premium malzemeler, özel tarifler ve eşsiz deneyim.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
