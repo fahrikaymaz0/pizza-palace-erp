@@ -7,7 +7,7 @@ interface RoyalCrownProps {
 }
 
 // Kullanıcının sağladığı path ile kırmızı çizgisel taç simgesi
-export default function RoyalCrown({ className = 'w-6 h-6 text-red-600' }: RoyalCrownProps) {
+export default function RoyalCrown({ className = 'w-6 h-6 text-yellow-600' }: RoyalCrownProps) {
   return (
     <svg
       viewBox="0 0 24 24"

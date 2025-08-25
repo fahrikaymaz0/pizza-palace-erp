@@ -8,6 +8,7 @@ import { useTheme } from '../context/DarkModeContext';
 import OutlineCrown from '../components/OutlineCrown';
 import RoyalCrown from '../components/RoyalCrown';
 import Lottie from 'lottie-react';
+import SupportChatWidget from '../components/SupportChatWidget';
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -154,7 +155,7 @@ export default function RoyalPizzaKingdom() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <OutlineCrown className="w-7 h-7 text-yellow-600" />
+              <RoyalCrown className="w-7 h-7 text-yellow-600" />
               <h1 className="text-2xl font-bold">
                 <span className="text-red-600">Pizza</span>{' '}
                 <span className="text-yellow-600">Krallığı</span>
@@ -231,10 +232,10 @@ export default function RoyalPizzaKingdom() {
 
       {/* Basit Hero Section + Sağ/Sol Flama */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-        {/* Arka plan: pizza.jpeg soluk blur */}
+        {/* Arka plan: arkaplanpizza.jpeg soluk blur */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/pizza.jpeg"
+            src="/arkaplanpizza.jpeg"
             alt="Arka Plan"
             fill
             priority
@@ -433,11 +434,9 @@ export default function RoyalPizzaKingdom() {
           <Phone className="w-5 h-5" />
           <span className="font-semibold hidden sm:block">Hızlı Sipariş</span>
         </Link>
-        <Link href="#" className="group flex items-center gap-3 bg-yellow-500 text-purple-900 px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:bg-yellow-400">
-          <Shield className="w-5 h-5" />
-          <span className="font-semibold hidden sm:block">Destek Ekibi</span>
-        </Link>
       </div>
+      {/* Canlı Destek Widget */}
+      <SupportChatWidget />
 
       {/* Footer sadeleştirildi: koyu blok kaldırıldı, hafif tema */}
       <footer className="bg-white text-gray-700 py-10 border-t">
