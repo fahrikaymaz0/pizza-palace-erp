@@ -242,27 +242,13 @@ function RoyalMenu() {
       color: 'from-red-700 to-red-600',
       count: allProducts.filter(p => p.category === 'spicy').length
     },
-    {
-      id: 'desserts',
-      name: 'Tatlılar',
-      description: 'Sufle, tiramisu, mozaik pasta',
-      color: 'from-yellow-400 to-yellow-500',
-      count: 3
-    },
-    {
-      id: 'drinks',
-      name: 'İçecekler',
-      description: 'Kola, ayran, su, meyve suyu',
-      color: 'from-red-500 to-red-600',
-      count: 6
-    },
-    {
-      id: 'combos',
-      name: 'Menüler',
-      description: 'Pizza + İçecek + Patates',
-      color: 'from-yellow-500 to-red-600',
-      count: 4
-    }
+    { id: 'combos', name: 'Menüler', description: 'Pizza + İçecek + Patates', color: 'from-yellow-500 to-red-600', count: 6 },
+    { id: '1p', name: '1 Kişilik', description: 'Tek kişilik menüler', color: 'from-red-500 to-red-600', count: 2 },
+    { id: '2p', name: '2 Kişilik', description: 'Paylaşımlı menüler', color: 'from-yellow-500 to-yellow-400', count: 2 },
+    { id: '3-4p', name: '3-4 Kişilik', description: 'Aile menüleri', color: 'from-red-600 to-red-500', count: 1 },
+    { id: '5-6p', name: '5-6 Kişilik', description: 'Kalabalık menüler', color: 'from-yellow-600 to-yellow-500', count: 1 },
+    { id: 'drinks', name: 'İçecekler', description: 'Kola, ayran, su, meyve suyu', color: 'from-red-500 to-red-600', count: 6 },
+    { id: 'desserts', name: 'Tatlılar', description: 'Sufle, tiramisu, mozaik pasta', color: 'from-yellow-400 to-yellow-500', count: 3 },
   ];
 
   // Filtreleme ve sıralama
@@ -416,7 +402,7 @@ function RoyalMenu() {
           </div>
 
           {/* Search and Filter */}
-          <div className="backdrop-blur-sm border-b bg-white/70 border-gray-200">
+          <div className="backdrop-blur-sm border-b bg-white/70 border-gray-200 sticky top-16 z-30">
             <div className="container mx-auto px-4 py-4">
               <div className="flex flex-col md:flex-row gap-4">
                 {/* Search */}
@@ -447,19 +433,19 @@ function RoyalMenu() {
               </div>
 
           {/* Categories */}
-          <div className="bg-white/5 backdrop-blur-sm border-b border-yellow-400/20">
+          <div className="bg-white/40 backdrop-blur-sm border-b border-yellow-400/30">
             <div className="container mx-auto px-4 py-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
                 {categories.map((category) => (
                   <motion.button
                     key={category.id}
                     onClick={() => setActiveCategory(category.id)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`relative overflow-hidden rounded-2xl p-6 transition-all duration-300 ${
+                    className={`relative overflow-hidden rounded-xl p-4 transition-all duration-300 ${
                       activeCategory === category.id
-                        ? 'ring-4 ring-yellow-400 shadow-2xl'
-                        : 'hover:shadow-xl'
+                        ? 'ring-2 ring-yellow-500 shadow-lg'
+                        : 'hover:shadow-md'
                     }`}
                   >
                     {/* Background Gradient */}
@@ -467,13 +453,8 @@ function RoyalMenu() {
                     
                     {/* Content */}
                     <div className="relative z-10 text-white text-left">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-lg font-bold">{category.name}</h3>
-                        <span className="text-sm bg-white/20 px-2 py-1 rounded-full">
-                          {category.count} pizza
-                        </span>
-                      </div>
-                      <p className="text-sm opacity-90 leading-relaxed">
+                      <h3 className="text-base font-bold truncate">{category.name}</h3>
+                      <p className="text-xs opacity-90 leading-relaxed line-clamp-2">
                         {category.description}
                       </p>
                     </div>
@@ -481,11 +462,11 @@ function RoyalMenu() {
                     {/* Active indicator */}
                     {activeCategory === category.id && (
                       <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute top-3 right-3 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="absolute inset-0 ring-2 ring-yellow-400 rounded-xl"
                       >
-                        <span className="text-purple-900 text-xs font-bold">✓</span>
+                        
                       </motion.div>
                     )}
                   </motion.button>

@@ -70,7 +70,7 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <RoyalCrown className="w-6 h-6 text-yellow-600" />
+              <RoyalCrown className="w-7 h-7 text-yellow-600" />
               <span className="text-xl font-bold text-gray-900 hidden sm:block">
                 <span className="text-red-600">Pizza</span> <span className="text-yellow-600">Krallığı</span>
               </span>

@@ -230,7 +230,17 @@ export default function RoyalPizzaKingdom() {
       </AnimatePresence>
 
       {/* Basit Hero Section + Sağ/Sol Flama */}
-      <section className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 flex items-center justify-center relative overflow-hidden">
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+        {/* Arka plan: pizza.jpeg soluk blur */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0" style={{
+            backgroundImage: "url('/pizza.jpeg')",
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'blur(6px) opacity(0.25)'
+          }} />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-white/70" />
+        </div>
         {/* Sarkık flamalar */}
         <div className="absolute inset-y-0 left-4 z-10 pointer-events-none hidden sm:block">
           <svg width="90" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -410,6 +420,18 @@ export default function RoyalPizzaKingdom() {
           </motion.div>
         </div>
       </section>
+
+      {/* Floating Action Buttons - Sağ Alt */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-30 flex flex-col gap-3">
+        <Link href="tel:+905551234567" className="group flex items-center gap-3 bg-red-600 text-white px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:bg-red-700">
+          <Phone className="w-5 h-5" />
+          <span className="font-semibold hidden sm:block">Hızlı Sipariş</span>
+        </Link>
+        <Link href="#" className="group flex items-center gap-3 bg-yellow-500 text-purple-900 px-5 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:bg-yellow-400">
+          <Shield className="w-5 h-5" />
+          <span className="font-semibold hidden sm:block">Destek Ekibi</span>
+        </Link>
+      </div>
 
       {/* Footer sadeleştirildi: koyu blok kaldırıldı, hafif tema */}
       <footer className="bg-white text-gray-700 py-10 border-t">
