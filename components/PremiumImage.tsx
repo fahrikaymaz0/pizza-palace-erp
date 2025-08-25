@@ -17,6 +17,7 @@ interface PremiumImageProps {
   blurDataURL?: string;
   onLoad?: () => void;
   onError?: (e: any) => void;
+  fallbackSrc?: string;
 }
 
 export default function PremiumImage({
@@ -32,7 +33,8 @@ export default function PremiumImage({
   placeholder = 'blur',
   blurDataURL,
   onLoad,
-  onError
+  onError,
+  fallbackSrc
 }: PremiumImageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
@@ -40,7 +42,7 @@ export default function PremiumImage({
   const mountedRef = useRef(true);
 
   // Fallback image if main image fails
-  const fallbackSrc = '/pizzas/margherita.png';
+  const defaultFallback = '/pizzas/margherita.png';
 
   // Component unmount cleanup
   useEffect(() => {
@@ -72,8 +74,9 @@ export default function PremiumImage({
     setIsLoading(false);
     
     // Try fallback image only if not already using it
-    if (imageSrc !== fallbackSrc) {
-      setImageSrc(fallbackSrc);
+    const targetFallback = fallbackSrc || defaultFallback;
+    if (imageSrc !== targetFallback) {
+      setImageSrc(targetFallback);
     }
     
     onError?.(e);

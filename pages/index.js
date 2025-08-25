@@ -233,12 +233,14 @@ export default function RoyalPizzaKingdom() {
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
         {/* Arka plan: pizza.jpeg soluk blur */}
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0" style={{
-            backgroundImage: "url('/pizza.jpeg')",
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'blur(6px) opacity(0.25)'
-          }} />
+          <Image
+            src="/pizza.jpeg"
+            alt="Arka Plan"
+            fill
+            priority
+            sizes="100vw"
+            style={{ objectFit: 'cover', filter: 'blur(6px) opacity(0.28)' }}
+          />
           <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-white/70" />
         </div>
         {/* Sarkık flamalar */}
@@ -357,7 +359,7 @@ export default function RoyalPizzaKingdom() {
         </div>
       </section>
 
-      {/* Hızlı Sipariş Ver Bölümü (statik ikonlarla) */}
+      {/* Hızlı Sipariş Ver Bölümü (SVG ikonlarla) */}
       <section className="py-20 bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50">
         <div className="container mx-auto px-4">
           <motion.div
@@ -375,32 +377,36 @@ export default function RoyalPizzaKingdom() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {[
-              { title: 'Üye Ol', desc: 'Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun', bullet: 'Ücretsiz üyelik • Hızlı kayıt • Özel indirimler' },
-              { title: 'Siparişini Oluştur', desc: 'Menümüzden istediğiniz pizzayı seçin ve özelleştirin', bullet: 'Özelleştirilebilir • Hızlı seçim • Canlı takip' },
-              { title: 'Siparişin Gelsin', desc: 'Sıcacık pizzanız kapınıza kadar teslim edilir', bullet: 'Hızlı teslimat • Sıcak servis • Güvenli paketleme' },
-            ].map((step, i) => (
-              <motion.div key={step.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 * (i + 1) }} className="text-center">
-                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
-                  <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-white">
-                    <Image
-                      src="/pizza-slices.gif"
-                      alt={step.title}
-                      width={64}
-                      height={64}
-                      loading="lazy"
-                      decoding="async"
-                      className="rounded-full"
-                    />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
-                  <p className="text-gray-600 mb-6">{step.desc}</p>
-                  <div className="bg-red-50 rounded-lg p-4">
-                    <p className="text-sm text-red-700 font-medium">{step.bullet}</p>
-                  </div>
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="text-center">
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-red-50">
+                  <svg viewBox="0 0 500 500" className="w-16 h-16" xmlns="http://www.w3.org/2000/svg"><path fill="#cf0a09" d="M145.722-159.6H-145.722A13.878 13.878 0 0 0-159.6-145.722V145.722A13.878 13.878 0 0 0-145.722 159.6H145.722A13.878 13.878 0 0 0 159.6 145.722V-145.722A13.878 13.878 0 0 0 145.722-159.6z"/><path fill="#fdb8b8" d="M82.489 7.588v160.476a7.58 7.58 0 0 1-7.581 7.581H7.588A7.588 7.588 0 0 1 0 168.064V7.588A7.588 7.588 0 0 1 7.588 0h67.32A7.588 7.588 0 0 1 82.489 7.588z"/><path fill="#7f3d3d" d="M-60.139-55.365s-5.029 31.643 25.806 33.853S33.668-6.135 33.668-6.135S20.106 24.337 15.668 51.865c0 0 16.316 3.5 16.316 3.5S45.284 31.483 57.168-2.751c0 0 8-18.761-8.58-25.886C22.839-39.697-1.333-54.248-1.333-54.248s-58.806-1.117-58.806-1.117z"/></svg>
                 </div>
-              </motion.div>
-            ))}
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Üye Ol</h3>
+                <p className="text-gray-600 mb-6">Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun</p>
+                <div className="bg-red-50 rounded-lg p-4"><p className="text-sm text-red-700 font-medium">Ücretsiz üyelik • Hızlı kayıt • Özel indirimler</p></div>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }} className="text-center">
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-yellow-50">
+                  <svg viewBox="0 0 500 500" className="w-16 h-16" xmlns="http://www.w3.org/2000/svg"><path fill="#d74545" d="M-1.667 6.785l-7.823-2.682 1.43-8.244-.333-2.644L9.49-.56 2.704 6.237z"/><path fill="#7e2a2a" d="M-22.794-18.095c-2.093 4.82-1.695 13.479-3.948 18.225 3.892.96 7.713 2.25 11.184 4.175 2.109 1.17 4.056 2.556 5.817 4.115l31.217 9.676 5.265-15.905z"/></svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişini Oluştur</h3>
+                <p className="text-gray-600 mb-6">Menümüzden istediğiniz pizzayı seçin ve özelleştirin</p>
+                <div className="bg-yellow-50 rounded-lg p-4"><p className="text-sm text-yellow-700 font-medium">Özelleştirilebilir • Hızlı seçim • Canlı takip</p></div>
+              </div>
+            </motion.div>
+            <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="text-center">
+              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                <div className="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6 bg-green-50">
+                  <svg viewBox="0 0 500 500" className="w-16 h-16" xmlns="http://www.w3.org/2000/svg"><path fill="#e00f0f" d="M0-25.884c-28.59 0-51.768 23.177-51.768 51.768H51.768C51.768-2.707 28.591-25.884 0-25.884z"/></svg>
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişin Gelsin</h3>
+                <p className="text-gray-600 mb-6">Sıcacık pizzanız kapınıza kadar teslim edilir</p>
+                <div className="bg-green-50 rounded-lg p-4"><p className="text-sm text-green-700 font-medium">Hızlı teslimat • Sıcak servis • Güvenli paketleme</p></div>
+              </div>
+            </motion.div>
           </div>
 
           {/* CTA Butonu */}

@@ -113,7 +113,7 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Register API Error:', error);
+    console.error('Register API Error:', error && (error.stack || error.message || error));
     return res.status(500).json({
       success: false,
       message: 'Kayıt sırasında bir hata oluştu'
