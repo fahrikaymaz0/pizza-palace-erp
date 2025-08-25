@@ -1,4 +1,4 @@
-import { prisma } from '../../../lib/prisma';
+import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
 import { generateToken } from '../../../lib/auth';
 import jwt from 'jsonwebtoken';
 
@@ -20,6 +20,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    await ensurePrismaSqliteSchema();
     const { email, code, token: verificationToken } = req.body || {};
 
     // 1) Token ile doğrulama (e-posta linkinden)

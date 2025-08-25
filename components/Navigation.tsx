@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, ShoppingCart, User, Menu, X, Heart, MapPin, Phone } from 'lucide-react';
+import RoyalCrown from './RoyalCrown';
 import { cn } from '../lib/utils';
 
 export default function Navigation() {
@@ -69,13 +70,9 @@ export default function Navigation() {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link href="/" className="flex items-center space-x-2">
-              <img 
-                src="/Pizza Krallığı Logosu.png" 
-                alt="Pizza Palace Pro" 
-                className="h-10 w-auto"
-              />
+              <RoyalCrown className="w-6 h-6 text-yellow-500" />
               <span className="text-xl font-bold text-gray-900 hidden sm:block">
-                Pizza Palace Pro
+                <span className="text-red-600">Pizza</span> <span className="text-yellow-600">Krallığı</span>
               </span>
             </Link>
 
