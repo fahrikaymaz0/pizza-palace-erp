@@ -1,4 +1,4 @@
-import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
+import { prisma, ensurePrismaSqliteSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
 import { hashPassword, validateEmail, validatePassword, validatePhone, generateToken } from '../../../lib/auth';
 import { generateCode, sendVerificationEmail } from '../../../lib/emailService';
 
@@ -21,6 +21,7 @@ export default async function handler(req, res) {
 
   try {
     await ensurePrismaSqliteSchema();
+    await ensureUserLastLoginColumn();
     const { firstName, lastName, email, phone, address, password, confirmPassword } = req.body;
 
     console.log('Register attempt:', { firstName, lastName, email });

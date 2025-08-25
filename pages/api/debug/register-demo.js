@@ -1,9 +1,10 @@
-import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
+import { prisma, ensurePrismaSqliteSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
 import { hashPassword } from '../../../lib/auth';
 
 export default async function handler(req, res) {
   try {
     await ensurePrismaSqliteSchema();
+    await ensureUserLastLoginColumn();
     const email = `demo+${Date.now()}@example.com`;
     const hashed = await hashPassword('Demo1234');
     const user = await prisma.user.create({
