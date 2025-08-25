@@ -16,8 +16,12 @@ export default function AdminLogin() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    // Don't auto-redirect, let user login manually
-    // This prevents issues with invalid tokens
+    // Giriş alanlarını koru (email'i hatırla)
+    const savedEmail = typeof window !== 'undefined' ? localStorage.getItem('lastAdminEmail') : '';
+    if (savedEmail) {
+      setFormData((prev) => ({ ...prev, email: savedEmail }));
+    }
+    // Otomatik yönlendirme yapma
   }, [router]);
 
   const handleInputChange = (e) => {
@@ -26,6 +30,9 @@ export default function AdminLogin() {
       ...prev,
       [name]: value
     }));
+    if (name === 'email') {
+      try { localStorage.setItem('lastAdminEmail', value); } catch (_) {}
+    }
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -76,6 +83,8 @@ export default function AdminLogin() {
         // Save admin token and user data
         localStorage.setItem('adminToken', data.data.token);
         localStorage.setItem('adminUser', JSON.stringify({ id: data.data.id, email: data.data.email }));
+        // Email'i hatırla
+        try { localStorage.setItem('lastAdminEmail', formData.email); } catch (_) {}
         
         alert('Admin girişi başarılı!');
         router.push('/admin/dashboard');
