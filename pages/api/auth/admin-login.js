@@ -1,4 +1,4 @@
-import { prisma, ensurePrismaSqliteSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
+import { prisma, ensurePrismaSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
 import bcrypt from 'bcryptjs';
 import { generateToken } from '../../../lib/auth';
 
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    await ensurePrismaSqliteSchema();
+    await ensurePrismaSchema();
     await ensureUserLastLoginColumn();
     
     const { email, password } = req.body || {};

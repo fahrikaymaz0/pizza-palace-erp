@@ -1,4 +1,4 @@
-import { prisma, ensurePrismaSqliteSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
+import { prisma, ensurePrismaSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
 import { hashPassword, validateEmail, validatePassword, validatePhone, generateToken } from '../../../lib/auth';
 
 // Email service functions - inline implementation
@@ -31,62 +31,83 @@ export default async function handler(req, res) {
 
   // Only allow POST method
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+    return res.status(405).json({ 
+      error: 'Method not allowed',
+      detail: `Expected POST, got ${req.method}`
+    });
   }
 
   try {
-    await ensurePrismaSqliteSchema();
+    // Database schema'yı kontrol et
+    await ensurePrismaSchema();
     await ensureUserLastLoginColumn();
+    
     const { firstName, lastName, email, phone, address, password, confirmPassword } = req.body;
     const normalizedEmail = String(email || '').trim().toLowerCase();
 
-    console.log('Register attempt:', { firstName, lastName, email });
+    console.log('Register attempt:', { firstName, lastName, email: normalizedEmail });
 
     // Validation
     if (!firstName || !lastName || !normalizedEmail || !password) {
       return res.status(400).json({
         success: false,
-        message: 'Ad, soyad, e-posta ve şifre gereklidir'
+        message: 'Ad, soyad, e-posta ve şifre gereklidir',
+        detail: 'Missing required fields'
       });
     }
 
     if (password !== confirmPassword) {
       return res.status(400).json({
         success: false,
-        message: 'Şifreler eşleşmiyor'
+        message: 'Şifreler eşleşmiyor',
+        detail: 'Password mismatch'
       });
     }
 
     if (!validatePassword(password)) {
       return res.status(400).json({
         success: false,
-        message: 'Şifre en az 6 karakter olmalıdır'
+        message: 'Şifre en az 6 karakter olmalıdır',
+        detail: 'Invalid password'
       });
     }
 
     if (!validateEmail(normalizedEmail)) {
       return res.status(400).json({
         success: false,
-        message: 'Geçerli bir e-posta adresi giriniz'
+        message: 'Geçerli bir e-posta adresi giriniz',
+        detail: 'Invalid email format'
       });
     }
 
     if (phone && !validatePhone(phone)) {
       return res.status(400).json({
         success: false,
-        message: 'Geçerli bir telefon numarası giriniz'
+        message: 'Geçerli bir telefon numarası giriniz',
+        detail: 'Invalid phone format'
       });
     }
 
     // Check if user already exists
-    const existingUser = await prisma.user.findFirst({
-      where: { email: normalizedEmail }
-    });
+    let existingUser;
+    try {
+      existingUser = await prisma.user.findFirst({
+        where: { email: normalizedEmail }
+      });
+    } catch (dbError) {
+      console.error('Database user check error:', dbError);
+      return res.status(500).json({
+        success: false,
+        message: 'Kullanıcı kontrolü sırasında hata oluştu',
+        detail: dbError.message
+      });
+    }
 
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: 'Bu e-posta adresi zaten kullanılıyor'
+        message: 'Bu e-posta adresi zaten kullanılıyor',
+        detail: 'User already exists'
       });
     }
 
@@ -97,39 +118,52 @@ export default async function handler(req, res) {
     // 1) Kullanıcıyı henüz kalıcı kaydetmeden e‑posta gönder
     const emailSent = await sendVerificationEmail(normalizedEmail, verificationCode);
     if (!emailSent) {
-      return res.status(502).json({ success: false, message: 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.' });
+      return res.status(502).json({ 
+        success: false, 
+        message: 'Doğrulama e-postası gönderilemedi. Lütfen daha sonra tekrar deneyin.',
+        detail: 'Email service failed'
+      });
     }
 
-    // 2) Doğrulama bekleyen kayıt tablosu yoksa User içinde bekleme olarak tutalım (emailVerified=false, verificationCode set)
-    const newUser = await prisma.user.create({
-      data: {
-        firstName,
-        lastName,
-        email: normalizedEmail,
-        phone: phone || null,
-        address: address || null,
-        password: hashedPassword,
-        emailVerified: false,
-        verificationCode
-      },
-      select: { id: true, firstName: true, lastName: true, email: true, role: true, createdAt: true }
-    });
+    // 2) E‑posta gönderildiyse kullanıcıyı kaydet
+    let newUser;
+    try {
+      newUser = await prisma.user.create({
+        data: {
+          firstName,
+          lastName,
+          email: normalizedEmail,
+          password: hashedPassword,
+          phone: phone || null,
+          address: address || null,
+          verificationCode,
+          verificationExpires: new Date(Date.now() + 10 * 60 * 1000), // 10 dakika
+          role: 'user'
+        }
+      });
+    } catch (createError) {
+      console.error('User creation error:', createError);
+      return res.status(500).json({
+        success: false,
+        message: 'Kullanıcı kaydı sırasında hata oluştu',
+        detail: createError.message
+      });
+    }
 
-    console.log('New user created (pending verification):', newUser.id);
+    console.log('User registered successfully:', newUser.id);
 
     return res.status(201).json({
       success: true,
-      message: 'Doğrulama kodu gönderildi. Kod onaylanınca hesabınız aktifleşecektir.',
-      user: newUser
+      message: 'Kayıt başarılı! E-posta adresinize doğrulama kodu gönderildi.',
+      userId: newUser.id
     });
 
   } catch (error) {
-    const msg = error && (error.message || error.code || error.toString());
-    console.error('Register API Error:', msg);
+    console.error('Register API Error:', error);
     return res.status(500).json({
       success: false,
       message: 'Kayıt sırasında bir hata oluştu',
-      detail: msg
+      detail: error.message
     });
   }
 }

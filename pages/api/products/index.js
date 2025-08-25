@@ -1,4 +1,4 @@
-import { prisma, ensurePrismaSqliteSchema } from '../../../lib/prisma';
+import { prisma, ensurePrismaSchema } from '../../../lib/prisma';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -18,11 +18,12 @@ export default async function handler(req, res) {
   }
 
   try {
-    await ensurePrismaSqliteSchema();
+    // Database schema'yı kontrol et
+    await ensurePrismaSchema();
+    
     const { category, search, sortBy } = req.query;
 
-    // DB ürünler (varsa) yoksa fallback mock
-    const dbProducts = await prisma.product.findMany({ orderBy: { name: 'asc' } });
+    // Mock ürünler (database bağlantı sorunu varsa)
     const mockProducts = [
       {
         id: '1',
@@ -117,7 +118,17 @@ export default async function handler(req, res) {
       }
     ];
 
-    let filteredProducts = dbProducts.length ? dbProducts : mockProducts;
+    // Database'den ürünleri çekmeyi dene
+    let dbProducts = [];
+    try {
+      dbProducts = await prisma.product.findMany({ 
+        orderBy: { name: 'asc' } 
+      });
+    } catch (dbError) {
+      console.log('Database ürün çekme hatası, mock kullanılıyor:', dbError.message);
+    }
+
+    let filteredProducts = dbProducts.length > 0 ? dbProducts : mockProducts;
 
     // Category filter
     if (category && category !== 'all') {
@@ -160,7 +171,8 @@ export default async function handler(req, res) {
     console.error('Products API Error:', error);
     return res.status(500).json({
       success: false,
-      message: 'Ürünler yüklenirken bir hata oluştu'
+      message: 'Ürünler yüklenirken bir hata oluştu',
+      detail: error.message
     });
   }
 }
