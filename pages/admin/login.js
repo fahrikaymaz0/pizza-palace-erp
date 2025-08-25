@@ -16,12 +16,7 @@ export default function AdminLogin() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    // Giriş alanlarını koru (email'i hatırla)
-    const savedEmail = typeof window !== 'undefined' ? localStorage.getItem('lastAdminEmail') : '';
-    if (savedEmail) {
-      setFormData((prev) => ({ ...prev, email: savedEmail }));
-    }
-    // Otomatik yönlendirme yapma
+    // Otomatik yönlendirme veya otomatik doldurma yapma
   }, [router]);
 
   const handleInputChange = (e) => {
@@ -30,9 +25,7 @@ export default function AdminLogin() {
       ...prev,
       [name]: value
     }));
-    if (name === 'email') {
-      try { localStorage.setItem('lastAdminEmail', value); } catch (_) {}
-    }
+    // Otomatik doldurma istemiyoruz; sadece başarıyla girişte saklıyoruz
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({

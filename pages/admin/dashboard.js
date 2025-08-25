@@ -162,7 +162,7 @@ export default function AdminDashboard() {
         <link rel="icon" href="/kaymaz-icon.ico" />
       </Head>
 
-      <div className="min-h-screen bg-white text-gray-900">
+      <div className="min-h-screen bg-[conic-gradient(at_30%_20%,#fff, #fff, #fff)] text-gray-900">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -261,7 +261,7 @@ export default function AdminDashboard() {
             transition={{ duration: 0.5, delay: 0.4 }}
             className="bg-white rounded-lg shadow border border-gray-200"
           >
-            <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-red-50 to-yellow-50">
+            <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-red-50 via-white to-yellow-50">
               <h2 className="text-lg font-semibold text-gray-900">Son Siparişler</h2>
             </div>
             
