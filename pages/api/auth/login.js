@@ -40,8 +40,8 @@ export default async function handler(req, res) {
     }
 
     // Find user
-    const user = await prisma.user.findUnique({
-      where: { email }
+    const user = await prisma.user.findFirst({
+      where: { email: { equals: email, mode: 'insensitive' } }
     });
 
     if (!user) {
@@ -99,10 +99,12 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Login API Error:', error);
+    const msg = error && (error.message || error.code || error.toString());
+    console.error('Login API Error:', msg);
     return res.status(500).json({
       success: false,
-      message: 'Giriş sırasında bir hata oluştu'
+      message: 'Giriş sırasında bir hata oluştu',
+      detail: msg
     });
   }
 }

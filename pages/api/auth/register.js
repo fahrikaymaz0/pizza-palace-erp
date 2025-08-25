@@ -62,8 +62,8 @@ export default async function handler(req, res) {
     }
 
     // Check if user already exists
-    const existingUser = await prisma.user.findUnique({
-      where: { email }
+    const existingUser = await prisma.user.findFirst({
+      where: { email: { equals: email, mode: 'insensitive' } }
     });
 
     if (existingUser) {
@@ -113,10 +113,12 @@ export default async function handler(req, res) {
     });
 
   } catch (error) {
-    console.error('Register API Error:', error && (error.stack || error.message || error));
+    const msg = error && (error.message || error.code || error.toString());
+    console.error('Register API Error:', msg);
     return res.status(500).json({
       success: false,
-      message: 'Kayıt sırasında bir hata oluştu'
+      message: 'Kayıt sırasında bir hata oluştu',
+      detail: msg
     });
   }
 }
