@@ -253,25 +253,43 @@ export default function RoyalPizzaKingdom() {
         </div>
         {/* Sarkık flamalar */}
         <div className="absolute inset-y-0 left-4 z-10 pointer-events-none hidden sm:block">
-          <svg width="160" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="200" height="100%" viewBox="0 0 100 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="leftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#E63946"/>
-                <stop offset="100%" stopColor="#C21D2B"/>
+                <stop offset="0%" stopColor="#e83a3a"/>
+                <stop offset="100%" stopColor="#b8121f"/>
+              </linearGradient>
+              <filter id="leftShadow" x="-20%" y="-10%" width="140%" height="120%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#000000" floodOpacity="0.2"/>
+              </filter>
+              <linearGradient id="leftSheen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#ffffff" stopOpacity="0.25"/>
+                <stop offset="0.3" stopColor="#ffffff" stopOpacity="0.05"/>
+                <stop offset="1" stopColor="#ffffff" stopOpacity="0"/>
               </linearGradient>
             </defs>
-            <path d="M0 0 H90 V760 L60 820 L45 760 L30 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
+            <path d="M0 0 H100 V740 L70 820 L50 760 L30 820 L0 740 Z" fill="url(#leftGrad)" stroke="#8f0f1a" strokeWidth="2.5" filter="url(#leftShadow)"/>
+            <path d="M1 0 H99 V720 L70 800 L50 740 L30 800 L1 720 Z" fill="url(#leftSheen)"/>
           </svg>
         </div>
         <div className="absolute inset-y-0 right-4 z-10 pointer-events-none hidden sm:block">
-          <svg width="160" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <svg width="200" height="100%" viewBox="0 0 100 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="rightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#FFD166"/>
-                <stop offset="100%" stopColor="#E3B84F"/>
+                <stop offset="0%" stopColor="#ffd166"/>
+                <stop offset="100%" stopColor="#d8ad3d"/>
+              </linearGradient>
+              <filter id="rightShadow" x="-20%" y="-10%" width="140%" height="120%">
+                <feDropShadow dx="0" dy="6" stdDeviation="6" floodColor="#000000" floodOpacity="0.2"/>
+              </filter>
+              <linearGradient id="rightSheen" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#ffffff" stopOpacity="0.25"/>
+                <stop offset="0.3" stopColor="#ffffff" stopOpacity="0.05"/>
+                <stop offset="1" stopColor="#ffffff" stopOpacity="0"/>
               </linearGradient>
             </defs>
-            <path d="M90 0 H0 V760 L30 820 L45 760 L60 820 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
+            <path d="M100 0 H0 V740 L30 820 L50 760 L70 820 L100 740 Z" fill="url(#rightGrad)" stroke="#c0982f" strokeWidth="2.5" filter="url(#rightShadow)"/>
+            <path d="M99 0 H1 V720 L30 800 L50 740 L70 800 L99 720 Z" fill="url(#rightSheen)"/>
           </svg>
         </div>
         <div className="container mx-auto px-4 text-center">
