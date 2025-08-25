@@ -507,7 +507,7 @@ function RoyalMenu() {
                 >
                   <div className="relative h-48">
                     <PremiumImage
-                      src={product.image}
+                      src={product.image.replace('/pizzas/', '/optimized/pizzas/').replace('.png', '-medium.webp')}
                       alt={product.name}
                       fill
                       className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"

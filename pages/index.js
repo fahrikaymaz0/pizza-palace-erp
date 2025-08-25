@@ -296,14 +296,14 @@ export default function RoyalPizzaKingdom() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
             {royalProducts.map((product, index) => (
               <motion.div
                 key={product.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
               >
                 <div className="h-48 bg-gray-200 relative">
                   <img
@@ -317,10 +317,10 @@ export default function RoyalPizzaKingdom() {
                     </span>
                   )}
                 </div>
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-1">
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{product.name}</h3>
-                  <p className="text-gray-600 mb-4">{product.description}</p>
-                  <div className="flex items-center justify-between">
+                  <p className="text-gray-600 mb-4 min-h-[48px]">{product.description}</p>
+                  <div className="mt-auto flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <Star className="w-5 h-5 text-yellow-500 fill-current" />
                       <span className="text-gray-700 font-semibold">{product.rating}</span>
@@ -346,7 +346,7 @@ export default function RoyalPizzaKingdom() {
         </div>
       </section>
 
-      {/* Hızlı Sipariş Ver Bölümü */}
+      {/* Hızlı Sipariş Ver Bölümü (statik ikonlarla) */}
       <section className="py-20 bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50">
         <div className="container mx-auto px-4">
           <motion.div
@@ -364,89 +364,24 @@ export default function RoyalPizzaKingdom() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* Adım 1: Üye Ol */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-center"
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
-                <div className="w-24 h-24 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Lottie
-                    animationData={require('/public/animations/user-register.json')}
-                    loop={true}
-                    autoplay={true}
-                    style={{ width: '100%', height: '100%' }}
-                  />
+            {[
+              { title: 'Üye Ol', desc: 'Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun', color: 'bg-red-100', bullet: 'Ücretsiz üyelik • Hızlı kayıt • Özel indirimler' },
+              { title: 'Siparişini Oluştur', desc: 'Menümüzden istediğiniz pizzayı seçin ve özelleştirin', color: 'bg-yellow-100', bullet: 'Özelleştirilebilir • Hızlı seçim • Canlı takip' },
+              { title: 'Siparişin Gelsin', desc: 'Sıcacık pizzanız kapınıza kadar teslim edilir', color: 'bg-green-100', bullet: 'Hızlı teslimat • Sıcak servis • Güvenli paketleme' },
+            ].map((step, i) => (
+              <motion.div key={step.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.1 * (i + 1) }} className="text-center">
+                <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
+                  <div className={`w-24 h-24 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}> 
+                    <RoyalCrown className="w-10 h-10 text-red-600" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{step.title}</h3>
+                  <p className="text-gray-600 mb-6">{step.desc}</p>
+                  <div className="bg-red-50 rounded-lg p-4">
+                    <p className="text-sm text-red-700 font-medium">{step.bullet}</p>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Üye Ol</h3>
-                <p className="text-gray-600 mb-6">
-                  Hızlıca hesap oluşturun ve özel fırsatlardan haberdar olun
-                </p>
-                <div className="bg-red-50 rounded-lg p-4">
-                  <p className="text-sm text-red-700 font-medium">
-                    Ücretsiz üyelik • Hızlı kayıt • Özel indirimler
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Adım 2: Siparişini Oluştur */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-center"
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
-                <div className="w-24 h-24 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Lottie
-                    animationData={require('/public/animations/shopping-cart.json')}
-                    loop={true}
-                    autoplay={true}
-                    style={{ width: '100%', height: '100%' }}
-                  />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişini Oluştur</h3>
-                <p className="text-gray-600 mb-6">
-                  Menümüzden istediğiniz pizzayı seçin ve özelleştirin
-                </p>
-                <div className="bg-yellow-50 rounded-lg p-4">
-                  <p className="text-sm text-yellow-700 font-medium">
-                    Özelleştirilebilir • Hızlı seçim • Canlı takip
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Adım 3: Siparişin Gelsin */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-center"
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 h-full">
-                <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Lottie
-                    animationData={require('/public/animations/delivery-truck.json')}
-                    loop={true}
-                    autoplay={true}
-                    style={{ width: '100%', height: '100%' }}
-                  />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Siparişin Gelsin</h3>
-                <p className="text-gray-600 mb-6">
-                  Sıcacık pizzanız kapınıza kadar teslim edilir
-                </p>
-                <div className="bg-green-50 rounded-lg p-4">
-                  <p className="text-sm text-green-700 font-medium">
-                    Hızlı teslimat • Sıcak servis • Güvenli paketleme
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
 
           {/* CTA Butonu */}
