@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -34,6 +34,8 @@ export default function AdminDashboard() {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const isMountedRef = useRef(true);
+  const fetchIdRef = useRef(0);
 
   useEffect(() => {
     // Simple auth check and data fetch
@@ -45,6 +47,7 @@ export default function AdminDashboard() {
 
     // Fetch orders directly
     fetchOrders();
+    return () => { isMountedRef.current = false; };
   }, []); // Only run once on mount
 
   // Separate effect for pagination
@@ -56,6 +59,7 @@ export default function AdminDashboard() {
 
   const fetchOrders = async () => {
     try {
+      const currentFetchId = ++fetchIdRef.current;
       const adminToken = localStorage.getItem('adminToken');
       if (!adminToken) {
         router.push('/admin/login');
@@ -83,6 +87,11 @@ export default function AdminDashboard() {
       const data = await response.json();
       console.log('Orders data:', data);
 
+      // Ignore stale responses
+      if (!isMountedRef.current || currentFetchId !== fetchIdRef.current) {
+        return;
+      }
+
       if (data.success) {
         setOrders(data.orders || []);
         setStatistics(data.statistics || {
@@ -101,8 +110,10 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('Error fetching orders:', error);
     } finally {
-      setIsLoading(false);
-      setHasFetched(true);
+      if (isMountedRef.current) {
+        setIsLoading(false);
+        setHasFetched(true);
+      }
     }
   };
 
