@@ -35,24 +35,52 @@ export default function AdminDashboard() {
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
-    // Check if admin is logged in
-    const adminToken = localStorage.getItem('adminToken');
-    if (!adminToken) {
-      router.push('/admin/login');
-      return;
-    }
+    // Check if admin is logged in with valid token
+    const checkAuthAndFetch = async () => {
+      const adminToken = localStorage.getItem('adminToken');
+      if (!adminToken) {
+        router.push('/admin/login');
+        return;
+      }
 
-    // Add a small delay to ensure router is ready
-    const timer = setTimeout(() => {
-      fetchOrders();
-    }, 100);
+      try {
+        // Validate token first
+        const response = await fetch('/api/orders/all?page=1&limit=1', {
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+          }
+        });
 
-    return () => clearTimeout(timer);
+        if (response.status === 200) {
+          // Token is valid, fetch orders
+          fetchOrders();
+        } else if (response.status === 401 || response.status === 403) {
+          // Token is invalid, redirect to login
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
+          router.push('/admin/login');
+        } else {
+          // Other error, still try to fetch orders
+          fetchOrders();
+        }
+      } catch (error) {
+        console.error('Auth check error:', error);
+        // On error, try to fetch orders anyway
+        fetchOrders();
+      }
+    };
+
+    checkAuthAndFetch();
   }, [router, currentPage]);
 
   const fetchOrders = async () => {
     try {
       const adminToken = localStorage.getItem('adminToken');
+      if (!adminToken) {
+        router.push('/admin/login');
+        return;
+      }
+      
       console.log('Fetching orders with token:', adminToken ? 'Token exists' : 'No token');
       
       const response = await fetch(`/api/orders/all?page=${currentPage}&limit=10`, {
@@ -74,6 +102,7 @@ export default function AdminDashboard() {
         // If token is invalid, redirect to login
         if (response.status === 401 || response.status === 403) {
           localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminUser');
           router.push('/admin/login');
         }
       }
