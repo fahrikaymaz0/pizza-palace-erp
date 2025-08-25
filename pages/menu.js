@@ -9,6 +9,7 @@ import { Crown, Star, ShoppingCart, ArrowLeft, Filter, Search, Heart, X } from '
 import dynamic from 'next/dynamic';
 import RoyalParallaxScene from '../components/RoyalParallaxScene';
 import PremiumImage from '../components/PremiumImage';
+import PremiumCardPayment from '../components/PremiumCardPayment';
 
 function RoyalMenu() {
   const { isLightMode } = useTheme();
@@ -23,6 +24,7 @@ function RoyalMenu() {
   const [phone, setPhone] = useState('');
   const [notes, setNotes] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('cash');
 
   // Statik pizza verileri
   const allProducts = [
@@ -334,7 +336,7 @@ function RoyalMenu() {
         items: cartItems.map(ci => ({ name: ci.name, quantity: ci.quantity, price: ci.price })),
         totalPrice,
         customerMessage: notes,
-        paymentMethod: 'cash'
+        paymentMethod: paymentMethod
       };
 
       const res = await fetch('/api/orders/create', {
@@ -740,23 +742,34 @@ function RoyalMenu() {
                 {/* Ödeme Yöntemi */}
                 <div className="mt-4">
                   <label className="block text-sm mb-2">Ödeme Yöntemi</label>
-                  <div className="flex gap-3">
-                    <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-yellow-400">Kapıda Nakit</button>
-                    <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-yellow-400">Kapıda Kart</button>
-                    <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-yellow-400">Online Kart (PayTR)</button>
+                  <div className="flex gap-3 flex-wrap">
+                    <button type="button" onClick={() => setPaymentMethod('cash')} className={`px-4 py-2 rounded-lg border ${paymentMethod==='cash' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 bg-white'} text-gray-700 hover:border-yellow-400`}>Kapıda Nakit</button>
+                    <button type="button" onClick={() => setPaymentMethod('pos')} className={`px-4 py-2 rounded-lg border ${paymentMethod==='pos' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 bg-white'} text-gray-700 hover:border-yellow-400`}>Kapıda Kart</button>
+                    <button type="button" onClick={() => setPaymentMethod('online')} className={`px-4 py-2 rounded-lg border ${paymentMethod==='online' ? 'border-yellow-500 bg-yellow-50' : 'border-gray-300 bg-white'} text-gray-700 hover:border-yellow-400`}>Online Kart (PayTR)</button>
                   </div>
                 </div>
 
-                {/* Kart Ödeme Placeholder */}
-                <div className="mt-4 p-4 rounded-lg border border-yellow-300 bg-yellow-50">
-                  <p className="text-sm text-yellow-800">Online kart ödemesi (PayTR test) bir sonraki adımda entegre edilecek. Şimdilik siparişler kapıda ödeme ile oluşturuluyor.</p>
-                </div>
-
-                <div className="flex items-center justify-between pt-4">
-                  <button disabled={submitting} onClick={submitOrder} className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 px-6 py-3 rounded-full font-bold hover:from-yellow-300 hover:to-yellow-500 disabled:opacity-50">
-                    {submitting ? 'Gönderiliyor...' : 'Siparişi Onayla'}
-                  </button>
-                </div>
+                {paymentMethod === 'online' ? (
+                  <div className="mt-4">
+                    <PremiumCardPayment
+                      amount={totalPrice}
+                      onSuccess={() => {
+                        // Kart başarılı simülasyon -> siparişi online paid olarak oluştur
+                        setNotes(prev => (prev ? prev + ' | Online simülasyon: Başarılı' : 'Online simülasyon: Başarılı'));
+                        submitOrder();
+                      }}
+                      onError={(msg) => {
+                        alert(msg || 'Kart doğrulaması başarısız');
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between pt-4">
+                    <button disabled={submitting} onClick={submitOrder} className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 px-6 py-3 rounded-full font-bold hover:from-yellow-300 hover:to-yellow-500 disabled:opacity-50">
+                      {submitting ? 'Gönderiliyor...' : 'Siparişi Onayla'}
+                    </button>
+                  </div>
+                )}
               </div>
             </motion.div>
           </motion.div>
