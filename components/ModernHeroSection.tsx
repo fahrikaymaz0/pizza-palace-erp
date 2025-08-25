@@ -415,3 +415,4 @@ export default function ModernHeroSection({ className }: ModernHeroSectionProps)
     </section>
   );
 }
+

@@ -214,3 +214,4 @@ Deployment tamamlandıktan sonra:
 
 URL: `https://your-project.vercel.app`
 
+

@@ -224,3 +224,4 @@ export default function SupportMessageModal({ isOpen, onClose }) {
     </AnimatePresence>
   );
 }
+

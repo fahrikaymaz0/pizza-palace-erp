@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Star, Shield, Zap, Heart, ShoppingCart, Menu, X, ChevronRight, ChevronLeft, Phone, Award, Clock, Truck, Crown, UserPlus, ShoppingBag, Truck as TruckIcon } from 'lucide-react';
 import { useTheme } from '../context/DarkModeContext';
 import OutlineCrown from '../components/OutlineCrown';
+import RoyalCrown from '../components/RoyalCrown';
 import Lottie from 'lottie-react';
 
 export default function RoyalPizzaKingdom() {
@@ -227,15 +228,38 @@ export default function RoyalPizzaKingdom() {
         )}
       </AnimatePresence>
 
-      {/* Basit Hero Section */}
+      {/* Basit Hero Section + Sağ/Sol Flama */}
       <section className="min-h-screen bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50 flex items-center justify-center relative overflow-hidden">
+        {/* Sarkık flamalar */}
+        <div className="absolute inset-y-0 left-4 z-10 pointer-events-none hidden sm:block">
+          <svg width="90" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="leftGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#E63946"/>
+                <stop offset="100%" stopColor="#C21D2B"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 0 H90 V760 L45 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
+          </svg>
+        </div>
+        <div className="absolute inset-y-0 right-4 z-10 pointer-events-none hidden sm:block">
+          <svg width="90" height="100%" viewBox="0 0 90 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="rightGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#FFD166"/>
+                <stop offset="100%" stopColor="#E3B84F"/>
+              </linearGradient>
+            </defs>
+            <path d="M90 0 H0 V760 L45 820 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
+          </svg>
+        </div>
         <div className="container mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <OutlineCrown className="w-16 h-16 text-yellow-500 mx-auto mb-6" />
+            <RoyalCrown className="w-16 h-16 mx-auto mb-6" />
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               <span className="text-red-600">Pizza</span>{' '}
               <span className="text-yellow-600">Krallığı</span>
@@ -322,7 +346,7 @@ export default function RoyalPizzaKingdom() {
         </div>
       </section>
 
-      {/* Nasıl Çalışır Bölümü */}
+      {/* Hızlı Sipariş Ver Bölümü */}
       <section className="py-20 bg-gradient-to-br from-red-50 via-yellow-50 to-orange-50">
         <div className="container mx-auto px-4">
           <motion.div
@@ -332,10 +356,10 @@ export default function RoyalPizzaKingdom() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Nasıl Çalışır?
+              Hızlı Sipariş Ver
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Sadece 3 basit adımda lezzetli pizzanızı sipariş edin
+              3 basit adımda pizzanı kapına getir
             </p>
           </motion.div>
 
@@ -443,23 +467,15 @@ export default function RoyalPizzaKingdom() {
         </div>
       </section>
 
-      {/* Basit Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      {/* Footer sadeleştirildi: koyu blok kaldırıldı, hafif tema */}
+      <footer className="bg-white text-gray-700 py-10 border-t">
         <div className="container mx-auto px-4 text-center">
-          <div className="flex items-center justify-center mb-6">
-            <OutlineCrown className="w-8 h-8 text-yellow-500 mr-3" />
-            <h3 className="text-2xl font-bold">
-              <span className="text-red-500">Pizza</span>{' '}
-              <span className="text-yellow-500">Krallığı</span>
-            </h3>
-          </div>
-          <p className="text-gray-400 mb-4">
-            Kraliyet lezzetlerin adresi. Premium malzemeler, özel tarifler.
-          </p>
-          <div className="flex justify-center space-x-6">
-            <Link href="/menu" className="text-gray-400 hover:text-white transition-colors">Menü</Link>
-            <Link href="/login" className="text-gray-400 hover:text-white transition-colors">Giriş</Link>
-            <Link href="/register" className="text-gray-400 hover:text-white transition-colors">Kayıt</Link>
+          <RoyalCrown className="w-10 h-10 mx-auto mb-3" />
+          <h3 className="text-xl font-bold mb-2"><span className="text-red-600">Pizza</span> <span className="text-yellow-600">Krallığı</span></h3>
+          <div className="flex justify-center gap-6 text-sm">
+            <Link href="/menu" className="hover:text-red-600">Menü</Link>
+            <Link href="/login" className="hover:text-red-600">Giriş</Link>
+            <Link href="/register" className="hover:text-red-600">Kayıt</Link>
           </div>
         </div>
       </footer>

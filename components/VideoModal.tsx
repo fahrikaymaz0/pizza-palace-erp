@@ -66,3 +66,4 @@ export default function VideoModal({ isOpen, onClose, videoSrc, poster }: VideoM
     </AnimatePresence>
   );
 }
+

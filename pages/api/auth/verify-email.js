@@ -1,5 +1,6 @@
 import { prisma } from '../../../lib/prisma';
 import { generateToken } from '../../../lib/auth';
+import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -19,76 +20,71 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { email, code } = req.body;
+    const { email, code, token: verificationToken } = req.body || {};
 
-    console.log('Email verification attempt:', { email, code });
+    // 1) Token ile doğrulama (e-posta linkinden)
+    if (verificationToken) {
+      try {
+        const secret = process.env.JWT_SECRET || 'fallback-secret';
+        const payload = jwt.verify(verificationToken, secret);
+        const tokenEmail = payload.email;
+        if (!tokenEmail) {
+          return res.status(400).json({ success: false, message: 'Geçersiz doğrulama tokenı' });
+        }
 
-    // Validation
+        const userByToken = await prisma.user.findUnique({ where: { email: tokenEmail } });
+        if (!userByToken) {
+          return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı' });
+        }
+        if (userByToken.emailVerified) {
+          const loginToken = generateToken(userByToken);
+          return res.status(200).json({ success: true, message: 'E-posta zaten doğrulanmış', user: {
+            id: userByToken.id,
+            firstName: userByToken.firstName,
+            lastName: userByToken.lastName,
+            email: userByToken.email,
+            phone: userByToken.phone,
+            address: userByToken.address,
+            role: userByToken.role,
+            emailVerified: true
+          }, token: loginToken });
+        }
+
+        const updatedViaToken = await prisma.user.update({
+          where: { id: userByToken.id },
+          data: { emailVerified: true, verificationCode: null },
+          select: { id: true, firstName: true, lastName: true, email: true, phone: true, address: true, role: true, emailVerified: true }
+        });
+        const loginToken = generateToken(updatedViaToken);
+        return res.status(200).json({ success: true, message: 'E-posta başarıyla doğrulandı', user: updatedViaToken, token: loginToken });
+      } catch {
+        return res.status(400).json({ success: false, message: 'Doğrulama tokenı geçersiz veya süresi dolmuş' });
+      }
+    }
+
+    // 2) E-posta + kod ile doğrulama (kayıt modali)
     if (!email || !code) {
-      return res.status(400).json({
-        success: false,
-        message: 'E-posta ve doğrulama kodu gereklidir'
-      });
+      return res.status(400).json({ success: false, message: 'E-posta ve doğrulama kodu gereklidir' });
     }
 
-    // Find user
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
-
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'Kullanıcı bulunamadı'
-      });
+      return res.status(404).json({ success: false, message: 'Kullanıcı bulunamadı' });
     }
-
-    // Check if already verified
     if (user.emailVerified) {
-      return res.status(400).json({
-        success: false,
-        message: 'E-posta zaten doğrulanmış'
-      });
+      return res.status(400).json({ success: false, message: 'E-posta zaten doğrulanmış' });
     }
-
-    // Verify code
     if (user.verificationCode !== code) {
-      return res.status(400).json({
-        success: false,
-        message: 'Geçersiz doğrulama kodu'
-      });
+      return res.status(400).json({ success: false, message: 'Geçersiz doğrulama kodu' });
     }
 
-    // Update user as verified
     const updatedUser = await prisma.user.update({
       where: { id: user.id },
-      data: {
-        emailVerified: true,
-        verificationCode: null
-      },
-      select: {
-        id: true,
-        firstName: true,
-        lastName: true,
-        email: true,
-        phone: true,
-        address: true,
-        role: true,
-        emailVerified: true
-      }
+      data: { emailVerified: true, verificationCode: null },
+      select: { id: true, firstName: true, lastName: true, email: true, phone: true, address: true, role: true, emailVerified: true }
     });
-
-    // Generate JWT token for automatic login
-    const token = generateToken(updatedUser);
-
-    console.log('Email verified:', user.id);
-
-    return res.status(200).json({
-      success: true,
-      message: 'E-posta başarıyla doğrulandı',
-      user: updatedUser,
-      token
-    });
+    const loginToken = generateToken(updatedUser);
+    return res.status(200).json({ success: true, message: 'E-posta başarıyla doğrulandı', user: updatedUser, token: loginToken });
 
   } catch (error) {
     console.error('Email verification API Error:', error);

@@ -160,3 +160,4 @@ npm run analyze
 ---
 
 **Not**: Bu optimizasyonlar modern pizza sitelerinden ilham alınarak yapılmıştır ve en güncel web standartlarını kullanmaktadır.
+

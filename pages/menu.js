@@ -221,31 +221,62 @@ function RoyalMenu() {
       color: 'from-purple-500 to-pink-500',
       count: allProducts.filter(p => p.category === 'royal').length
     },
-    { 
-      id: 'classic', 
+    {
+      id: 'classic',
       name: 'Klasik Pizzalar',
       description: 'Geleneksel İtalyan lezzetleri',
-      color: 'from-green-500 to-teal-500',
+      color: 'from-red-600 to-red-500',
       count: allProducts.filter(p => p.category === 'classic').length
     },
-    { 
-      id: 'vegetarian', 
+    {
+      id: 'vegetarian',
       name: 'Vejetaryen',
       description: 'Taze sebzelerle hazırlanan sağlıklı seçenekler',
-      color: 'from-emerald-500 to-green-500',
+      color: 'from-yellow-500 to-yellow-400',
       count: allProducts.filter(p => p.category === 'vegetarian').length
     },
-    { 
-      id: 'spicy', 
+    {
+      id: 'spicy',
       name: 'Acılı Pizzalar',
       description: 'Baharatlı ve keskin lezzetler',
-      color: 'from-red-600 to-orange-600',
+      color: 'from-red-700 to-red-600',
       count: allProducts.filter(p => p.category === 'spicy').length
+    },
+    {
+      id: 'desserts',
+      name: 'Tatlılar',
+      description: 'Sufle, tiramisu, mozaik pasta',
+      color: 'from-yellow-400 to-yellow-500',
+      count: 3
+    },
+    {
+      id: 'drinks',
+      name: 'İçecekler',
+      description: 'Kola, ayran, su, meyve suyu',
+      color: 'from-red-500 to-red-600',
+      count: 6
+    },
+    {
+      id: 'combos',
+      name: 'Menüler',
+      description: 'Pizza + İçecek + Patates',
+      color: 'from-yellow-500 to-red-600',
+      count: 4
     }
   ];
 
   // Filtreleme ve sıralama
-  const filteredProducts = allProducts
+  // Ekstra kategoriler için örnek ürün enjeksiyonu
+  const extraItems = [
+    { id: 'd1', name: 'Tiramisu', description: 'Klasik İtalyan tatlısı', price: 45, image: '/pizzas/margherita.png', category: 'desserts', rating: 4.8, reviewCount: 52, ingredients: ['Kakao','Mascarpone','Kedi dili'], preparationTime: '—', calories: 380 },
+    { id: 'd2', name: 'Sufle', description: 'Sıcak çikolatalı sufle', price: 39, image: '/pizzas/margherita.png', category: 'desserts', rating: 4.7, reviewCount: 61, ingredients: ['Çikolata'], preparationTime: '—', calories: 410 },
+    { id: 'b1', name: 'Kola 330ml', description: 'Soğuk servis', price: 25, image: '/pizzas/margherita.png', category: 'drinks', rating: 4.6, reviewCount: 200, ingredients: ['—'], preparationTime: '—', calories: 140 },
+    { id: 'b2', name: 'Ayran 300ml', description: 'Serinletici', price: 20, image: '/pizzas/margherita.png', category: 'drinks', rating: 4.6, reviewCount: 120, ingredients: ['—'], preparationTime: '—', calories: 90 },
+    { id: 'c1', name: 'Solo Menü', description: 'Orta Pizza + İçecek + Patates', price: 149, image: '/pizzas/margherita.png', category: 'combos', rating: 4.9, reviewCount: 88, ingredients: ['Pizza','Patates','İçecek'], preparationTime: '25 dk', calories: 1300 },
+    { id: 'c2', name: 'Aile Menüsü', description: 'Büyük Pizza + 2 İçecek + Patates', price: 219, image: '/pizzas/margherita.png', category: 'combos', rating: 4.9, reviewCount: 73, ingredients: ['Pizza','Patates','İçecek'], preparationTime: '30 dk', calories: 2100 }
+  ];
+
+  const filteredProducts = [...allProducts, ...extraItems]
     .filter(product => {
       const matchesCategory = activeCategory === 'all' || product.category === activeCategory;
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -307,12 +338,19 @@ function RoyalMenu() {
     setSubmitting(true);
     try {
       const token = localStorage.getItem('token');
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+
       const payload = {
-        items: cartItems.map(ci => ({ productId: ci.id, quantity: ci.quantity })),
-        shippingAddress: address,
-        phone,
-        notes
+        customerName: `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Müşteri',
+        customerEmail: user.email || 'unknown@example.com',
+        customerPhone: phone,
+        deliveryAddress: address,
+        items: cartItems.map(ci => ({ name: ci.name, quantity: ci.quantity, price: ci.price })),
+        totalPrice,
+        customerMessage: notes,
+        paymentMethod: 'cash'
       };
+
       const res = await fetch('/api/orders/create', {
         method: 'POST',
         headers: {
