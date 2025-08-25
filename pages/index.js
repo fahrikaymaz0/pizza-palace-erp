@@ -177,11 +177,16 @@ export default function RoyalPizzaKingdom() {
                 </Link>
               )}
               
-              {/* Tek auth butonu - sağda */}
+              {/* Auth butonları */}
               {!isAuthed ? (
-                <Link href="/login" className="px-4 py-2 bg-gradient-to-r from-green-100 to-teal-100 text-green-800 rounded-full font-semibold hover:from-green-200 hover:to-teal-200 transition-all duration-300 shadow-sm">
-                  Giriş Yap
-                </Link>
+                <div className="flex space-x-2">
+                  <Link href="/login" className="px-4 py-2 bg-gradient-to-r from-green-100 to-teal-100 text-green-800 rounded-full font-semibold hover:from-green-200 hover:to-teal-200 transition-all duration-300 shadow-sm">
+                    Giriş Yap
+                  </Link>
+                  <Link href="/admin/login" className="px-4 py-2 bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-800 rounded-full font-semibold hover:from-purple-200 hover:to-indigo-200 transition-all duration-300 shadow-sm">
+                    Admin Girişi
+                  </Link>
+                </div>
               ) : (
                 <button onClick={handleLogout} className="px-4 py-2 bg-gradient-to-r from-red-100 to-pink-100 text-red-800 rounded-full font-semibold hover:from-red-200 hover:to-pink-200 transition-all duration-300 shadow-sm">
                   Çıkış Yap

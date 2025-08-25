@@ -44,7 +44,14 @@ export default function AdminDashboard() {
 
     // Fetch orders directly
     fetchOrders();
-  }, [currentPage]); // Remove router dependency to prevent loops
+  }, []); // Only run once on mount
+
+  // Separate effect for pagination
+  useEffect(() => {
+    if (currentPage > 1) {
+      fetchOrders();
+    }
+  }, [currentPage]);
 
   const fetchOrders = async () => {
     try {

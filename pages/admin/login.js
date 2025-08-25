@@ -16,11 +16,8 @@ export default function AdminLogin() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    // Only redirect if we have a token (let dashboard handle validation)
-    const token = localStorage.getItem('adminToken');
-    if (token) {
-      router.push('/admin/dashboard');
-    }
+    // Don't auto-redirect, let user login manually
+    // This prevents issues with invalid tokens
   }, [router]);
 
   const handleInputChange = (e) => {
