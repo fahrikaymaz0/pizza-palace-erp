@@ -242,12 +242,12 @@ export default function RoyalPizzaKingdom() {
             priority
             sizes="100vw"
             unoptimized
-            style={{ objectFit: 'cover', filter: 'blur(2px) opacity(0.4)' }}
+            style={{ objectFit: 'cover', filter: 'blur(1.2px) opacity(0.45)' }}
             onError={() => setBgSrc('/arkaplanpizza/arkaplanpizza.png')}
           />
           {/* Saf fallback <img> - Next Image 400 durumunda */}
           <noscript>
-            <img src="/arkaplanpizza/arkaplanpizza.png" alt="Arka Plan" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(2px) opacity(0.4)' }} />
+            <img src="/arkaplanpizza/arkaplanpizza.png" alt="Arka Plan" style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'blur(1.2px) opacity(0.45)' }} />
           </noscript>
           <div className="absolute inset-0 bg-gradient-to-br from-white/70 via-white/60 to-white/70" />
         </div>
@@ -260,7 +260,7 @@ export default function RoyalPizzaKingdom() {
                 <stop offset="100%" stopColor="#C21D2B"/>
               </linearGradient>
             </defs>
-            <path d="M0 0 H90 V760 L45 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
+            <path d="M0 0 H90 V760 L60 820 L45 760 L30 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
           </svg>
         </div>
         <div className="absolute inset-y-0 right-4 z-10 pointer-events-none hidden sm:block">
@@ -271,7 +271,7 @@ export default function RoyalPizzaKingdom() {
                 <stop offset="100%" stopColor="#E3B84F"/>
               </linearGradient>
             </defs>
-            <path d="M90 0 H0 V760 L45 820 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
+            <path d="M90 0 H0 V760 L30 820 L45 760 L60 820 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
           </svg>
         </div>
         <div className="container mx-auto px-4 text-center">
