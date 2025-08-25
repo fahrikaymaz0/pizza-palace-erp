@@ -8,6 +8,7 @@ export default async function handler(req, res) {
   if (!roomId) return res.status(400).end('roomId required');
   await ensurePrismaSqliteSchema();
 
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Connection', 'keep-alive');
