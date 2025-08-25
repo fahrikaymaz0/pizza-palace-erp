@@ -265,7 +265,7 @@ export default function RoyalPizzaKingdom() {
                 <stop offset="100%" stopColor="#C21D2B"/>
               </linearGradient>
             </defs>
-            <path d="M0 0 H90 V760 L62 818 L45 760 L28 818 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
+            <path d="M0 0 H90 V760 L45 820 L0 760 Z" fill="url(#leftGrad)" stroke="#A51521" strokeWidth="3"/>
           </svg>
         </div>
         <div className="absolute inset-y-0 right-4 z-10 pointer-events-none hidden sm:block">
@@ -276,7 +276,7 @@ export default function RoyalPizzaKingdom() {
                 <stop offset="100%" stopColor="#E3B84F"/>
               </linearGradient>
             </defs>
-            <path d="M90 0 H0 V760 L28 818 L45 760 L62 818 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
+            <path d="M90 0 H0 V760 L45 820 L90 760 Z" fill="url(#rightGrad)" stroke="#D4A63A" strokeWidth="3"/>
           </svg>
         </div>
         <div className="container mx-auto px-4 text-center">

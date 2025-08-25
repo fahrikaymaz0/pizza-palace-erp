@@ -735,6 +735,24 @@ function RoyalMenu() {
                 </div>
                 <div className="flex items-center justify-between pt-2">
                   <span className="text-lg">Toplam: <span className="font-bold text-yellow-600 dark:text-yellow-400">₺{totalPrice}</span></span>
+                </div>
+
+                {/* Ödeme Yöntemi */}
+                <div className="mt-4">
+                  <label className="block text-sm mb-2">Ödeme Yöntemi</label>
+                  <div className="flex gap-3">
+                    <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-yellow-400">Kapıda Nakit</button>
+                    <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-yellow-400">Kapıda Kart</button>
+                    <button type="button" className="px-4 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:border-yellow-400">Online Kart (PayTR)</button>
+                  </div>
+                </div>
+
+                {/* Kart Ödeme Placeholder */}
+                <div className="mt-4 p-4 rounded-lg border border-yellow-300 bg-yellow-50">
+                  <p className="text-sm text-yellow-800">Online kart ödemesi (PayTR test) bir sonraki adımda entegre edilecek. Şimdilik siparişler kapıda ödeme ile oluşturuluyor.</p>
+                </div>
+
+                <div className="flex items-center justify-between pt-4">
                   <button disabled={submitting} onClick={submitOrder} className="bg-gradient-to-r from-yellow-400 to-yellow-600 text-purple-900 px-6 py-3 rounded-full font-bold hover:from-yellow-300 hover:to-yellow-500 disabled:opacity-50">
                     {submitting ? 'Gönderiliyor...' : 'Siparişi Onayla'}
                   </button>

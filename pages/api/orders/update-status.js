@@ -1,0 +1,55 @@
+import { prisma } from '../../../lib/prisma';
+import { verifyToken } from '../../../lib/auth';
+
+export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  try {
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.substring(7) : null;
+    if (!token) {
+      return res.status(401).json({ success: false, message: 'Yetkilendirme gerekli' });
+    }
+
+    const decoded = verifyToken(token);
+    if (!decoded || String(decoded.role || '').toLowerCase() !== 'admin') {
+      return res.status(403).json({ success: false, message: 'Admin yetkisi gerekli' });
+    }
+
+    const { orderId, status, paymentStatus } = req.body || {};
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: 'orderId zorunludur' });
+    }
+
+    const data = {};
+    if (status) data.status = status; // pending | preparing | completed | cancelled
+    if (paymentStatus) data.paymentStatus = paymentStatus; // pending | completed | failed
+
+    if (Object.keys(data).length === 0) {
+      return res.status(400).json({ success: false, message: 'Güncellenecek alan yok' });
+    }
+
+    const updated = await prisma.order.update({
+      where: { id: orderId },
+      data,
+      include: { items: true }
+    });
+
+    return res.status(200).json({ success: true, order: updated });
+  } catch (error) {
+    console.error('Update order status error:', error);
+    return res.status(500).json({ success: false, message: 'Durum güncellenemedi' });
+  }
+}
