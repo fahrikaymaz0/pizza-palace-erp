@@ -1,6 +1,21 @@
 import { prisma, ensurePrismaSqliteSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
 import { hashPassword, validateEmail, validatePassword, validatePhone, generateToken } from '../../../lib/auth';
-import { generateCode, sendVerificationEmail } from '../../../lib/emailService';
+
+// Email service functions - inline implementation
+function generateCode() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+async function sendVerificationEmail(email, code) {
+  try {
+    // Development mode - just log the code
+    console.log(`[DEV] Verification code ${code} -> ${email}`);
+    return true;
+  } catch (error) {
+    console.error('Email sending failed:', error);
+    return false;
+  }
+}
 
 export default async function handler(req, res) {
   // CORS headers

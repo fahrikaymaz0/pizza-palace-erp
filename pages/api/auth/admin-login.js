@@ -3,10 +3,11 @@ import bcrypt from 'bcryptjs';
 import { generateToken } from '../../../lib/auth';
 
 export default async function handler(req, res) {
-  // CORS headers
+  // CORS headers - more comprehensive
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+  res.setHeader('Access-Control-Max-Age', '86400');
 
   // Handle preflight
   if (req.method === 'OPTIONS') {
@@ -14,15 +15,23 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Only allow POST method
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ 
+      success: false,
+      message: 'Method not allowed',
+      allowedMethods: ['POST']
+    });
   }
 
   try {
     await ensurePrismaSqliteSchema();
     await ensureUserLastLoginColumn();
+    
     const { email, password } = req.body || {};
     const normalizedEmail = String(email || '').trim().toLowerCase();
+
+    console.log('Admin login attempt:', { email: normalizedEmail });
 
     // Validasyon
     if (!normalizedEmail || !password) {
@@ -33,7 +42,18 @@ export default async function handler(req, res) {
     }
 
     // Admin kullanıcısını bul
-    const admin = await prisma.user.findFirst({ where: { email: normalizedEmail } });
+    const admin = await prisma.user.findFirst({ 
+      where: { email: normalizedEmail },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        password: true,
+        role: true,
+        emailVerified: true
+      }
+    });
 
     if (!admin) {
       return res.status(401).json({
@@ -42,7 +62,15 @@ export default async function handler(req, res) {
       });
     }
 
-    // Şifre kontrolü (gerçek uygulamada admin şifresi farklı olmalı)
+    // Email doğrulaması kontrolü
+    if (!admin.emailVerified) {
+      return res.status(403).json({
+        success: false,
+        message: 'E-posta doğrulanmadı. Lütfen e-postanızdaki kodu onaylayın.'
+      });
+    }
+
+    // Şifre kontrolü
     const isPasswordValid = await bcrypt.compare(password, admin.password);
 
     if (!isPasswordValid) {
@@ -53,11 +81,12 @@ export default async function handler(req, res) {
     }
 
     // Admin kontrolü: role alanını küçük harfe çevirerek kontrol et
-    if (String(admin.role || '').toLowerCase() !== 'admin') {
+    const userRole = String(admin.role || '').toLowerCase();
+    if (userRole !== 'admin') {
       return res.status(403).json({
         success: false,
         message: 'Bu alana erişim yetkiniz yok',
-        detail: `role=${admin.role}`
+        detail: `role=${admin.role}, normalized=${userRole}`
       });
     }
 
@@ -70,8 +99,7 @@ export default async function handler(req, res) {
       data: { lastLogin: new Date() }
     });
 
-    // Cookie ayarla
-    res.setHeader('Set-Cookie', `adminToken=${token}; HttpOnly; Path=/; Max-Age=86400; SameSite=Strict`);
+    console.log('Admin logged in successfully:', admin.id);
 
     res.status(200).json({
       success: true,
@@ -81,6 +109,7 @@ export default async function handler(req, res) {
         firstName: admin.firstName,
         lastName: admin.lastName,
         email: admin.email,
+        role: admin.role,
         token
       }
     });
@@ -92,6 +121,5 @@ export default async function handler(req, res) {
       message: 'Giriş yapılırken bir hata oluştu',
       detail: error?.message || String(error)
     });
-  } finally {
   }
 } 

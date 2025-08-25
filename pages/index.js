@@ -12,7 +12,7 @@ import SupportChatWidget from '../components/SupportChatWidget';
 
 export default function RoyalPizzaKingdom() {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [bgSrc, setBgSrc] = useState('/arkaplanpizza.jpeg');
+  const [bgSrc, setBgSrc] = useState('/arkaplanpizza/arkaplanpizza.png');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
