@@ -16,6 +16,18 @@ export default function AdminLogin() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/auth/last-admin-email');
+        const data = await res.json();
+        if (data?.email) {
+          setFormData(prev => ({ ...prev, email: data.email }));
+        }
+      } catch (_) {}
+    })();
+  }, []);
+
+  useEffect(() => {
     // Otomatik yönlendirme veya otomatik doldurma yapma
   }, [router]);
 

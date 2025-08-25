@@ -99,6 +99,9 @@ export default async function handler(req, res) {
       data: { lastLogin: new Date() }
     });
 
+    // AppSetting'e son admin emailini kaydet
+    await prisma.$executeRawUnsafe(`INSERT INTO "AppSetting" ("key","value") VALUES ('lastAdminEmail', ?) ON CONFLICT(key) DO UPDATE SET value=excluded.value`, normalizedEmail);
+
     console.log('Admin logged in successfully:', admin.id);
 
     res.status(200).json({
