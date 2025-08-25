@@ -1,6 +1,6 @@
 import { prisma, ensurePrismaSqliteSchema, ensureUserLastLoginColumn } from '../../../lib/prisma';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import { generateToken } from '../../../lib/auth';
 
 export default async function handler(req, res) {
   // CORS headers
@@ -60,16 +60,8 @@ export default async function handler(req, res) {
       });
     }
 
-    // JWT token oluştur
-    const token = jwt.sign(
-      { 
-        userId: admin.id, 
-        email: admin.email,
-        role: 'admin'
-      },
-      process.env.JWT_SECRET || 'admin-secret-key',
-      { expiresIn: '24h' }
-    );
+    // Uygulama geneliyle aynı JWT imzasını kullan
+    const token = generateToken(admin);
 
     // Son giriş zamanını güncelle
     await prisma.user.update({
